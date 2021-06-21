@@ -329,7 +329,8 @@ def main_window():
                                "Purple", "Violet", "Pink", "Tan", "Beige", "Brown", "Chocolate"]
                 for color in clip_colors:
                     win.GetItems()[f"ConditionValue_{i}_{j}"].AddItem(color)
-                win.GetItems()[f"ConditionValue_{i}_{j}"]["CurrentIndex"] = clip_colors.index(value)
+                if value and value in clip_colors:
+                    win.GetItems()[f"ConditionValue_{i}_{j}"]["CurrentIndex"] = clip_colors.index(value)
                 win.On[f"ConditionValue_{i}_{j}"].CurrentIndexChanged = change_clip_color
             elif items[f"ConditionKeyCombo_{i}_{j}"]["CurrentText"] == "Flag":
                 items[f"ConditionContainer_{i}_{j}"].AddChild(ui.ComboBox({"ID": f"ConditionValue_{i}_{j}"}))
@@ -339,7 +340,8 @@ def main_window():
                                "Lavender", "Sky", "Mint", "Lemon", "Sand", "Cocoa", "Cream"]
                 for color in flag_colors:
                     win.GetItems()[f"ConditionValue_{i}_{j}"].AddItem(color)
-                win.GetItems()[f"ConditionValue_{i}_{j}"]["CurrentIndex"] = flag_colors.index(value)
+                if value and value in flag_colors:
+                    win.GetItems()[f"ConditionValue_{i}_{j}"]["CurrentIndex"] = flag_colors.index(value)
                 win.On[f"ConditionValue_{i}_{j}"].CurrentIndexChanged = change_flag
             elif items[f"ConditionKeyCombo_{i}_{j}"]["CurrentText"] == "Input Color Space":
                 items[f"ConditionContainer_{i}_{j}"].AddChild(ui.ComboBox({"ID": f"ConditionValue_{i}_{j}"}))
