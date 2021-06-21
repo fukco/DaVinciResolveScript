@@ -1,0 +1,26 @@
+{
+  "Color Space Match Rules": {
+    "enabled": true,
+    "_comments": "this is for DaVinci Wide Gamut only!",
+    "rules": [
+      {
+        "manufacturer": "sony",
+        "details": [
+          {
+            "Gamma Notes": "s-log3-cine",
+            "Color Space Notes": "s-gamut3-cine",
+            "Input Color Space": "S-Gamut3.Cine/S-Log3"
+          },
+          {
+            "Gamma Notes": "s-log3",
+            "Color Space Notes": "s-gamut3",
+            "Input Color Space": "S-Gamut3/S-Log3"
+          }
+        ]
+      }
+    ]
+  },
+  "Custom Rules": {
+    "enabled": false
+  }
+}
