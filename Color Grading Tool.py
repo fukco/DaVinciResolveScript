@@ -106,7 +106,7 @@ else:
                 {"Gamma Notes": item.gamma_notes, "Color Space Notes": item.color_space_notes,
                  "Input Color Space": item.input_color_space}]})
 
-    data = {color_space_match_rules: {enabled: True, "_comments": "this is for DaVinci Wide Gamut only!"},
+    data = {color_space_match_rules: {enabled: True, "_comments": "this is for RCM only!"},
             custom_rules: {enabled: False}}
     data[color_space_match_rules].update(match_rules)
     json.dump(data, f, indent=2)
@@ -712,7 +712,8 @@ def execute():
     media_pool = project.GetMediaPool()
     root_folder = media_pool.GetRootFolder()
     success = True
-    if data[color_space_match_rules][enabled] and project.GetSetting("colorScienceMode") == "davinciYRGBColorManagedv2":
+    print(json.dumps(project.GetSetting(), indent=4))
+    if data[color_space_match_rules][enabled] and "davinciYRGBColorManaged" in project.GetSetting("colorScienceMode"):
         logger.debug("Match input color space begin")
         clips = []
         get_clips(root_folder, clips)

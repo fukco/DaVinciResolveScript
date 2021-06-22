@@ -1,7 +1,7 @@
 {
   "Color Space Match Rules": {
     "enabled": true,
-    "_comments": "this is for DaVinci Wide Gamut only!",
+    "_comments": "this is for RCM only!",
     "rules": [
       {
         "manufacturer": "sony",
