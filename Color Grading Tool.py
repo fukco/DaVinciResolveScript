@@ -712,7 +712,6 @@ def execute():
     media_pool = project.GetMediaPool()
     root_folder = media_pool.GetRootFolder()
     success = True
-    print(json.dumps(project.GetSetting(), indent=4))
     if data[color_space_match_rules][enabled] and "davinciYRGBColorManaged" in project.GetSetting("colorScienceMode"):
         logger.debug("Match input color space begin")
         clips = []
