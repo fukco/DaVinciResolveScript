@@ -718,7 +718,8 @@ def execute():
         get_clips(root_folder, clips)
         for clip in clips:
             metadata = clip.GetMetadata()
-            input_color_space = color_space_match_map.get((metadata["Gamma Notes"], metadata["Color Space Notes"]))
+            input_color_space = color_space_match_map.get(
+                (metadata.get("Gamma Notes"), metadata.get("Color Space Notes")))
             if input_color_space:
                 if clip.SetClipProperty("Input Color Space", input_color_space):
                     logger.debug(f"{clip.GetName()} Set Input Color Space {input_color_space} Successfully.")
