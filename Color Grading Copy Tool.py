@@ -4,7 +4,7 @@ import logging
 import sys
 
 __author__ = "Michael<https://github.com/fukco>"
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __license__ = "MIT"
 
 gui_mode = True  # True or False
@@ -90,10 +90,10 @@ def handle_color_version(timeline_items, assign_color_version, color_version_nam
                 item.AddVersion(color_version_name, 0)
 
 
-def copy_grading(option, assign_color_version, color_version_name):
+def copy_grading(timeline_item, option, assign_color_version, color_version_name):
     logger.debug(
         "Current timelineItem is {}, Option is {}, Assign color version is {}, Color version name is {}".format(
-            current_timeline_item.GetName(), option, assign_color_version, color_version_name))
+            timeline_item.GetName(), option, assign_color_version, color_version_name))
     timeline_items = get_all_timeline_item()
     target_items = []
     if option == options[0]:  # All
@@ -101,36 +101,36 @@ def copy_grading(option, assign_color_version, color_version_name):
     elif option == options[1]:  # Same Clip
         for item in timeline_items:
             if item.GetMediaPoolItem().GetClipProperty(
-                    "File Path") == current_timeline_item.GetMediaPoolItem().GetClipProperty("File Path"):
+                    "File Path") == timeline_item.GetMediaPoolItem().GetClipProperty("File Path"):
                 target_items.append(item)
     elif option == options[5]:  # Same Input Color Space
         for item in timeline_items:
             if item.GetMediaPoolItem().GetClipProperty(
-                    "Input Color Space") == current_timeline_item.GetMediaPoolItem().GetClipProperty(
+                    "Input Color Space") == timeline_item.GetMediaPoolItem().GetClipProperty(
                 "Input Color Space"):
                 target_items.append(item)
     elif option == options[6]:  # Clip Color
         for item in timeline_items:
-            if item.GetClipColor() == current_timeline_item.GetClipColor():
+            if item.GetClipColor() == timeline_item.GetClipColor():
                 target_items.append(item)
     elif option == options[7]:  # Flags
         for item in timeline_items:
-            if item.GetFlags() == current_timeline_item.GetFlags():
+            if item.GetFlags() == timeline_item.GetFlags():
                 target_items.append(item)
     else:
         param = option.lstrip("Same ")
         if param == "Keywords":
             for item in timeline_items:
                 if collections.Counter(item.GetMediaPoolItem().GetMetadata(param).split(",")) == collections.Counter(
-                        current_timeline_item.GetMediaPoolItem().GetMetadata(param).split(",")):
+                        timeline_item.GetMediaPoolItem().GetMetadata(param).split(",")):
                     target_items.append(item)
         else:
             for item in timeline_items:
-                if item.GetMediaPoolItem().GetMetadata(param) == current_timeline_item.GetMediaPoolItem().GetMetadata(
+                if item.GetMediaPoolItem().GetMetadata(param) == timeline_item.GetMediaPoolItem().GetMetadata(
                         param):
                     target_items.append(item)
     handle_color_version(target_items, assign_color_version, color_version_name)
-    if len(target_items) > 0 and not current_timeline_item.CopyGrades(target_items):
+    if len(target_items) > 0 and not timeline_item.CopyGrades(target_items):
         logger.error("copy failed {}".format(target_items))
         return False
     logger.info("Copy Grading Execute finished.")
@@ -143,29 +143,16 @@ project = projectManager.GetCurrentProject()
 mediaPool = project.GetMediaPool()
 rootFolder = mediaPool.GetRootFolder()
 timeline = project.GetCurrentTimeline()
-current_timeline_item = timeline.GetCurrentVideoItem()
 
 
 def main_window():
     win = dispatcher.AddWindow({
         "ID": 'MyWin',
         "WindowTitle": 'Color Grading Copy Tool',
-        "Geometry": [500, 200, 600, 180]
+        "Geometry": [600, 300, 500, 140]
     }, [
         ui.VGroup({"ID": 'root'}, [
             # Add your GUI elements here:
-            ui.HGroup([
-                ui.Label({
-                    "Text": 'Current TimelineItem:',
-                }),
-
-                ui.LineEdit({
-                    "ID": 'CurrentItemTxt',
-                    "ReadOnly": True,
-                }),
-
-            ]),
-
             ui.HGroup([
                 ui.Label({
                     "Text": 'Copy To Timeline:',
@@ -197,12 +184,6 @@ def main_window():
             ui.HGroup([
                 ui.Button(
                     {
-                        "ID": 'Refresh',
-                        "Text": "Refresh"
-                    },
-                ),
-                ui.Button(
-                    {
                         "Text": "Execute",
                         "ID": "Execute"
                     }
@@ -220,34 +201,22 @@ def main_window():
 
     itm["MyCombo"]["CurrentIndex"] = 1
 
-    if current_timeline_item:
-        itm["CurrentItemTxt"]["Text"] = current_timeline_item.GetName()
-
     # The window was closed
     def close_win(ev):
         dispatcher.ExitLoop()
 
-    def refresh_win_current_video_item(ev):
-        global current_timeline_item
+    def execute(ev):
         current_timeline_item = timeline.GetCurrentVideoItem()
-        if current_timeline_item:
-            show_message("")
-            itm["CurrentItemTxt"]["Text"] = current_timeline_item.GetName()
-        else:
+        if not current_timeline_item:
             show_message("Please open [Edit] or [Color] page to choose one timeline item!", 1)
             logger.warning("Please open [Edit] or [Color] page to choose one timeline item!")
-
-    def execute(ev):
+            return
         option = itm["MyCombo"]["CurrentText"]
         assign_color_version = itm["MyCheckbox"]["Checked"]
         color_version_name = itm["MyLineTxt"]["Text"]
         if not color_version_name:
             color_version_name = color_version_name_placeholder
-        if not current_timeline_item:
-            show_message("Please select timeline item!", 1)
-            logger.warning("Please select timeline item!")
-            return
-        if copy_grading(option, assign_color_version, color_version_name):
+        if copy_grading(current_timeline_item, option, assign_color_version, color_version_name):
             show_message("Finished.")
         else:
             show_message("Some error occurred, Please check log details!")
@@ -260,7 +229,6 @@ def main_window():
 
     win.On.MyWin.Close = close_win
     win.On.Execute.Clicked = execute
-    win.On.Refresh.Clicked = refresh_win_current_video_item
 
     win.Show()
     dispatcher.RunLoop()
@@ -271,4 +239,9 @@ if __name__ == '__main__':
     if "gui_mode" in locals().keys() and gui_mode:
         main_window()
     else:
-        copy_grading(default_option, default_assign_color_version, default_color_version_name)
+        current_timeline_item = timeline.GetCurrentVideoItem()
+        if current_timeline_item:
+            copy_grading(current_timeline_item, default_option, default_assign_color_version,
+                         default_color_version_name)
+        else:
+            logger.warning("Please open [Edit] or [Color] page to choose one timeline item!")
