@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """For DaVinci Resolve Color Grading"""
 __author__ = "Michael<https://github.com/fukco>"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __license__ = "MIT"
 
 import json
@@ -79,13 +79,28 @@ color_space_match_rules = "Color Space Match Rules"
 custom_rules = "Custom Rules"
 enabled = "enabled"
 default_color_version_name = "Auto Generate Color Version"
-color_space_match_list = [ColorSpaceMatchRule("sony", "s-log3-cine", "s-gamut3-cine", "S-Gamut3.Cine/S-Log3"),
-                          ColorSpaceMatchRule("sony", "s-log3", "s-gamut3", "S-Gamut3/S-Log3")]
+color_space_match_list = [ColorSpaceMatchRule("Sony", "s-log3-cine", "s-gamut3-cine", "S-Gamut3.Cine/S-Log3"),
+                          ColorSpaceMatchRule("Sony", "s-log3", "s-gamut3", "S-Gamut3/S-Log3"),
+
+                          ColorSpaceMatchRule("Fujifilm", "F-log", "", "FujiFilm F-Log"),
+
+                          ColorSpaceMatchRule("Panasonic", "V-Log", "V-Gamut", "Panasonic V-Gamut/V-Log"),
+
+                          ColorSpaceMatchRule("Atomos", "CLog", "Cinema", "Canon Cinema Gamut/Canon Log"),
+                          ColorSpaceMatchRule("Atomos", "CLog2", "Cinema", "Canon Cinema Gamut/Canon Log2"),
+                          ColorSpaceMatchRule("Atomos", "CLog3", "Cinema", "Canon Cinema Gamut/Canon Log3"),
+                          ColorSpaceMatchRule("Atomos", "F-Log", "F-Gamut", "FujiFilm F-Log"),
+                          ColorSpaceMatchRule("Atomos", "V-Log", "V-Gamut", "Panasonic V-Gamut/V-Log"),
+                          ColorSpaceMatchRule("Atomos", "SLog3", "SGamut3.cine", "S-Gamut3.Cine/S-Log3"),
+                          ColorSpaceMatchRule("Atomos", "SLog3", "SGamut3", "S-Gamut3/S-Log3"),
+                          ColorSpaceMatchRule("Atomos", "N-Log", "BT.2020", "Nikon N-Log"),
+                          ColorSpaceMatchRule("Atomos", "HLG", "BT.2020", "Rec.2100 HLG")]
 color_space_match_map = {}
 input_color_space_list = []
 for item in color_space_match_list:
     color_space_match_map[(item.gamma_notes, item.color_space_notes)] = item.input_color_space
-    input_color_space_list.append(item.input_color_space)
+    if item.input_color_space not in input_color_space_list:
+        input_color_space_list.append(item.input_color_space)
 if pathlib.Path(json_file).is_file():
     f = open(json_file, mode="r")
     logger.debug(f"Open Json File {json_file}")
@@ -147,13 +162,13 @@ def main_window():
             # checkbox
             ui.HGroup({"Weight": 0}, [
                 ui.HGap(0, 10),
-                ui.CheckBox({"Text": 'Match Input Color Space', "ID": "ColorScienceCheckBox"}),
+                ui.CheckBox({"Text": 'RCM Color Space Match', "ID": "ColorScienceCheckBox"}),
                 ui.CheckBox({"Text": 'Custom Grading', "ID": "CustomGradingCheckBox"}),
                 ui.HGap(0, 10)]),
 
             # color space match rule
             ui.HGroup({"Weight": 0.05}, [
-                ui.Label({"Text": 'Color Space Match Rules:', 'Font': ui.Font({'Family': "Times New Roman"}),
+                ui.Label({"Text": 'RCM Color Space Match Rules:', 'Font': ui.Font({'Family': "Times New Roman"}),
                           "Alignment": {"AlignHCenter": True, "AlignTop": True}})]),
             ui.VGroup({"Weight": 2}, [ui.Tree({"ID": tree_id})]),
 

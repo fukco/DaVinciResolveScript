@@ -5,7 +5,7 @@ import sys
 from ctypes import cdll, c_char_p, Structure
 
 __author__ = "Michael<https://github.com/fukco>"
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __license__ = "MIT"
 
 fields_list = [
@@ -32,7 +32,7 @@ fields_list = [
     ("Focal Point (mm)", c_char_p),
     ("Distance", c_char_p),
     ("Filter", c_char_p),
-    ("Nd Filter", c_char_p),
+    ("ND Filter", c_char_p),
     ("Compression Ratio", c_char_p),
     ("Codec Bitrate", c_char_p),
     ("Aspect Ratio Notes", c_char_p),
@@ -99,6 +99,7 @@ if __name__ == "__main__":
     # add ch to logger
     logger.addHandler(ch)
 
+    logger.info("Processing...")
     resolve = GetResolve()
     projectManager = resolve.GetProjectManager()
     project = projectManager.GetCurrentProject()
@@ -125,6 +126,9 @@ if __name__ == "__main__":
                 resolve_meta_dict = lib.DRProcessMediaFile(file_path.encode("utf-8")).get_dict()
                 result[file_path] = resolve_meta_dict
             meta = {k: v for k, v in resolve_meta_dict.items() if v}
+            if not meta:
+                logger.warning(f"{os.path.basename(file_path)} Not Supported.")
+                continue
             if clip.SetMetadata(meta):
                 logger.debug(f"Processed {os.path.basename(file_path)} Successfully.")
             else:

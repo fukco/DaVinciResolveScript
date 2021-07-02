@@ -32,7 +32,7 @@
 
 
 4. 字幕转化工具<br/>
-待补充
+你是个聪明的娃er，要学会如何自己去摸索了！
 
 ---
 ## 文件说明
@@ -68,7 +68,8 @@
 ---
 ## Q&A
 Q: 为何没有提供中文界面？<br/>
-A: emmm，本来是要做国际化的，支持中英文版本的，与达芬奇内语言设置同步，找到了对应的API，无奈它有BUG啊，切换中英文无法正确获得语言设置，国际化工作暂时搁置。界面中都是简单英文单词，对各位难度应该不大。
+A: emmm，本来是要做国际化的，支持中英文版本的，与达芬奇内语言设置同步，找到了对应的API`fusion:GetPrefs("Global.UserInterface.Language")`，切换中英文无法正确获得语言设置，国际化工作暂时搁置。界面中都是简单英文单词，对各位难度应该不大。
+07-02 Update:Win系统下%appdata%目录下`%appdata%\Blackmagic Design\DaVinci Resolve\Preferences\config.user.xml`中能够读取到系统语言设置
 
 
 Q: 喂！有BUG啊，如何反馈？<br/>
