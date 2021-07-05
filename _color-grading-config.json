@@ -4,41 +4,6 @@
     "_comments": "this is for RCM only!",
     "rules": [
       {
-        "manufacturer": "Sony",
-        "details": [
-          {
-            "Gamma Notes": "s-log3-cine",
-            "Color Space Notes": "s-gamut3-cine",
-            "Input Color Space": "S-Gamut3.Cine/S-Log3"
-          },
-          {
-            "Gamma Notes": "s-log3",
-            "Color Space Notes": "s-gamut3",
-            "Input Color Space": "S-Gamut3/S-Log3"
-          }
-        ]
-      },
-      {
-        "manufacturer": "Fujifilm",
-        "details": [
-          {
-            "Gamma Notes": "F-log",
-            "Color Space Notes": "",
-            "Input Color Space": "FujiFilm F-Log"
-          }
-        ]
-      },
-      {
-        "manufacturer": "Panasonic",
-        "details": [
-          {
-            "Gamma Notes": "V-Log",
-            "Color Space Notes": "V-Gamut",
-            "Input Color Space": "Panasonic V-Gamut/V-Log"
-          }
-        ]
-      },
-      {
         "manufacturer": "Atomos",
         "details": [
           {
@@ -85,6 +50,41 @@
             "Gamma Notes": "HLG",
             "Color Space Notes": "BT.2020",
             "Input Color Space": "Rec.2100 HLG"
+          }
+        ]
+      },
+      {
+        "manufacturer": "Fujifilm",
+        "details": [
+          {
+            "Gamma Notes": "F-log",
+            "Color Space Notes": "",
+            "Input Color Space": "FujiFilm F-Log"
+          }
+        ]
+      },
+      {
+        "manufacturer": "Panasonic",
+        "details": [
+          {
+            "Gamma Notes": "V-Log",
+            "Color Space Notes": "V-Gamut",
+            "Input Color Space": "Panasonic V-Gamut/V-Log"
+          }
+        ]
+      },
+      {
+        "manufacturer": "Sony",
+        "details": [
+          {
+            "Gamma Notes": "s-log3-cine",
+            "Color Space Notes": "s-gamut3-cine",
+            "Input Color Space": "S-Gamut3.Cine/S-Log3"
+          },
+          {
+            "Gamma Notes": "s-log3",
+            "Color Space Notes": "s-gamut3",
+            "Input Color Space": "S-Gamut3/S-Log3"
           }
         ]
       }

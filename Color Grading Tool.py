@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """For DaVinci Resolve Color Grading"""
 __author__ = "Michael<https://github.com/fukco>"
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 __license__ = "MIT"
 
 import json
@@ -73,20 +73,15 @@ logger.addHandler(ch)
 
 pathname = os.path.dirname(sys.argv[0])
 filename = "color-grading-config.json"
+drx_filename = "DRX-conf.json"
 json_file = os.path.join(pathname, filename)
+drx_json_file = os.path.join(pathname, drx_filename)
 
 color_space_match_rules = "Color Space Match Rules"
 custom_rules = "Custom Rules"
 enabled = "enabled"
 default_color_version_name = "Auto Generate Color Version"
-color_space_match_list = [ColorSpaceMatchRule("Sony", "s-log3-cine", "s-gamut3-cine", "S-Gamut3.Cine/S-Log3"),
-                          ColorSpaceMatchRule("Sony", "s-log3", "s-gamut3", "S-Gamut3/S-Log3"),
-
-                          ColorSpaceMatchRule("Fujifilm", "F-log", "", "FujiFilm F-Log"),
-
-                          ColorSpaceMatchRule("Panasonic", "V-Log", "V-Gamut", "Panasonic V-Gamut/V-Log"),
-
-                          ColorSpaceMatchRule("Atomos", "CLog", "Cinema", "Canon Cinema Gamut/Canon Log"),
+color_space_match_list = [ColorSpaceMatchRule("Atomos", "CLog", "Cinema", "Canon Cinema Gamut/Canon Log"),
                           ColorSpaceMatchRule("Atomos", "CLog2", "Cinema", "Canon Cinema Gamut/Canon Log2"),
                           ColorSpaceMatchRule("Atomos", "CLog3", "Cinema", "Canon Cinema Gamut/Canon Log3"),
                           ColorSpaceMatchRule("Atomos", "F-Log", "F-Gamut", "FujiFilm F-Log"),
@@ -94,7 +89,15 @@ color_space_match_list = [ColorSpaceMatchRule("Sony", "s-log3-cine", "s-gamut3-c
                           ColorSpaceMatchRule("Atomos", "SLog3", "SGamut3.cine", "S-Gamut3.Cine/S-Log3"),
                           ColorSpaceMatchRule("Atomos", "SLog3", "SGamut3", "S-Gamut3/S-Log3"),
                           ColorSpaceMatchRule("Atomos", "N-Log", "BT.2020", "Nikon N-Log"),
-                          ColorSpaceMatchRule("Atomos", "HLG", "BT.2020", "Rec.2100 HLG")]
+                          ColorSpaceMatchRule("Atomos", "HLG", "BT.2020", "Rec.2100 HLG"),
+
+                          ColorSpaceMatchRule("Fujifilm", "F-log", "", "FujiFilm F-Log"),
+
+                          ColorSpaceMatchRule("Panasonic", "V-Log", "V-Gamut", "Panasonic V-Gamut/V-Log"),
+
+                          ColorSpaceMatchRule("Sony", "s-log3-cine", "s-gamut3-cine", "S-Gamut3.Cine/S-Log3"),
+                          ColorSpaceMatchRule("Sony", "s-log3", "s-gamut3", "S-Gamut3/S-Log3"),
+                          ]
 color_space_match_map = {}
 input_color_space_list = []
 for item in color_space_match_list:
@@ -128,10 +131,13 @@ else:
     logger.debug(f"Create Json File {json_file}")
 f.close()
 
-bmd = get_bmd()
-fusion = bmd.scriptapp("Fusion")
-ui = fusion.UIManager
-dispatcher = bmd.UIDispatcher(ui)
+drx_lists = []
+if pathlib.Path(drx_json_file).is_file():
+    f = open(drx_json_file, mode="r")
+    logger.debug(f"Open DRX conf json file {drx_json_file}")
+    drx_conf = json.load(f)
+    drx_lists = drx_conf.get("lists")
+    drx_map = dict((x.get("name"), x.get("path")) for x in drx_lists)
 
 
 def main_window():
@@ -246,9 +252,6 @@ def main_window():
             ui.CheckBox(
                 {"Text": 'Assign Color Version Name', "Checked": option_selected.get("Assign Color Version Name"),
                  "ID": "AssignColorVersionNameCheckBox", "Weight": 0}),
-            ui.HGap(2),
-            ui.Label({"Text": 'Name:', "Weight": 0, 'Font': ui.Font({'Family': "Times New Roman"})}),
-            ui.HGap(5),
             ui.LineEdit({"ID": "ColorVersionName", "Weight": 5, "Text": option_selected.get("Color Version Name"),
                          "PlaceholderText": default_color_version_name})
         ]))
@@ -260,37 +263,39 @@ def main_window():
                 conditions = entry["conditions"]
             condition_tables = []
             for j in range(len(conditions)):
-                condition = conditions[j]
-                key = condition["key"]
-                value = condition["value"]
+                # condition = conditions[j]
+                # key = condition["key"]
+                # value = condition["value"]
                 condition_row = [ui.ComboBox({"ID": f"ConditionKeyCombo_{index}_{j}", "Weight": 0.5}),
                                  ui.HGroup({"ID": f"ConditionContainer_{index}_{j}", "Weight": 1}),
                                  ui.Button({"ID": f"DeleteConditionButton_{index}_{j}", "Text": "Delete", "Weight": 0})]
                 condition_tables.append(ui.HGroup(condition_row))
 
-            drx = entry["drx"]
-            if drx:
-                drx_element = ui.Label({"Text": drx, 'Font': ui.Font({'Family': "Times New Roman"}),
-                                        "Weight": 1.5, "ID": f"drxFile_{index}"})
+            # drx = entry["drx"]
+            if drx_lists:
+                # drx_element = ui.Label({"Text": drx, 'Font': ui.Font({'Family': "Times New Roman"}),
+                #                         "Weight": 1.5, "ID": f"drxFile_{index}"})
+                drx_element = ui.ComboBox({"ID": f"drxFile_{index}"})
             else:
-                drx_element = ui.Label({"Text": "<font color='#922626'>Please enter drx file path!</font>",
-                                        'Font': ui.Font({'Family': "Times New Roman"}), "Weight": 1.5,
-                                        "ID": f"drxFile_{index}"})
+                drx_element = ui.Label({"Text": "<font color='#922626'>Please update DRX file lists first!</font>",
+                                        'Font': ui.Font({'Family': "Times New Roman"}), "Weight": 2})
 
             option_element = ui.HGroup([
-                ui.Label(
-                    {"Text": f"Entry # {index + 1}", 'Font': ui.Font({'Family': "Times New Roman"}),
-                     "Weight": 0}),
-                ui.HGap(1),
-
-                ui.VGroup({"Weight": 1.5}, [
-                    ui.HGroup({"Weight": 0}, [
-                        ui.Button({"ID": f"DrxSelectButton_{index}", "Text": "Select", "Weight": 0}),
+                ui.VGroup([
+                    ui.HGroup([
+                        ui.HGap(2),
+                        ui.Label(
+                            {"Text": f"Entry # {index + 1}", 'Font': ui.Font({'Family': "Times New Roman"}),
+                             "Weight": 0}),
+                        ui.HGap(140),
                         drx_element,
-                        ui.Button({"ID": f"EntryDeleteButton_{index}", "Text": "Delete Entry", "Weight": 0})]),
+                        ui.HGap(100),
+                        ui.Button({"ID": f"EntryDeleteButton_{index}", "Text": "Delete Entry", "Weight": 0}),
+                    ]),
                     ui.HGroup({"Weight": 0}, [
                         ui.VGroup({"Weight": 0}, [
-                            ui.Button({"ID": f"ConditionAddButton_{index}", "Text": "Add Condition", "Weight": 0})]),
+                            ui.Button(
+                                {"ID": f"ConditionAddButton_{index}", "Text": "Add Condition", "Weight": 0})]),
                         ui.VGroup({"ID": f"conditionRows_{index}"}, condition_tables)
                     ])
                 ]),
@@ -303,14 +308,11 @@ def main_window():
             del data[custom_rules]["options"][option_selected_index]["entries"][index]
             repaint_custom_rules_table()
 
-        def select_drx(ev):
+        def update_drx(ev):
             index = int(ev["who"].split("_")[-1])
             option_selected_index = win.GetItems()[option_combo]["CurrentIndex"]
             entries = data[custom_rules]["options"][option_selected_index]["entries"]
-            selected_path = fusion.RequestFile(entries[index]["drx"])
-            if selected_path:
-                entries[index]["drx"] = selected_path
-                win.GetItems()[f"drxFile_{index}"]["Text"] = selected_path
+            entries[index]["drx"] = win.GetItems()[f"drxFile_{index}"]["CurrentText"]
 
         def add_condition(ev):
             index = int(ev["who"].split("_")[-1])
@@ -451,11 +453,18 @@ def main_window():
         condition_keys = ["All", "Camera Type", "Camera Serial #", "Keyword", "Input Color Space", "Clip Color", "Flag"]
         for index in range(len(entries)):
             entry = entries[index]
+            if win.GetItems().get(f"drxFile_{index}"):
+                i = 0
+                for drx_element in drx_lists:
+                    win.GetItems().get(f"drxFile_{index}").AddItem(drx_element.get("name"))
+                    if drx_element.get("name") == entry.get("drx"):
+                        win.GetItems().get(f"drxFile_{index}")["CurrentIndex"] = i
+                    i = i + 1
+            win.On[f"drxFile_{index}"].CurrentIndexChanged = update_drx
             conditions = []
             if "conditions" in entry:
                 conditions = entry["conditions"]
             win.On[f"ConditionAddButton_{index}"].Clicked = add_condition
-            win.On[f"DrxSelectButton_{index}"].Clicked = select_drx
             win.On[f"EntryDeleteButton_{index}"].Clicked = delete_entry
             for j in range(len(conditions)):
                 key = conditions[j]["key"]
@@ -757,7 +766,8 @@ def execute():
                     timeline_items = timeline.GetItemListInTrack("video", index)
                     for entry in entries:
                         conditions = entry.get("conditions")
-                        drx = entry.get("drx")
+                        drx_name = entry.get("drx")
+                        drx_path = drx_map.get(drx_name)
                         target_items = []
                         for item in timeline_items:
                             if is_timeline_item_match_conditions(item, conditions):
@@ -765,9 +775,9 @@ def execute():
                                     if not item.LoadVersionByName(version_name, 0):
                                         item.AddVersion(version_name, 0)
                                 target_items.append(item)
-                        if len(target_items) and not timeline.ApplyGradeFromDRX(drx, 0, target_items):
+                        if len(target_items) and not timeline.ApplyGradeFromDRX(drx_path, 0, target_items):
                             success = False
-                            logger.error(f"Unable to apply a still from {drx} to target items.")
+                            logger.error(f"Unable to apply a still from {drx_path} to target items.")
     if success:
         logger.info("All Done, Have Fun!")
         return True
@@ -777,6 +787,10 @@ def execute():
 
 
 if __name__ == '__main__':
+    bmd = get_bmd()
+    fusion = bmd.scriptapp("Fusion")
+    ui = fusion.UIManager
+    dispatcher = bmd.UIDispatcher(ui)
     if "gui_mode" in locals().keys() and gui_mode:
         main_window()
     else:

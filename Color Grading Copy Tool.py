@@ -47,10 +47,6 @@ def get_bmd():
     return bmd
 
 
-bmd = get_bmd()
-fusion = bmd.scriptapp("Fusion")
-ui = fusion.UIManager
-dispatcher = bmd.UIDispatcher(ui)
 options = ['All', 'Same Clip', 'Same Camera Type', 'Same Camera Serial #', 'Same Keywords', 'Same Input Color Space',
            'Same Clip Color', 'Same Flags']
 color_version_name_placeholder = "Auto Generate Color Version"
@@ -135,14 +131,6 @@ def copy_grading(timeline_item, option, assign_color_version, color_version_name
         return False
     logger.info("Copy Grading Execute finished.")
     return True
-
-
-resolve = bmd.scriptapp("Resolve")
-projectManager = resolve.GetProjectManager()
-project = projectManager.GetCurrentProject()
-mediaPool = project.GetMediaPool()
-rootFolder = mediaPool.GetRootFolder()
-timeline = project.GetCurrentTimeline()
 
 
 def main_window():
@@ -236,7 +224,17 @@ def main_window():
 
 
 if __name__ == '__main__':
+    bmd = get_bmd()
+    resolve = bmd.scriptapp("Resolve")
+    projectManager = resolve.GetProjectManager()
+    project = projectManager.GetCurrentProject()
+    mediaPool = project.GetMediaPool()
+    rootFolder = mediaPool.GetRootFolder()
+    timeline = project.GetCurrentTimeline()
     if "gui_mode" in locals().keys() and gui_mode:
+        fusion = bmd.scriptapp("Fusion")
+        ui = fusion.UIManager
+        dispatcher = bmd.UIDispatcher(ui)
         main_window()
     else:
         current_timeline_item = timeline.GetCurrentVideoItem()
