@@ -16,7 +16,7 @@
 在达芬奇内，打开 工作区->脚本->Comp->XiaoLi->Color Grading Tool 执行日志可以在 工作区->控制台 内查看<br/>
   a.选择是否开启RCM颜色空间匹配（色彩科学DaVinci YRGB Color Managed），选择是否开启自定义调色<br/>
   b.新增/修改选项（方案），功能类似于预设<br/>
-  c.为单个方案新增/修改预定义调色方案，需要选择DRX文件，匹配条件（条件支持所有、摄像机类型、摄像机序列号、关键词、输入色彩空间(RCM)、片段色彩、旗标）<br/>
+  c.为单个方案新增/修改预定义调色方案，需要选择DRX文件名(由DRX Management自动生成)，匹配条件（条件支持所有、摄像机类型、摄像机序列号、关键词、输入色彩空间(RCM)、片段色彩、旗标）<br/>
   d.选择是否指定调色版本，如果指定颜色版本不存在，将自动创建相应的调色版本，未指定则使用当前调色版本<br/>
   f.点击Save Config进行保存配置或Execute直接执行，执行会自动保存配置<br/>
   g.如需使用使用无视图模式：编辑源代码,修改`gui_mode = True`为`gui_mode = False`
@@ -31,7 +31,13 @@
   d.如需使用无视图模式：编辑源代码，修改`gui_mode = True`为`gui_mode = False`，以及`default_option`,`default_assign_color_version`,`default_color_version_name`三个字段对应值
 
 
-4. 字幕转化工具<br/>
+4. DRX文件管理<br/>
+在达芬奇内，打开 工作区->脚本->Comp->XiaoLi->DRX Management 执行日志可以在 工作区->控制台 内查看<br/>
+  a.选择需要查找DRX文件的根目录<br/>
+  b.点击刷新按钮，更新目录以及递归目录所有DRX文件列表<br/>
+  c.如需使用无视图模式：编辑源代码，修改`gui_mode = True`为`gui_mode = False`
+
+5. 字幕转化工具<br/>
 你是个聪明的娃er，要学会如何自己去摸索了！
 
 ---
