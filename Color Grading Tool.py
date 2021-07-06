@@ -4,14 +4,13 @@ __author__ = "Michael<https://github.com/fukco>"
 __version__ = "0.2.0"
 __license__ = "MIT"
 
+import collections
 import json
 import logging
 import os
 import pathlib
 import sys
 from datetime import datetime
-
-gui_mode = True
 
 
 def get_bmd():
@@ -46,14 +45,6 @@ def get_bmd():
     return bmd
 
 
-class ColorSpaceMatchRule:
-    def __init__(self, manufacturer, gamma_notes, color_space_notes, input_color_space):
-        self.manufacturer = manufacturer
-        self.gamma_notes = gamma_notes
-        self.color_space_notes = color_space_notes
-        self.input_color_space = input_color_space
-
-
 # create logger
 logger = logging.getLogger("color_grading_tool")
 logger.setLevel(logging.DEBUG)
@@ -75,33 +66,8 @@ pathname = os.path.dirname(sys.argv[0])
 filename = "conf.json"
 json_file = os.path.join(pathname, filename)
 
-color_space_match_rules = "Color Space Match Rules"
 custom_rules = "Custom Rules"
-enabled = "enabled"
 default_color_version_name = "Auto Generate Color Version"
-color_space_match_list = [ColorSpaceMatchRule("Atomos", "CLog", "Cinema", "Canon Cinema Gamut/Canon Log"),
-                          ColorSpaceMatchRule("Atomos", "CLog2", "Cinema", "Canon Cinema Gamut/Canon Log2"),
-                          ColorSpaceMatchRule("Atomos", "CLog3", "Cinema", "Canon Cinema Gamut/Canon Log3"),
-                          ColorSpaceMatchRule("Atomos", "F-Log", "F-Gamut", "FujiFilm F-Log"),
-                          ColorSpaceMatchRule("Atomos", "V-Log", "V-Gamut", "Panasonic V-Gamut/V-Log"),
-                          ColorSpaceMatchRule("Atomos", "SLog3", "SGamut3.cine", "S-Gamut3.Cine/S-Log3"),
-                          ColorSpaceMatchRule("Atomos", "SLog3", "SGamut3", "S-Gamut3/S-Log3"),
-                          ColorSpaceMatchRule("Atomos", "N-Log", "BT.2020", "Nikon N-Log"),
-                          ColorSpaceMatchRule("Atomos", "HLG", "BT.2020", "Rec.2100 HLG"),
-
-                          ColorSpaceMatchRule("Fujifilm", "F-log", "", "FujiFilm F-Log"),
-
-                          ColorSpaceMatchRule("Panasonic", "V-Log", "V-Gamut", "Panasonic V-Gamut/V-Log"),
-
-                          ColorSpaceMatchRule("Sony", "s-log3-cine", "s-gamut3-cine", "S-Gamut3.Cine/S-Log3"),
-                          ColorSpaceMatchRule("Sony", "s-log3", "s-gamut3", "S-Gamut3/S-Log3"),
-                          ]
-color_space_match_map = {}
-input_color_space_list = []
-for item in color_space_match_list:
-    color_space_match_map[(item.gamma_notes, item.color_space_notes)] = item.input_color_space
-    if item.input_color_space not in input_color_space_list:
-        input_color_space_list.append(item.input_color_space)
 
 data = {}
 if pathlib.Path(json_file).is_file():
@@ -110,39 +76,91 @@ if pathlib.Path(json_file).is_file():
     data = json.load(f)
     f.close()
 
-if not data.get(color_space_match_rules):
-    data.update({color_space_match_rules: {enabled: True, "_comments": "this is for RCM only!"},
-                 custom_rules: {enabled: False}})
-if not data.get(color_space_match_rules).get("rules"):
-    match_rules = {"rules": []}
-    manufacturers = []
-    for item in color_space_match_list:
-        if item.manufacturer in manufacturers:
-            index = manufacturers.index(item.manufacturer)
-            match_rules["rules"][index]["details"].append(
-                {"Gamma Notes": item.gamma_notes, "Color Space Notes": item.color_space_notes,
-                 "Input Color Space": item.input_color_space})
-        else:
-            manufacturers.append(item.manufacturer)
-            match_rules["rules"].append({"manufacturer": item.manufacturer, "details": [
-                {"Gamma Notes": item.gamma_notes, "Color Space Notes": item.color_space_notes,
-                 "Input Color Space": item.input_color_space}]})
-    data[color_space_match_rules].update(match_rules)
+input_color_space_list = []
+if data.get("Color Space Match Rules") and data.get("Color Space Match Rules").get("rules"):
+    for item in data.get("Color Space Match Rules").get("rules"):
+        for detail in item.get("details"):
+            if detail.get("Input Color Space") not in input_color_space_list:
+                input_color_space_list.append(detail.get("Input Color Space"))
 drx_lists = []
 if data.get("DRX") and data.get("DRX").get("lists"):
     drx_lists = data.get("DRX").get("lists")
 drx_map = dict((x.get("name"), x.get("path")) for x in drx_lists) if drx_lists else {}
+copyTypeOptions = ['All', 'Same Clip', 'Same Camera Type', 'Same Camera Serial #', 'Same Keywords',
+                   'Same Input Color Space',
+                   'Same Clip Color', 'Same Flags']
+
+
+def get_all_timeline_item():
+    track_count = timeline.GetTrackCount("video")
+    result = []
+    for index in range(track_count):
+        items = timeline.GetItemListInTrack("video", index)
+        if items and len(items) > 0:
+            result.extend(items)
+    return result
+
+
+def handle_color_version(timeline_items, assign_color_version, color_version_name):
+    if assign_color_version:
+        for item in timeline_items:
+            if not item.LoadVersionByName(color_version_name, 0):
+                item.AddVersion(color_version_name, 0)
+
+
+def copy_grading(timeline_item, option, assign_color_version, color_version_name):
+    logger.debug(
+        "Current timelineItem is {}, Option is {}, Assign color version is {}, Color version name is {}".format(
+            timeline_item.GetName(), option, assign_color_version, color_version_name))
+    timeline_items = get_all_timeline_item()
+    target_items = []
+    if option == copyTypeOptions[0]:  # All
+        target_items = timeline_items
+    elif option == copyTypeOptions[1]:  # Same Clip
+        for item in timeline_items:
+            if item.GetMediaPoolItem().GetClipProperty(
+                    "File Path") == timeline_item.GetMediaPoolItem().GetClipProperty("File Path"):
+                target_items.append(item)
+    elif option == copyTypeOptions[5]:  # Same Input Color Space
+        for item in timeline_items:
+            if item.GetMediaPoolItem().GetClipProperty(
+                    "Input Color Space") == timeline_item.GetMediaPoolItem().GetClipProperty(
+                "Input Color Space"):
+                target_items.append(item)
+    elif option == copyTypeOptions[6]:  # Clip Color
+        for item in timeline_items:
+            if item.GetClipColor() == timeline_item.GetClipColor():
+                target_items.append(item)
+    elif option == copyTypeOptions[7]:  # Flags
+        for item in timeline_items:
+            if item.GetFlags() == timeline_item.GetFlags():
+                target_items.append(item)
+    else:
+        param = option.lstrip("Same ")
+        if param == "Keywords":
+            for item in timeline_items:
+                if collections.Counter(item.GetMediaPoolItem().GetMetadata(param).split(",")) == collections.Counter(
+                        timeline_item.GetMediaPoolItem().GetMetadata(param).split(",")):
+                    target_items.append(item)
+        else:
+            for item in timeline_items:
+                if item.GetMediaPoolItem().GetMetadata(param) == timeline_item.GetMediaPoolItem().GetMetadata(
+                        param):
+                    target_items.append(item)
+    handle_color_version(target_items, assign_color_version, color_version_name)
+    if len(target_items) > 0 and not timeline_item.CopyGrades(target_items):
+        logger.error("copy failed {}".format(target_items))
+        return False
+    logger.info("Copy Grading Execute finished.")
+    return True
 
 
 def main_window():
     # some element IDs
     win_id = "com.xiaoli.ColorGradingTool"  # should be unique for single instancing
-    tree_id = "MatchTree"
     option_combo = "OptionCombo"
     save_button_id = "SaveButton"
-    gamma_notes = "Gamma Notes"
-    color_space_notes = "Color Space Notes"
-    input_color_space = "Input Color Space"
+    copy_button_id = "CopyButton"
 
     # check for existing instance
     win = ui.FindWindow(win_id)
@@ -154,23 +172,39 @@ def main_window():
     # define the window UI layout
     win = dispatcher.AddWindow({
         'ID': win_id,
-        'Geometry': [600, 100, 800, 800],
-        'WindowTitle': "Color Grading Tool",
-        'fixedSize': {800, 800}
+        'Geometry': [600, 100, 700, 800],
+        'WindowTitle': "Color Grading Tool"
     },
         ui.VGroup([
-            # checkbox
-            ui.HGroup({"Weight": 0}, [
-                ui.HGap(0, 10),
-                ui.CheckBox({"Text": 'RCM Color Space Match', "ID": "ColorScienceCheckBox"}),
-                ui.CheckBox({"Text": 'Custom Grading', "ID": "CustomGradingCheckBox"}),
-                ui.HGap(0, 10)]),
-
-            # color space match rule
+            # timeline color grading copy
             ui.HGroup({"Weight": 0.05}, [
-                ui.Label({"Text": 'RCM Color Space Match Rules:', 'Font': ui.Font({'Family': "Times New Roman"}),
+                ui.Label({"Text": 'Timeline Color Grading Copy:', 'Font': ui.Font({'Family': "Times New Roman"}),
                           "Alignment": {"AlignHCenter": True, "AlignTop": True}})]),
-            ui.VGroup({"Weight": 2}, [ui.Tree({"ID": tree_id})]),
+            ui.HGroup({"Weight": 0}, [
+                ui.Label({
+                    "Text": 'Copy To Timeline:',
+                    "Weight": 0
+                }),
+
+                ui.ComboBox({
+                    "ID": 'CopyTypesCombo'
+                }),
+
+            ]),
+            ui.HGroup({"Weight": 0}, [
+                ui.CheckBox({
+                    "ID": 'CopyToAssignColorVersionCheckBox',
+                    "Weight": 0,
+                    "Text": 'Assign Color Version Name'
+                }),
+
+                ui.LineEdit({
+                    "ID": 'CopyToColorVersionTxt',
+                    "PlaceholderText": default_color_version_name,
+                }),
+            ]),
+
+            ui.VGap(5),
 
             # custom rule
             ui.VGroup({"ID": "CustomRuleId", "Weight": 5}, [
@@ -197,39 +231,23 @@ def main_window():
             ]),
 
             ui.HGroup({"Weight": 0}, [
-                ui.Button({"Text": "Execute", "ID": "ExecuteButton", "Weight": 0}),
+                ui.Button({"Text": "Copy Grades", "ID": copy_button_id, "Weight": 0}),
                 ui.HGap(2),
-                ui.Button({"Text": "Save Config", "ID": save_button_id, "Weight": 0}),
+                ui.Button({"Text": "Custom Grading", "ID": "ExecuteButton", "Weight": 0}),
+                ui.HGap(2),
+                ui.Button({"Text": "Save Rules", "ID": save_button_id, "Weight": 0}),
                 ui.HGap(5),
                 ui.Label({'Font': ui.Font({'Family': "Times New Roman"}), "ID": "InfoLabel"})
             ]),
         ])
     )
+    items = win.GetItems()
 
-    def init_tree():
-        items = win.GetItems()
+    # Add the items to the ComboBox menu
+    for option in copyTypeOptions:
+        items["CopyTypesCombo"].AddItem(option)
 
-        # Add a header row.
-        hdr = items[tree_id].NewItem()
-        hdr["Text"][0] = gamma_notes
-        hdr["Text"][1] = color_space_notes
-        hdr["Text"][2] = input_color_space
-        items[tree_id].SetHeaderItem(hdr)
-
-        # Number of columns in the Tree list
-        items[tree_id]["ColumnCount"] = 3
-
-        # Resize the Columns
-        items[tree_id]["ColumnWidth"][0] = 200
-        items[tree_id]["ColumnWidth"][1] = 200
-        items[tree_id]["ColumnWidth"][2] = 360
-
-    def init_checkbox():
-        items = win.GetItems()
-        if data[color_space_match_rules].get(enabled):
-            items["ColorScienceCheckBox"]["Checked"] = True
-        if data[custom_rules].get(enabled):
-            items["CustomGradingCheckBox"]["Checked"] = True
+    items["CopyTypesCombo"]["CurrentIndex"] = 1
 
     def add_custom_rules_table(options):
         if len(options) <= 0:
@@ -257,18 +275,12 @@ def main_window():
                 conditions = entry["conditions"]
             condition_tables = []
             for j in range(len(conditions)):
-                # condition = conditions[j]
-                # key = condition["key"]
-                # value = condition["value"]
                 condition_row = [ui.ComboBox({"ID": f"ConditionKeyCombo_{index}_{j}", "Weight": 0.5}),
                                  ui.HGroup({"ID": f"ConditionContainer_{index}_{j}", "Weight": 1}),
                                  ui.Button({"ID": f"DeleteConditionButton_{index}_{j}", "Text": "Delete", "Weight": 0})]
                 condition_tables.append(ui.HGroup(condition_row))
 
-            # drx = entry["drx"]
             if drx_lists:
-                # drx_element = ui.Label({"Text": drx, 'Font': ui.Font({'Family': "Times New Roman"}),
-                #                         "Weight": 1.5, "ID": f"drxFile_{index}"})
                 drx_element = ui.ComboBox({"ID": f"drxFile_{index}"})
             else:
                 drx_element = ui.Label({"Text": "<font color='#922626'>Please update DRX file lists first!</font>",
@@ -299,19 +311,19 @@ def main_window():
         def delete_entry(ev):
             index = int(ev["who"].split("_")[-1])
             option_selected_index = win.GetItems()[option_combo]["CurrentIndex"]
-            del data[custom_rules]["options"][option_selected_index]["entries"][index]
+            del data.get(custom_rules)["options"][option_selected_index]["entries"][index]
             repaint_custom_rules_table()
 
         def update_drx(ev):
             index = int(ev["who"].split("_")[-1])
             option_selected_index = win.GetItems()[option_combo]["CurrentIndex"]
-            entries = data[custom_rules]["options"][option_selected_index]["entries"]
+            entries = data.get(custom_rules)["options"][option_selected_index]["entries"]
             entries[index]["drx"] = win.GetItems()[f"drxFile_{index}"]["CurrentText"]
 
         def add_condition(ev):
             index = int(ev["who"].split("_")[-1])
             option_selected_index = win.GetItems()[option_combo]["CurrentIndex"]
-            data[custom_rules]["options"][option_selected_index]["entries"][index]["conditions"].append(
+            data.get(custom_rules)["options"][option_selected_index]["entries"][index]["conditions"].append(
                 {"key": "", "value": ""})
             repaint_custom_rules_table()
 
@@ -319,7 +331,7 @@ def main_window():
             i = int(ev["who"].split("_")[-2])
             j = int(ev["who"].split("_")[-1])
             option_selected_index = win.GetItems()[option_combo]["CurrentIndex"]
-            del data[custom_rules]["options"][option_selected_index]["entries"][i]["conditions"][j]
+            del data.get(custom_rules)["options"][option_selected_index]["entries"][i]["conditions"][j]
             repaint_custom_rules_table()
 
         def change_condition_key(ev):
@@ -327,8 +339,8 @@ def main_window():
             j = int(ev["who"].split("_")[-1])
             items = win.GetItems()
             option_selected_index = win.GetItems()[option_combo]["CurrentIndex"]
-            value = data[custom_rules]["options"][option_selected_index]["entries"][i]["conditions"][j]["value"]
-            data[custom_rules]["options"][option_selected_index]["entries"][i]["conditions"][j]["key"] = \
+            value = data.get(custom_rules)["options"][option_selected_index]["entries"][i]["conditions"][j]["value"]
+            data.get(custom_rules)["options"][option_selected_index]["entries"][i]["conditions"][j]["key"] = \
                 items[f"ConditionKeyCombo_{i}_{j}"]["CurrentText"]
             items[f"ConditionContainer_{i}_{j}"].RemoveChild(f"ConditionValue_{i}_{j}")
             items[f"ConditionContainer_{i}_{j}"].RemoveChild(f"ConditionValueColor_{i}_{j}")
@@ -375,7 +387,7 @@ def main_window():
             j = int(ev["who"].split("_")[-1])
             items = win.GetItems()
             option_selected_index = items[option_combo]["CurrentIndex"]
-            data[custom_rules]["options"][option_selected_index]["entries"][i]["conditions"][j]["value"] = \
+            data.get(custom_rules)["options"][option_selected_index]["entries"][i]["conditions"][j]["value"] = \
                 items[f"ConditionValue_{i}_{j}"]["Text"]
 
         def change_clip_color(ev):
@@ -397,7 +409,7 @@ def main_window():
             i = int(ev["who"].split("_")[-2])
             j = int(ev["who"].split("_")[-1])
             option_selected_index = win.GetItems()[option_combo]["CurrentIndex"]
-            data[custom_rules]["options"][option_selected_index]["entries"][i]["conditions"][j]["value"] = \
+            data.get(custom_rules)["options"][option_selected_index]["entries"][i]["conditions"][j]["value"] = \
                 items[f"ConditionValue_{i}_{j}"]["CurrentText"]
 
         def change_flag(ev):
@@ -419,7 +431,7 @@ def main_window():
             i = int(ev["who"].split("_")[-2])
             j = int(ev["who"].split("_")[-1])
             option_selected_index = win.GetItems()[option_combo]["CurrentIndex"]
-            data[custom_rules]["options"][option_selected_index]["entries"][i]["conditions"][j]["value"] = \
+            data.get(custom_rules)["options"][option_selected_index]["entries"][i]["conditions"][j]["value"] = \
                 items[f"ConditionValue_{i}_{j}"]["CurrentText"]
 
         def change_input_color_space(ev):
@@ -427,7 +439,7 @@ def main_window():
             j = int(ev["who"].split("_")[-1])
             items = win.GetItems()
             option_selected_index = win.GetItems()[option_combo]["CurrentIndex"]
-            data[custom_rules]["options"][option_selected_index]["entries"][i]["conditions"][j]["value"] = \
+            data.get(custom_rules)["options"][option_selected_index]["entries"][i]["conditions"][j]["value"] = \
                 items[f"ConditionValue_{i}_{j}"]["CurrentText"]
 
         def click_assign_color_version_name_check_box(ev):
@@ -490,7 +502,7 @@ def main_window():
             show_message("Please Add Option First!", 1)
 
     def repaint_custom_rules_table():
-        if "options" in data[custom_rules]:
+        if "options" in data.get(custom_rules):
             items = win.GetItems()
             items["CustomRuleEntriesContainer"].RemoveChild("CustomRules")
             items["CustomRuleEntriesContainer"].AddChild(ui.VGroup({"ID": "CustomRules"}))
@@ -498,19 +510,6 @@ def main_window():
         else:
             add_custom_rules_table([])
         win.RecalcLayout()
-
-    def load_color_space_match_rule():
-        for manufacturerRule in data[color_space_match_rules]["rules"]:
-            items = win.GetItems()
-            item = items[tree_id].NewItem()
-            item["Text"][0] = manufacturerRule["manufacturer"]
-            items[tree_id].AddTopLevelItem(item)
-            for rule in manufacturerRule["details"]:
-                item_child = items[tree_id].NewItem()
-                item_child["Text"][0] = rule[gamma_notes]
-                item_child["Text"][1] = rule[color_space_notes]
-                item_child["Text"][2] = rule[input_color_space]
-                item.AddChild(item_child)
 
     def new_option_win(ev):
         new_option_win = dispatcher.AddWindow({
@@ -540,16 +539,14 @@ def main_window():
             dispatcher.ExitLoop()
 
         def add_option_to_config(option_name):
-            if custom_rules not in data or "options" not in data[custom_rules]:
-                if not data[custom_rules]:
-                    data[custom_rules][enabled] = False
-                data[custom_rules]["options"] = [{"name": option_name, "selected": True}]
+            if custom_rules not in data or "options" not in data.get(custom_rules):
+                data.update({custom_rules: {"options": [{"name": option_name, "selected": True}]}})
             else:
                 if len(data[custom_rules]["options"]) >= 20:
                     new_option_items["NewOptionLabelId"][
                         "Text"] = "<font color='#ff0000'>Your Options is more than 20!</font>"
                     return False
-                for option in data[custom_rules]["options"]:
+                for option in data.get(custom_rules)["options"]:
                     if option["name"] == option_name:
                         new_option_items["NewOptionLabelId"][
                             "Text"] = "<font color='#ff0000'>Your option name is exist! Please use another one!</font>"
@@ -557,9 +554,9 @@ def main_window():
                                                                       {"R": 1, "G": 0.125, "B": 0.125,
                                                                        "A": 1})
                         return False
-                for option in data[custom_rules]["options"]:
+                for option in data.get(custom_rules)["options"]:
                     option["selected"] = False
-                data[custom_rules]["options"].append({"name": option_name, "selected": True})
+                data.get(custom_rules)["options"].append({"name": option_name, "selected": True})
             return True
 
         def new_option_execute(ev):
@@ -577,10 +574,10 @@ def main_window():
         return new_option_win, new_option_items
 
     def load_option_combo():
-        if data[custom_rules] and "options" in data[custom_rules] and data[custom_rules]["options"]:
+        if data.get(custom_rules) and "options" in data.get(custom_rules) and data.get(custom_rules)["options"]:
             i = 0
             items = win.GetItems()
-            for option in data[custom_rules]["options"]:
+            for option in data.get(custom_rules)["options"]:
                 items[option_combo].AddItem(option["name"])
                 if option["selected"]:
                     items[option_combo]["CurrentIndex"] = i
@@ -597,15 +594,15 @@ def main_window():
     def delete_option(ev):
         if win.GetItems()[option_combo]["CurrentText"]:
             i = 0
-            for option in data[custom_rules]["options"]:
+            for option in data.get(custom_rules)["options"]:
                 if option["name"] == win.GetItems()[option_combo]["CurrentText"]:
-                    data[custom_rules]["options"].remove(option)
+                    data.get(custom_rules)["options"].remove(option)
                     combo_delete_option(i)
                     break
                 i += 1
 
     def combo_change(ev):
-        options = data[custom_rules]["options"]
+        options = data.get(custom_rules)["options"]
         for index in range(len(options)):
             if index == win.GetItems()[option_combo]["CurrentIndex"]:
                 options[index]["selected"] = True
@@ -622,34 +619,35 @@ def main_window():
         save_config()
         show_message(f"Config Updated At {datetime.now().strftime('%H:%M:%S.%f')[:-3]}.")
 
+    def click_copy_button(ev):
+        current_timeline_item = timeline.GetCurrentVideoItem()
+        if not current_timeline_item:
+            show_message("Please open [Edit] or [Color] page to choose one timeline item!", 1)
+            logger.warning("Please open [Edit] or [Color] page to choose one timeline item!")
+            return
+        option = items["CopyTypesCombo"]["CurrentText"]
+        assign_color_version = items["CopyToAssignColorVersionCheckBox"]["Checked"]
+        color_version_name = items["CopyToColorVersionTxt"]["Text"]
+        if not color_version_name:
+            color_version_name = default_color_version_name
+        if copy_grading(current_timeline_item, option, assign_color_version, color_version_name):
+            show_message("Finished.")
+        else:
+            show_message("Some error occurred, Please check log details!")
+
     def click_execute_button(ev):
         logger.info("Start Processing.")
         show_message("Processing...")
         save_config()
-        if execute():
+        if quick_grading_execute():
             show_message("All Down. Have Fun!")
         else:
             show_message("Some process failed, please check console log details.", 1)
 
-    def click_color_science_check_box(ev):
-        if win.GetItems()["ColorScienceCheckBox"]["Checked"]:
-            data[color_space_match_rules][enabled] = True
-        else:
-            data[color_space_match_rules][enabled] = False
-
-    def click_custom_grading_check_box(ev):
-        if win.GetItems()["CustomGradingCheckBox"]["Checked"]:
-            data[custom_rules][enabled] = True
-        else:
-            data[custom_rules][enabled] = False
-
     def close(ev):
         dispatcher.ExitLoop()
 
-    init_tree()
-    init_checkbox()
     load_option_combo()
-    load_color_space_match_rule()
 
     # assign event handlers
     win.On[win_id].Close = close
@@ -658,20 +656,19 @@ def main_window():
     win.On[option_combo].CurrentIndexChanged = combo_change
     win.On["ExecuteButton"].Clicked = click_execute_button
     win.On[save_button_id].Clicked = click_save_button
+    win.On[copy_button_id].Clicked = click_copy_button
     win.On["EntryAddButton"].Clicked = add_entry
-    win.On["ColorScienceCheckBox"].Clicked = click_color_science_check_box
-    win.On["CustomGradingCheckBox"].Clicked = click_custom_grading_check_box
     win.Show()
     dispatcher.RunLoop()
     win.Hide()
 
 
 def get_selected_option():
-    if custom_rules in data and "options" in data[custom_rules]:
-        for option in data[custom_rules]["options"]:
+    if custom_rules in data and "options" in data.get(custom_rules):
+        for option in data.get(custom_rules)["options"]:
             if option["selected"]:
                 return option
-        return data[custom_rules]["options"][0]
+        return data.get(custom_rules)["options"][0]
     return None
 
 
@@ -722,56 +719,39 @@ def is_timeline_item_match_conditions(timeline_item, conditions):
     return True
 
 
-def execute():
+def quick_grading_execute():
     logger.info("Start match input color space and apply custom grading rules.")
     resolve = bmd.scriptapp("Resolve")
     project_manager = resolve.GetProjectManager()
     project = project_manager.GetCurrentProject()
-    media_pool = project.GetMediaPool()
-    root_folder = media_pool.GetRootFolder()
     success = True
-    if data[color_space_match_rules][enabled] and "davinciYRGBColorManaged" in project.GetSetting("colorScienceMode"):
-        logger.debug("Match input color space begin")
-        clips = []
-        get_clips(root_folder, clips)
-        for clip in clips:
-            metadata = clip.GetMetadata()
-            input_color_space = color_space_match_map.get(
-                (metadata.get("Gamma Notes"), metadata.get("Color Space Notes")))
-            if input_color_space:
-                if clip.SetClipProperty("Input Color Space", input_color_space):
-                    logger.debug(f"{clip.GetName()} Set Input Color Space {input_color_space} Successfully.")
-                else:
-                    success = False
-                    logger.error(f"{clip.GetName()} Set Input Color Space {input_color_space} Failed!")
 
-    if data[custom_rules][enabled]:
-        logger.debug("Apply custom color grading rules begin")
-        option_selected = get_selected_option()
-        if option_selected:
-            entries = option_selected.get("entries") if option_selected else []
-            timeline = project.GetCurrentTimeline()
-            track_count = timeline.GetTrackCount("video")
-            logger.debug(f"Total track count: {track_count}")
-            if len(entries) > 0:
-                version_name = option_selected.get("Color Version Name") if option_selected.get(
-                    "Color Version Name") else default_color_version_name
-                for index in range(1, int(track_count) + 1):
-                    timeline_items = timeline.GetItemListInTrack("video", index)
-                    for entry in entries:
-                        conditions = entry.get("conditions")
-                        drx_name = entry.get("drx")
-                        drx_path = drx_map.get(drx_name)
-                        target_items = []
-                        for item in timeline_items:
-                            if is_timeline_item_match_conditions(item, conditions):
-                                if option_selected.get("Assign Color Version Name"):
-                                    if not item.LoadVersionByName(version_name, 0):
-                                        item.AddVersion(version_name, 0)
-                                target_items.append(item)
-                        if len(target_items) and not timeline.ApplyGradeFromDRX(drx_path, 0, target_items):
-                            success = False
-                            logger.error(f"Unable to apply a still from {drx_path} to target items.")
+    logger.debug("Apply custom color grading rules begin")
+    option_selected = get_selected_option()
+    if option_selected:
+        entries = option_selected.get("entries") if option_selected else []
+        timeline = project.GetCurrentTimeline()
+        track_count = timeline.GetTrackCount("video")
+        logger.debug(f"Total track count: {track_count}")
+        if len(entries) > 0:
+            version_name = option_selected.get("Color Version Name") if option_selected.get(
+                "Color Version Name") else default_color_version_name
+            for index in range(1, int(track_count) + 1):
+                timeline_items = timeline.GetItemListInTrack("video", index)
+                for entry in entries:
+                    conditions = entry.get("conditions")
+                    drx_name = entry.get("drx")
+                    drx_path = drx_map.get(drx_name)
+                    target_items = []
+                    for item in timeline_items:
+                        if is_timeline_item_match_conditions(item, conditions):
+                            if option_selected.get("Assign Color Version Name"):
+                                if not item.LoadVersionByName(version_name, 0):
+                                    item.AddVersion(version_name, 0)
+                            target_items.append(item)
+                    if len(target_items) and not timeline.ApplyGradeFromDRX(drx_path, 0, target_items):
+                        success = False
+                        logger.error(f"Unable to apply a still from {drx_path} to target items.")
     if success:
         logger.info("All Done, Have Fun!")
         return True
@@ -785,7 +765,10 @@ if __name__ == '__main__':
     fusion = bmd.scriptapp("Fusion")
     ui = fusion.UIManager
     dispatcher = bmd.UIDispatcher(ui)
-    if "gui_mode" in locals().keys() and gui_mode:
-        main_window()
-    else:
-        execute()
+    resolve = bmd.scriptapp("Resolve")
+    projectManager = resolve.GetProjectManager()
+    project = projectManager.GetCurrentProject()
+    mediaPool = project.GetMediaPool()
+    rootFolder = mediaPool.GetRootFolder()
+    timeline = project.GetCurrentTimeline()
+    main_window()
