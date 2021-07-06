@@ -72,10 +72,8 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 pathname = os.path.dirname(sys.argv[0])
-filename = "color-grading-config.json"
-drx_filename = "DRX-conf.json"
+filename = "conf.json"
 json_file = os.path.join(pathname, filename)
-drx_json_file = os.path.join(pathname, drx_filename)
 
 color_space_match_rules = "Color Space Match Rules"
 custom_rules = "Custom Rules"
@@ -104,12 +102,18 @@ for item in color_space_match_list:
     color_space_match_map[(item.gamma_notes, item.color_space_notes)] = item.input_color_space
     if item.input_color_space not in input_color_space_list:
         input_color_space_list.append(item.input_color_space)
+
+data = {}
 if pathlib.Path(json_file).is_file():
-    f = open(json_file, mode="r")
+    f = open(json_file, mode="r", encoding="utf-8")
     logger.debug(f"Open Json File {json_file}")
     data = json.load(f)
-else:
-    f = open(json_file, mode="w")
+    f.close()
+
+if not data.get(color_space_match_rules):
+    data.update({color_space_match_rules: {enabled: True, "_comments": "this is for RCM only!"},
+                 custom_rules: {enabled: False}})
+if not data.get(color_space_match_rules).get("rules"):
     match_rules = {"rules": []}
     manufacturers = []
     for item in color_space_match_list:
@@ -123,21 +127,11 @@ else:
             match_rules["rules"].append({"manufacturer": item.manufacturer, "details": [
                 {"Gamma Notes": item.gamma_notes, "Color Space Notes": item.color_space_notes,
                  "Input Color Space": item.input_color_space}]})
-
-    data = {color_space_match_rules: {enabled: True, "_comments": "this is for RCM only!"},
-            custom_rules: {enabled: False}}
     data[color_space_match_rules].update(match_rules)
-    json.dump(data, f, indent=2)
-    logger.debug(f"Create Json File {json_file}")
-f.close()
-
 drx_lists = []
-if pathlib.Path(drx_json_file).is_file():
-    f = open(drx_json_file, mode="r")
-    logger.debug(f"Open DRX conf json file {drx_json_file}")
-    drx_conf = json.load(f)
-    drx_lists = drx_conf.get("lists")
-    drx_map = dict((x.get("name"), x.get("path")) for x in drx_lists)
+if data.get("DRX") and data.get("DRX").get("lists"):
+    drx_lists = data.get("DRX").get("lists")
+drx_map = dict((x.get("name"), x.get("path")) for x in drx_lists) if drx_lists else {}
 
 
 def main_window():
@@ -620,8 +614,8 @@ def main_window():
         repaint_custom_rules_table()
 
     def save_config():
-        write_file = open(json_file, mode="w")
-        json.dump(data, write_file, indent=2)
+        write_file = open(json_file, mode="w", encoding="utf-8")
+        json.dump(data, write_file, indent=2, ensure_ascii=False)
         write_file.close()
 
     def click_save_button(ev):

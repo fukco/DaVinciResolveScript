@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """For DRX File Management"""
 __author__ = "Michael<https://github.com/fukco>"
 __version__ = "0.1.0"
@@ -64,7 +65,7 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 pathname = os.path.dirname(sys.argv[0])
-filename = "DRX-conf.json"
+filename = "conf.json"
 json_file = os.path.join(pathname, filename)
 data = {}
 folder = ""
@@ -72,18 +73,16 @@ lists = []
 
 if pathlib.Path(json_file).is_file():
     try:
-        f = open(json_file, mode="r")
+        f = open(json_file, mode="r", encoding="utf-8")
         logger.debug(f"Open Json File {json_file}")
         data = json.load(f)
-        folder = data.get("folder")
-        lists = data.get("lists")
+        if data.get("DRX") and data.get("DRX").get("folder"):
+            folder = data.get("DRX").get("folder")
+        if data.get("DRX") and data.get("DRX").get("lists"):
+            lists = data.get("DRX").get("lists")
         f.close()
     except JSONDecodeError:
         logger.error("Invalid json file!")
-else:
-    f = open(json_file, mode="w")
-    logger.debug(f"Create Json File {json_file}")
-    f.close()
 
 
 def main_window():
@@ -173,10 +172,9 @@ def refresh_lists():
                     relative_path = os.path.relpath(drx_path, folder)
                     drx_name = os.path.splitext(relative_path)[0].replace(os.sep, "_")
                     lists.append({"name": drx_name, "path": drx_path})
-        data.update({"lists": lists})
-        data.update({"folder": folder})
-        write_file = open(json_file, mode="w")
-        json.dump(data, write_file, indent=2)
+        data.update({"DRX": {"lists": lists, "folder": folder}})
+        write_file = open(json_file, mode="w", encoding="utf-8")
+        json.dump(data, write_file, indent=2, ensure_ascii=False)
         write_file.close()
         logger.info("DRX file list saved!")
 

@@ -72,6 +72,105 @@
 * 如果你有各相机厂商的Tag标签定义或者元数据相关的白皮书什么的也欢迎联系我。
 
 ---
+### 色彩空间匹配规则手动更新方法
+色彩空间匹配可将下面这段中的rules对应的数据拷贝至你自己的conf.json文件中，注意拷贝前后需要符合JSON文件格式
+```json
+{
+  "Color Space Match Rules": {
+    "enabled": true,
+    "_comments": "this is for RCM only!",
+    "rules": [
+      {
+        "manufacturer": "Atomos",
+        "details": [
+          {
+            "Gamma Notes": "CLog",
+            "Color Space Notes": "Cinema",
+            "Input Color Space": "Canon Cinema Gamut/Canon Log"
+          },
+          {
+            "Gamma Notes": "CLog2",
+            "Color Space Notes": "Cinema",
+            "Input Color Space": "Canon Cinema Gamut/Canon Log2"
+          },
+          {
+            "Gamma Notes": "CLog3",
+            "Color Space Notes": "Cinema",
+            "Input Color Space": "Canon Cinema Gamut/Canon Log3"
+          },
+          {
+            "Gamma Notes": "F-Log",
+            "Color Space Notes": "F-Gamut",
+            "Input Color Space": "FujiFilm F-Log"
+          },
+          {
+            "Gamma Notes": "V-Log",
+            "Color Space Notes": "V-Gamut",
+            "Input Color Space": "Panasonic V-Gamut/V-Log"
+          },
+          {
+            "Gamma Notes": "SLog3",
+            "Color Space Notes": "SGamut3.cine",
+            "Input Color Space": "S-Gamut3.Cine/S-Log3"
+          },
+          {
+            "Gamma Notes": "SLog3",
+            "Color Space Notes": "SGamut3",
+            "Input Color Space": "S-Gamut3/S-Log3"
+          },
+          {
+            "Gamma Notes": "N-Log",
+            "Color Space Notes": "BT.2020",
+            "Input Color Space": "Nikon N-Log"
+          },
+          {
+            "Gamma Notes": "HLG",
+            "Color Space Notes": "BT.2020",
+            "Input Color Space": "Rec.2100 HLG"
+          }
+        ]
+      },
+      {
+        "manufacturer": "Fujifilm",
+        "details": [
+          {
+            "Gamma Notes": "F-log",
+            "Color Space Notes": "",
+            "Input Color Space": "FujiFilm F-Log"
+          }
+        ]
+      },
+      {
+        "manufacturer": "Panasonic",
+        "details": [
+          {
+            "Gamma Notes": "V-Log",
+            "Color Space Notes": "V-Gamut",
+            "Input Color Space": "Panasonic V-Gamut/V-Log"
+          }
+        ]
+      },
+      {
+        "manufacturer": "Sony",
+        "details": [
+          {
+            "Gamma Notes": "s-log3-cine",
+            "Color Space Notes": "s-gamut3-cine",
+            "Input Color Space": "S-Gamut3.Cine/S-Log3"
+          },
+          {
+            "Gamma Notes": "s-log3",
+            "Color Space Notes": "s-gamut3",
+            "Input Color Space": "S-Gamut3/S-Log3"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+---
 ## Q&A
 Q: 为何没有提供中文界面？<br/>
 A: emmm，本来是要做国际化的，支持中英文版本的，与达芬奇内语言设置同步，找到了对应的API`fusion:GetPrefs("Global.UserInterface.Language")`，切换中英文无法正确获得语言设置，国际化工作暂时搁置。界面中都是简单英文单词，对各位难度应该不大。
