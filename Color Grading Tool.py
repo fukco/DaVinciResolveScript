@@ -181,6 +181,8 @@ def main_window():
                 ui.Label({"Text": 'Timeline Color Grading Copy:', 'Font': ui.Font({'Family': "Times New Roman"}),
                           "Alignment": {"AlignHCenter": True, "AlignTop": True}})]),
             ui.HGroup({"Weight": 0}, [
+                ui.HGap(70),
+
                 ui.Label({
                     "Text": 'Copy To Timeline:',
                     "Weight": 0
@@ -204,7 +206,7 @@ def main_window():
                 }),
             ]),
 
-            ui.VGap(5),
+            ui.VGap(15),
 
             # custom rule
             ui.VGroup({"ID": "CustomRuleId", "Weight": 5}, [
@@ -215,6 +217,7 @@ def main_window():
 
                 ui.HGroup({"Weight": 0}, [
                     ui.Label({"Text": 'Option:', 'Font': ui.Font({'Family': "Times New Roman"}), "Weight": 0}),
+                    ui.HGap(5),
                     ui.ComboBox({"ID": option_combo, "Weight": 1.5}),
                     ui.Button({"ID": "OptionAddButton", "Text": "Add", "Weight": 0}),
                     ui.Button({"ID": "OptionDeleteButton", "Text": "Delete", "Weight": 0})]),
@@ -680,9 +683,7 @@ def get_clips(folder, result):
 
 
 def is_timeline_item_match_conditions(timeline_item, conditions):
-    for condition in list(conditions):
-        if condition.get("key") == "All":
-            return True
+    for condition in conditions:
         if not condition.get("key") or not condition.get("value"):
             conditions.remove(condition)
     if len(conditions) <= 0:
@@ -692,45 +693,35 @@ def is_timeline_item_match_conditions(timeline_item, conditions):
     for condition in conditions:
         key = condition.get("key")
         value = condition.get("value")
-        if key == "keyword":
-            if value in metadata.get("Keywords"):
-                return True
-            else:
+        if key == "All":
+            continue
+        elif key == "keyword":
+            if value not in metadata.get("Keywords"):
                 return False
         elif key == "Input Color Space":
-            if clip.GetClipProperty("Input Color Space") == value:
-                return True
-            else:
+            if clip.GetClipProperty("Input Color Space") != value:
                 return False
         elif key == "Clip Color":
-            if timeline_item.GetClipColor() == value:
-                return True
-            else:
+            if timeline_item.GetClipColor() != value:
                 return False
         elif key == "Flag":
             flag_dict = clip.GetFlags()
-            if flag_dict and value in flag_dict.values():
-                return True
-            else:
+            if flag_dict and value not in flag_dict.values():
                 return False
         else:
-            if not metadata.get(key) == value:
+            if metadata.get(key) != value:
                 return False
     return True
 
 
 def quick_grading_execute():
     logger.info("Start match input color space and apply custom grading rules.")
-    resolve = bmd.scriptapp("Resolve")
-    project_manager = resolve.GetProjectManager()
-    project = project_manager.GetCurrentProject()
     success = True
 
     logger.debug("Apply custom color grading rules begin")
     option_selected = get_selected_option()
     if option_selected:
         entries = option_selected.get("entries") if option_selected else []
-        timeline = project.GetCurrentTimeline()
         track_count = timeline.GetTrackCount("video")
         logger.debug(f"Total track count: {track_count}")
         if len(entries) > 0:
@@ -748,6 +739,10 @@ def quick_grading_execute():
                             if option_selected.get("Assign Color Version Name"):
                                 if not item.LoadVersionByName(version_name, 0):
                                     item.AddVersion(version_name, 0)
+                                logger.debug(
+                                    f"{item.GetName()} apply drx [{drx_name}] to color version [{version_name}].")
+                            else:
+                                logger.debug(f"{item.GetName()} apply drx [{drx_name}] to current color version.")
                             target_items.append(item)
                     if len(target_items) and not timeline.ApplyGradeFromDRX(drx_path, 0, target_items):
                         success = False
@@ -766,8 +761,8 @@ if __name__ == '__main__':
     ui = fusion.UIManager
     dispatcher = bmd.UIDispatcher(ui)
     resolve = bmd.scriptapp("Resolve")
-    projectManager = resolve.GetProjectManager()
-    project = projectManager.GetCurrentProject()
+    project_manager = resolve.GetProjectManager()
+    project = project_manager.GetCurrentProject()
     mediaPool = project.GetMediaPool()
     rootFolder = mediaPool.GetRootFolder()
     timeline = project.GetCurrentTimeline()

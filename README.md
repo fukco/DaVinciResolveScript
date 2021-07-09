@@ -12,30 +12,34 @@
 在达芬奇内，打开 工作区->脚本->Comp->XiaoLi->Metadata Parser 执行日志可以在 工作区->控制台 内查看
 
 
-2. 快速调色工具<br/>
-在达芬奇内，打开 工作区->脚本->Comp->XiaoLi->Color Grading Tool 执行日志可以在 工作区->控制台 内查看<br/>
-  a.选择是否开启RCM颜色空间匹配（色彩科学DaVinci YRGB Color Managed），选择是否开启自定义调色<br/>
-  b.新增/修改选项（方案），功能类似于预设<br/>
-  c.为单个方案新增/修改预定义调色方案，需要选择DRX文件名(由DRX Management自动生成)，匹配条件（条件支持所有、摄像机类型、摄像机序列号、关键词、输入色彩空间(RCM)、片段色彩、旗标）<br/>
-  d.选择是否指定调色版本，如果指定颜色版本不存在，将自动创建相应的调色版本，未指定则使用当前调色版本<br/>
-  f.点击Save Config进行保存配置或Execute直接执行，执行会自动保存配置<br/>
-  g.如需使用使用无视图模式：编辑源代码,修改`gui_mode = True`为`gui_mode = False`
-   
-
-3. 调色拷贝工具<br/>
-在达芬奇内，打开 工作区->脚本->Comp->XiaoLi->Color Grading Copy Tool 执行日志可以在 工作区->控制台 内查看<br/>
-  a.打开后会自动显示当前选择的时间线项，如未显示则需要在调色界面或者编辑界面中选中对应时间线项,再点击刷新按钮<br/>
-  b.选择拷贝至所有时间线项/同一片段的时间线项/相同摄像机类型/相同摄像机序列号/相同关键词/相同输入色彩空间/相同片段色彩/相同旗标<br/>
-  c.选择是否指定调色版本，如果指定颜色版本不存在，将自动创建相应的调色版本，未指定则使用当前调色版本<br/>
-  d.点击Execute执行
-  d.如需使用无视图模式：编辑源代码，修改`gui_mode = True`为`gui_mode = False`，以及`default_option`,`default_assign_color_version`,`default_color_version_name`三个字段对应值
+2. RCM色彩空间匹配<br/>
+在达芬奇内，打开 工作区->脚本->Comp->XiaoLi->RCM Color Space Match 执行日志可以在 工作区->控制台 内查看<br/>
+  a.视图中展示了RCM（色彩科学DaVinci YRGB Color Managed）色彩空间匹配规则<br/>
+  b.支持Atomos录机LOG素材Data Level批量修改为Full，同时支持所有Atomos素材Data Level批量修改为Full（后者的操作你最好能弄明白原理是否需要使用此功能，错误操作会导致素材还原与预期不一致）<br/>
+  c.点击执行，将媒体池中所有元数据符合a中规则的片段，按照规则指定其input color space，Atomos素材按照指定规则修改其Data Level<br/>
+  d.如需使用使用无视图模式：编辑源代码,修改`gui_mode = True`为`gui_mode = False`，无视图模式默认开启Atomos的LOG素材Data Level修改<br/>
+  e.佳能相机暂无法解析到拍摄使用的LOG格式，暂时无法自动匹配，如需批量匹配佳能素材可以使用智能媒体夹过滤佳能素材并全选设置对应输入色彩空间
 
 
-4. DRX文件管理<br/>
+3. DRX文件管理<br/>
 在达芬奇内，打开 工作区->脚本->Comp->XiaoLi->DRX Management 执行日志可以在 工作区->控制台 内查看<br/>
   a.选择需要查找DRX文件的根目录<br/>
   b.点击刷新按钮，更新目录以及递归目录所有DRX文件列表<br/>
   c.如需使用无视图模式：编辑源代码，修改`gui_mode = True`为`gui_mode = False`
+
+
+4. 调色工具<br/>
+在达芬奇内，打开 工作区->脚本->Comp->XiaoLi->Color Grading Tool 执行日志可以在 工作区->控制台 内查看<br/>
+I.调色拷贝工具<br/>
+a.选择拷贝至所有时间线项/同一片段的时间线项/相同摄像机类型/相同摄像机序列号/相同关键词/相同输入色彩空间/相同片段色彩/相同旗标<br/>
+b.选择是否指定调色版本，如果指定颜色版本不存在，将自动创建相应的调色版本，未指定则使用当前调色版本<br/>
+c.点击"拷贝调色"执行<br/>
+II.自定义调色<br/>
+a.新增/修改选项（方案），提前设定<br/>
+b.为单个方案新增/修改预定义调色方案，需要选择DRX文件名(由DRX Management自动生成)，匹配条件（条件支持所有、摄像机类型、摄像机序列号、关键词、输入色彩空间(RCM)、片段色彩、旗标），多条件时匹配规则为“同时满足”，如果需要满足“或”的场景，可以使用“添加条目”来实现<br/>
+c.选择是否指定调色版本，如果指定颜色版本不存在，将自动创建相应的调色版本，未指定则使用当前调色版本<br/>
+d.点击"保存配置"进行保存配置或"自定义调色"直接执行，执行会自动保存配置<br/>
+
 
 5. 字幕转化工具<br/>
 你是个聪明的娃er，要学会如何自己去摸索了！
@@ -43,22 +47,25 @@
 ---
 ## 文件说明
 ### 压缩包内文件
-* Color Grading Tool.py（支持有、无视图模式）<br/>
-  1、使用RCM时支持通过视频文件元数据自动匹配输入色彩空间<br/>
-  2、任意模式下基于DRX文件按条件匹配应用调色，支持配置持久化 （DRX文件是达芬奇能够识别的保存节点以及调色信息的文件） 
-  
-
-* Color Grading Copy Tool.py（支持有、无视图模式）<br/>
-  1、单次调色可快速复制到时间线上其他项，支持全部或按照条件复制<br/>
-
-
 * Metadata Parser.py(无视图脚本) 借助动态链接库解析视频文件元数据
 
 
-* resolve-metadata.dll/resolve-metadata.so 动态链接库文件，源码可参见另外一个项目
+* DRX Management（支持有、无视图模式）<br/>
+  1、整理DRX文件，并按照目录拼接生成DRX文件显示名，供Color Grading Tool使用
+
+
+* RCM Color Space Match.py（支持有、无视图模式）<br/>
+  1、使用RCM时支持通过视频文件元数据自动匹配输入色彩空间<br/>
+
+
+* Color Grading Tool.py<br/>
+  1、单次调色可快速复制到时间线上其他项，支持全部或按照条件复制<br/>
+  2、基于DRX文件按条件匹配应用调色，支持配置持久化 （DRX文件是达芬奇能够识别的保存节点以及调色信息的文件） 
+  
+
+* resolve-metadata.dll/resolve-metadata.so 动态链接库文件供元数据解析脚本使用，源码可参见另外一个项目
 
 ### 代码库文件
-* _config-grading-config.json "Color Grading Tool.py"对应的默认配置文件，更新色彩空间匹配规则时，可将对应的配置项拷贝到自己的配置文件中
 * JianYing Subtitle Conversation.py顾名思义借助外部工具将其生成的json文件转换为通用的srt文件，提供给达芬奇使用
 
 ---
@@ -72,12 +79,12 @@
 * 如果你有各相机厂商的Tag标签定义或者元数据相关的白皮书什么的也欢迎联系我。
 
 ---
-### 色彩空间匹配规则手动更新方法
-色彩空间匹配可将下面这段中的rules对应的数据拷贝至你自己的conf.json文件中，注意拷贝前后需要符合JSON文件格式
+## 更新注意事项
+### 色彩空间匹配规则
+* 色彩空间匹配规则做了本地持久化，可以自己在配置文件中写规则，当然如果代码更新了这部分持久化的内容也就是`conf.json`文件中这部分配置是没有做更新处理的，可将下面这段中的rules对应的数据拷贝至你自己的conf.json文件中，注意拷贝前后需要符合JSON文件格式并且不要覆盖你自己自定义的内容
 ```json
 {
   "Color Space Match Rules": {
-    "enabled": true,
     "_comments": "this is for RCM only!",
     "rules": [
       {
@@ -110,13 +117,13 @@
           },
           {
             "Gamma Notes": "SLog3",
-            "Color Space Notes": "SGamut3.cine",
-            "Input Color Space": "S-Gamut3.Cine/S-Log3"
+            "Color Space Notes": "SGamut3",
+            "Input Color Space": "S-Gamut3/S-Log3"
           },
           {
             "Gamma Notes": "SLog3",
-            "Color Space Notes": "SGamut3",
-            "Input Color Space": "S-Gamut3/S-Log3"
+            "Color Space Notes": "SGamut3Cine",
+            "Input Color Space": "S-Gamut3.Cine/S-Log3"
           },
           {
             "Gamma Notes": "N-Log",

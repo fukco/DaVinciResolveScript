@@ -8,6 +8,7 @@ import json
 import logging
 import os
 import pathlib
+import re
 import sys
 
 gui_mode = True
@@ -82,8 +83,8 @@ color_space_match_list = [ColorSpaceMatchRule("Atomos", "CLog", "Cinema", "Canon
                           ColorSpaceMatchRule("Atomos", "CLog3", "Cinema", "Canon Cinema Gamut/Canon Log3"),
                           ColorSpaceMatchRule("Atomos", "F-Log", "F-Gamut", "FujiFilm F-Log"),
                           ColorSpaceMatchRule("Atomos", "V-Log", "V-Gamut", "Panasonic V-Gamut/V-Log"),
-                          ColorSpaceMatchRule("Atomos", "SLog3", "SGamut3.cine", "S-Gamut3.Cine/S-Log3"),
                           ColorSpaceMatchRule("Atomos", "SLog3", "SGamut3", "S-Gamut3/S-Log3"),
+                          ColorSpaceMatchRule("Atomos", "SLog3", "SGamut3Cine", "S-Gamut3.Cine/S-Log3"),
                           ColorSpaceMatchRule("Atomos", "N-Log", "BT.2020", "Nikon N-Log"),
                           ColorSpaceMatchRule("Atomos", "HLG", "BT.2020", "Rec.2100 HLG"),
 
@@ -149,12 +150,18 @@ def main_window():
     # define the window UI layout
     win = dispatcher.AddWindow({
         'ID': win_id,
-        'Geometry': [600, 100, 800, 400],
+        'Geometry': [600, 100, 800, 460],
         'WindowTitle': "RCM Color Space Match",
     },
         ui.VGroup([
             # color space match rule
             ui.Tree({"ID": tree_id}),
+
+            ui.HGroup({"Weight": 0}, [
+                ui.CheckBox(
+                    {"ID": "EnableDataLevelAdjustment", "Text": "Enable Assign Atomos Clips' Data Level", "Weight": 0}),
+                ui.ComboBox({"ID": "DataLevelAdjustmentType", "Weight": 1})
+            ]),
 
             ui.HGroup({"Weight": 0}, [
                 ui.Button({"Text": "Match", "ID": "ExecuteButton", "Weight": 0}),
@@ -182,6 +189,12 @@ def main_window():
         items[tree_id]["ColumnWidth"][1] = 200
         items[tree_id]["ColumnWidth"][2] = 360
 
+    def init_combo():
+        items = win.GetItems()
+
+        items["DataLevelAdjustmentType"].AddItem('For Log Clips')
+        items["DataLevelAdjustmentType"].AddItem('For All Clips')
+
     def show_message(message, t=0):
         if t == 0:
             win.GetItems()["InfoLabel"]["Text"] = f"<font color='#39CA41'>{message}</font>"
@@ -200,11 +213,14 @@ def main_window():
                 item_child["Text"][1] = rule[color_space_notes]
                 item_child["Text"][2] = rule[input_color_space]
                 item.AddChild(item_child)
+            item["Expanded"] = True
 
     def click_execute_button(ev):
         logger.info("Start Processing.")
         show_message("Processing...")
-        if execute():
+        items = win.GetItems()
+        if execute(enabled=items["EnableDataLevelAdjustment"]["Checked"],
+                   assign_type=items["DataLevelAdjustmentType"]["CurrentIndex"]):
             show_message("All Down. Have Fun!")
         else:
             show_message("Some process failed, please check console log details.", 1)
@@ -213,6 +229,7 @@ def main_window():
         dispatcher.ExitLoop()
 
     init_tree()
+    init_combo()
     load_color_space_match_rule()
 
     # assign event handlers
@@ -230,7 +247,18 @@ def get_clips(folder, result):
         get_clips(sub_folder, result)
 
 
-def execute():
+def assign_data_level(clip, metadata, assign_type):
+    if metadata.get("Camera Manufacturer") == "Atomos":
+        if assign_type == 0 and re.search("LOG", metadata.get("Gamma Notes"), re.IGNORECASE) or assign_type == 1:
+            if clip.SetClipProperty("Data Level", "Full"):
+                logger.debug(f"Assign {clip.GetName()} data level full successfully.")
+            else:
+                logger.error(f"Assign {clip.GetName()} data level full failed.")
+                return False
+    return True
+
+
+def execute(enabled=True, assign_type=0):
     logger.info("Start match input color space and apply custom grading rules.")
     resolve = bmd.scriptapp("Resolve")
     project_manager = resolve.GetProjectManager()
@@ -239,20 +267,31 @@ def execute():
     root_folder = media_pool.GetRootFolder()
     success = True
     if "davinciYRGBColorManaged" in project.GetSetting("colorScienceMode"):
-        logger.debug("Match input color space begin")
+        logger.debug("Match begin...")
         clips = []
         get_clips(root_folder, clips)
         for clip in clips:
             metadata = clip.GetMetadata()
-            input_color_space = color_space_match_map.get(
-                (metadata.get("Gamma Notes"), metadata.get("Color Space Notes")))
+            gamma_notes = metadata.get("Gamma Notes") if metadata.get("Gamma Notes") else ""
+            color_space_rotes = metadata.get("Color Space Notes") if metadata.get("Color Space Notes") else ""
+            input_color_space = color_space_match_map.get((gamma_notes, color_space_rotes))
             if input_color_space:
                 if clip.SetClipProperty("Input Color Space", input_color_space):
                     logger.debug(f"{clip.GetName()} Set Input Color Space {input_color_space} Successfully.")
                 else:
                     success = False
                     logger.error(f"{clip.GetName()} Set Input Color Space {input_color_space} Failed!")
-
+            else:
+                logger.warning(f"{clip.GetName()} Does Not Found Input Color Space Match Rule!")
+            if enabled:
+                assign_data_level(clip, metadata, assign_type)
+    elif enabled:
+        logger.debug("Assign data level begin...")
+        clips = []
+        get_clips(root_folder, clips)
+        for clip in clips:
+            metadata = clip.GetMetadata()
+            assign_data_level(clip, metadata, assign_type)
     if success:
         logger.info("All Done, Have Fun!")
         return True

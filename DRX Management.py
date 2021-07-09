@@ -140,7 +140,7 @@ def main_window():
 
     def click_folder_button(ev):
         target_path = fusion.RequestDir()
-        print('[folder] ', target_path)
+        logger.info('[folder] ', target_path)
         itms["fileLabelId"]["Text"] = target_path
         global folder
         folder = target_path

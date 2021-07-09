@@ -152,17 +152,17 @@ def click_folder_button(ev):
 
 def resolve_handle_subtitle(srt_file):
     resolve = bmd.scriptapp("Resolve")
-    projectManager = resolve.GetProjectManager()
-    project = projectManager.GetCurrentProject()
-    mediaPool = project.GetMediaPool()
-    rootFolder = mediaPool.GetRootFolder()
-    subFolders = rootFolder.GetSubFolderList()
-    subtitleFolder = ""
-    for subFolder in subFolders:
+    project_manager = resolve.GetProjectManager()
+    project = project_manager.GetCurrentProject()
+    media_pool = project.GetMediaPool()
+    root_folder = media_pool.GetRootFolder()
+    sub_folders = root_folder.GetSubFolderList()
+    subtitle_folder = ""
+    for subFolder in sub_folders:
         if subFolder.GetName() == "SubTitles":
-            subtitleFolder = subFolder
-    if not subtitleFolder:
-        subtitleFolder = mediaPool.AddSubFolder(rootFolder, "SubTitles")
+            subtitle_folder = subFolder
+    if not subtitle_folder:
+        subtitle_folder = media_pool.AddSubFolder(root_folder, "SubTitles")
     # mediaPool.SetCurrentFolder(subtitleFolder)
     # mediaPoolItem = mediaPool.ImportFile([{"FilePath": srt_file}])
     timeline = project.GetCurrentTimeline()
