@@ -1,17 +1,54 @@
 #!/usr/bin/env python
 """For DaVinci Resolve Color Grading"""
 __author__ = "Michael<https://github.com/fukco>"
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 __license__ = "MIT"
 
-import json
 import logging
 import os
-import pathlib
 import re
 import sys
+from ctypes import cdll, c_char_p, Structure
 
 gui_mode = True
+
+fields_list = [
+    ("Camera Type", c_char_p),
+    ("Camera Manufacturer", c_char_p),
+    ("Camera Serial #", c_char_p),
+    ("Camera ID", c_char_p),
+    ("Camera Notes", c_char_p),
+    ("Camera Format", c_char_p),
+    ("Media Type", c_char_p),
+    ("Time-Lapse Interval", c_char_p),
+    ("Camera FPS", c_char_p),
+    ("Shutter Type", c_char_p),
+    ("Shutter", c_char_p),
+    ("ISO", c_char_p),
+    ("White Point (Kelvin)", c_char_p),
+    ("White Balance Tint", c_char_p),
+    ("Camera Firmware", c_char_p),
+    ("Lens Type", c_char_p),
+    ("Lens Number", c_char_p),
+    ("Lens Notes", c_char_p),
+    ("Camera Aperture Type", c_char_p),
+    ("Camera Aperture", c_char_p),
+    ("Focal Point (mm)", c_char_p),
+    ("Distance", c_char_p),
+    ("Filter", c_char_p),
+    ("ND Filter", c_char_p),
+    ("Compression Ratio", c_char_p),
+    ("Codec Bitrate", c_char_p),
+    ("Aspect Ratio Notes", c_char_p),
+    ("Gamma Notes", c_char_p),
+    ("Color Space Notes", c_char_p)]
+
+
+class DRMetadata(Structure):
+    _fields_ = fields_list
+
+    def get_dict(self):
+        return dict((f, getattr(self, f)) for f, _ in self._fields_)
 
 
 def get_bmd():
@@ -71,12 +108,6 @@ ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
 
-pathname = os.path.dirname(sys.argv[0])
-filename = "conf.json"
-json_file = os.path.join(pathname, filename)
-
-color_space_match_rules = "Color Space Match Rules"
-custom_rules = "Custom Rules"
 default_color_version_name = "Auto Generate Color Version"
 color_space_match_list = [ColorSpaceMatchRule("Atomos", "CLog", "Cinema", "Canon Cinema Gamut/Canon Log"),
                           ColorSpaceMatchRule("Atomos", "CLog2", "Cinema", "Canon Cinema Gamut/Canon Log2"),
@@ -92,6 +123,7 @@ color_space_match_list = [ColorSpaceMatchRule("Atomos", "CLog", "Cinema", "Canon
 
                           ColorSpaceMatchRule("Panasonic", "V-Log", "V-Gamut", "Panasonic V-Gamut/V-Log"),
 
+                          ColorSpaceMatchRule("Sony", "s-log2", "s-gamut", "S-Gamut/S-Log2"),
                           ColorSpaceMatchRule("Sony", "s-log3-cine", "s-gamut3-cine", "S-Gamut3.Cine/S-Log3"),
                           ColorSpaceMatchRule("Sony", "s-log3", "s-gamut3", "S-Gamut3/S-Log3"),
                           ]
@@ -102,34 +134,19 @@ for item in color_space_match_list:
     if item.input_color_space not in input_color_space_list:
         input_color_space_list.append(item.input_color_space)
 
-data = {}
-if pathlib.Path(json_file).is_file():
-    f = open(json_file, mode="r", encoding="utf-8")
-    logger.debug(f"Open Json File {json_file}")
-    data = json.load(f)
-    f.close()
-
-if not data.get(color_space_match_rules):
-    data.update({color_space_match_rules: {"_comments": "this is for RCM only!"}})
-if not data.get(color_space_match_rules).get("rules"):
-    match_rules = {"rules": []}
-    manufacturers = []
-    for item in color_space_match_list:
-        if item.manufacturer in manufacturers:
-            index = manufacturers.index(item.manufacturer)
-            match_rules["rules"][index]["details"].append(
-                {"Gamma Notes": item.gamma_notes, "Color Space Notes": item.color_space_notes,
-                 "Input Color Space": item.input_color_space})
-        else:
-            manufacturers.append(item.manufacturer)
-            match_rules["rules"].append({"manufacturer": item.manufacturer, "details": [
-                {"Gamma Notes": item.gamma_notes, "Color Space Notes": item.color_space_notes,
-                 "Input Color Space": item.input_color_space}]})
-    data[color_space_match_rules].update(match_rules)
-    f = open(json_file, mode="w", encoding="utf-8")
-    json.dump(data, f, indent=2, ensure_ascii=False)
-    logger.debug(f"Color Match Rules Not Found, Write Json File {json_file}")
-    f.close()
+match_rules = {"rules": []}
+manufacturers = []
+for item in color_space_match_list:
+    if item.manufacturer in manufacturers:
+        index = manufacturers.index(item.manufacturer)
+        match_rules["rules"][index]["details"].append(
+            {"Gamma Notes": item.gamma_notes, "Color Space Notes": item.color_space_notes,
+             "Input Color Space": item.input_color_space})
+    else:
+        manufacturers.append(item.manufacturer)
+        match_rules["rules"].append({"manufacturer": item.manufacturer, "details": [
+            {"Gamma Notes": item.gamma_notes, "Color Space Notes": item.color_space_notes,
+             "Input Color Space": item.input_color_space}]})
 
 
 def main_window():
@@ -158,6 +175,9 @@ def main_window():
             ui.Tree({"ID": tree_id}),
 
             ui.HGroup({"Weight": 0}, [
+                ui.CheckBox(
+                    {"ID": "EnableMetadataParser", "Text": "Enable Metadata Parser", "Weight": 0, "Checked": True}),
+                ui.HGap(10),
                 ui.CheckBox(
                     {"ID": "EnableDataLevelAdjustment", "Text": "Enable Assign Atomos Clips' Data Level", "Weight": 0}),
                 ui.ComboBox({"ID": "DataLevelAdjustmentType", "Weight": 1})
@@ -202,7 +222,7 @@ def main_window():
             win.GetItems()["InfoLabel"]["Text"] = f"<font color='#922626'>{message}</font>"
 
     def load_color_space_match_rule():
-        for manufacturerRule in data[color_space_match_rules]["rules"]:
+        for manufacturerRule in match_rules["rules"]:
             items = win.GetItems()
             item = items[tree_id].NewItem()
             item["Text"][0] = manufacturerRule["manufacturer"]
@@ -219,8 +239,9 @@ def main_window():
         logger.info("Start Processing.")
         show_message("Processing...")
         items = win.GetItems()
-        if execute(enabled=items["EnableDataLevelAdjustment"]["Checked"],
-                   assign_type=items["DataLevelAdjustmentType"]["CurrentIndex"]):
+        if execute(assign_data_level_enabled=items["EnableDataLevelAdjustment"]["Checked"],
+                   assign_type=items["DataLevelAdjustmentType"]["CurrentIndex"],
+                   parse_metadata_enabled=items["EnableMetadataParser"]["Checked"]):
             show_message("All Down. Have Fun!")
         else:
             show_message("Some process failed, please check console log details.", 1)
@@ -258,7 +279,35 @@ def assign_data_level(clip, metadata, assign_type):
     return True
 
 
-def execute(enabled=True, assign_type=0):
+def get_cdll_lib():
+    ext = ".so"
+    path = os.path.dirname(sys.argv[0])
+    if sys.platform.startswith("win") or sys.platform.startswith("cygwin"):
+        ext = ".dll"
+    library = os.path.join(path, f"resolve-metadata{ext}")
+    lib = cdll.LoadLibrary(library)
+    lib.DRProcessMediaFile.argtypes = [c_char_p]
+    lib.DRProcessMediaFile.restype = DRMetadata
+    return lib
+
+
+def parse_metadata(clip, lib):
+    file_path = clip.GetClipProperty("File Path")
+    if len(file_path) > 0:
+        resolve_meta_dict = lib.DRProcessMediaFile(file_path.encode("utf-8")).get_dict()
+        meta = {k: v.decode("utf-8") for k, v in resolve_meta_dict.items() if v}
+        if not meta:
+            logger.warning(f"{os.path.basename(file_path)} Not Supported.")
+            return None
+        if clip.SetMetadata(meta):
+            logger.debug(f"Parse {os.path.basename(file_path)} Successfully.")
+            return meta
+        else:
+            logger.error(f"Parse {os.path.basename(file_path)} Unsuccessfully!")
+    return None
+
+
+def execute(assign_data_level_enabled=True, assign_type=0, parse_metadata_enabled=True):
     logger.info("Start match input color space and apply custom grading rules.")
     resolve = bmd.scriptapp("Resolve")
     project_manager = resolve.GetProjectManager()
@@ -266,12 +315,18 @@ def execute(enabled=True, assign_type=0):
     media_pool = project.GetMediaPool()
     root_folder = media_pool.GetRootFolder()
     success = True
-    if "davinciYRGBColorManaged" in project.GetSetting("colorScienceMode"):
-        logger.debug("Match begin...")
-        clips = []
-        get_clips(root_folder, clips)
-        for clip in clips:
-            metadata = clip.GetMetadata()
+    is_rcm = "davinciYRGBColorManaged" in project.GetSetting("colorScienceMode")
+    clips = []
+    get_clips(root_folder, clips)
+    lib = {}
+    if parse_metadata_enabled:
+        lib = get_cdll_lib()
+    for clip in clips:
+        metadata = parse_metadata(clip, lib) if parse_metadata_enabled else clip.GetMetadata()
+        if not metadata:
+            logger.warning(f"Ignore {clip.GetName()}")
+            continue
+        if is_rcm:
             gamma_notes = metadata.get("Gamma Notes") if metadata.get("Gamma Notes") else ""
             color_space_rotes = metadata.get("Color Space Notes") if metadata.get("Color Space Notes") else ""
             input_color_space = color_space_match_map.get((gamma_notes, color_space_rotes))
@@ -283,15 +338,9 @@ def execute(enabled=True, assign_type=0):
                     logger.error(f"{clip.GetName()} Set Input Color Space {input_color_space} Failed!")
             else:
                 logger.warning(f"{clip.GetName()} Does Not Found Input Color Space Match Rule!")
-            if enabled:
-                assign_data_level(clip, metadata, assign_type)
-    elif enabled:
-        logger.debug("Assign data level begin...")
-        clips = []
-        get_clips(root_folder, clips)
-        for clip in clips:
-            metadata = clip.GetMetadata()
-            assign_data_level(clip, metadata, assign_type)
+        if assign_data_level_enabled:
+            if not assign_data_level(clip, metadata, assign_type):
+                success = False
     if success:
         logger.info("All Done, Have Fun!")
         return True

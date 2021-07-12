@@ -109,7 +109,6 @@ if __name__ == "__main__":
     clips = []
     get_clips(rootFolder, clips)
 
-    result = {}
     ext = ".so"
     path = os.path.dirname(sys.argv[0])
     if sys.platform.startswith("win") or sys.platform.startswith("cygwin"):
@@ -121,10 +120,7 @@ if __name__ == "__main__":
     for clip in clips:
         file_path = clip.GetClipProperty("File Path")
         if len(file_path) > 0:
-            resolve_meta_dict = result.get(file_path)
-            if not resolve_meta_dict:
-                resolve_meta_dict = lib.DRProcessMediaFile(file_path.encode("utf-8")).get_dict()
-                result[file_path] = resolve_meta_dict
+            resolve_meta_dict = lib.DRProcessMediaFile(file_path.encode("utf-8")).get_dict()
             meta = {k: v for k, v in resolve_meta_dict.items() if v}
             if not meta:
                 logger.warning(f"{os.path.basename(file_path)} Not Supported.")
