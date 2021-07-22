@@ -2,7 +2,7 @@
 
 ## 使用方法
 
-### 前置条件
+### 前提条件
 
 1. Windows：安装Python运行环境，需要安装3.6版本[Windows官网下载链接](https://www.python.org/ftp/python/3.6.8/python-3.6.8.exe)
    通过EXE安装的DaVinci Resolve可以识别，其他方法安装的不能识别。<br/>
@@ -23,10 +23,10 @@
    在达芬奇内，打开 工作区->脚本->Comp->XiaoLi->RCM Color Space Match 执行日志可以在 工作区->控制台 内查看<br/>
    a.视图中展示了RCM（色彩科学DaVinci YRGB Color Managed）色彩空间匹配规则<br/>
    b.支持开启元数据解析，如果未单独解析元数据，需要勾选此选项，默认勾选<br/>
-   c.支持Atomos录机LOG素材Data Level批量修改为Full，同时支持所有Atomos素材Data
+   c.支持Atomos录机LOG素材以及Legal素材Data Level批量修改为Full，同时支持所有Atomos素材Data
    Level批量修改为Full（后者的操作你最好能弄明白原理是否需要使用此功能，错误操作会导致素材还原与预期不一致）<br/>
    d.点击执行，将媒体池中所有元数据符合a中规则的片段，按照规则指定其input color space，Atomos素材按照指定规则修改其Data Level<br/>
-   e.如需使用使用无视图模式：编辑源代码,修改`gui_mode = True`为`gui_mode = False`，无视图模式默认开启元数据解析以及Atomos的LOG素材Data Level修改<br/>
+   e.如需使用使用无视图模式：编辑源代码,修改`gui_mode = True`为`gui_mode = False`，无视图模式默认开启元数据解析以及Atomos的LOG素材和Legal素材Data Level修改<br/>
    f.佳能相机暂无法解析到拍摄使用的LOG格式，暂时无法自动匹配，如需批量匹配佳能素材可以使用智能媒体夹过滤佳能素材并全选设置对应输入色彩空间
 
 

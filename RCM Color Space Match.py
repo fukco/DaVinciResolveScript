@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """For DaVinci Resolve Color Grading"""
 __author__ = "Michael<https://github.com/fukco>"
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 __license__ = "MIT"
 
 import logging
@@ -167,7 +167,7 @@ def main_window():
     # define the window UI layout
     win = dispatcher.AddWindow({
         'ID': win_id,
-        'Geometry': [600, 100, 800, 460],
+        'Geometry': [300, 180, 800, 460],
         'WindowTitle': "RCM Color Space Match",
     },
         ui.VGroup([
@@ -212,7 +212,7 @@ def main_window():
     def init_combo():
         items = win.GetItems()
 
-        items["DataLevelAdjustmentType"].AddItem('For Log Clips')
+        items["DataLevelAdjustmentType"].AddItem('For Log and Legal Clips')
         items["DataLevelAdjustmentType"].AddItem('For All Clips')
 
     def show_message(message, t=0):
@@ -270,7 +270,10 @@ def get_clips(folder, result):
 
 def assign_data_level(clip, metadata, assign_type):
     if metadata.get("Camera Manufacturer") == "Atomos":
-        if assign_type == 0 and re.search("LOG", metadata.get("Gamma Notes"), re.IGNORECASE) or assign_type == 1:
+        gamma_notes = metadata.get("Gamma Notes") if metadata.get("Gamma Notes") else ""
+        camera_notes = metadata.get("Camera Notes") if metadata.get("Camera Notes") else ""
+        if assign_type == 0 and (
+                re.search("LOG", gamma_notes, re.IGNORECASE) or "Range: Legal" in camera_notes) or assign_type == 1:
             if clip.SetClipProperty("Data Level", "Full"):
                 logger.debug(f"Assign {clip.GetName()} data level full successfully.")
             else:
