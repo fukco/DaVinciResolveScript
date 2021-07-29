@@ -1,18 +1,19 @@
 #!/usr/bin/env python
 """For DaVinci Resolve Color Grading"""
 __author__ = "Michael<https://github.com/fukco>"
-__version__ = "0.3.1"
+__version__ = "0.4.0"
 __license__ = "MIT"
 
 import logging
 import os
 import re
 import sys
-from ctypes import cdll, c_char_p, Structure
+from ctypes import cdll, c_char_p, c_bool, Structure
 
 gui_mode = True
 
 fields_list = [
+    ("IsSupportMedia", c_bool),
     ("Camera Type", c_char_p),
     ("Camera Manufacturer", c_char_p),
     ("Camera Serial #", c_char_p),
@@ -298,15 +299,22 @@ def parse_metadata(clip, lib):
     file_path = clip.GetClipProperty("File Path")
     if len(file_path) > 0:
         resolve_meta_dict = lib.DRProcessMediaFile(file_path.encode("utf-8")).get_dict()
-        meta = {k: v.decode("utf-8") for k, v in resolve_meta_dict.items() if v}
-        if not meta:
-            logger.warning(f"{os.path.basename(file_path)} Not Supported.")
-            return None
-        if clip.SetMetadata(meta):
-            logger.debug(f"Parse {os.path.basename(file_path)} Successfully.")
-            return meta
+        if resolve_meta_dict:
+            if not resolve_meta_dict["IsSupportMedia"]:
+                logger.warning(f"{os.path.basename(file_path)} Not Supported.")
+            else:
+                del resolve_meta_dict["IsSupportMedia"]
+                meta = {k: v.decode("utf-8") for k, v in resolve_meta_dict.items() if v}
+                if not meta:
+                    logger.debug(f"Ignore clip {os.path.basename(file_path)}.")
+                else:
+                    if clip.SetMetadata(meta):
+                        logger.debug(f"Process {os.path.basename(file_path)} Successfully.")
+                        return meta
+                    else:
+                        logger.error(f"Failed to set {os.path.basename(file_path)} metadata!")
         else:
-            logger.error(f"Parse {os.path.basename(file_path)} Unsuccessfully!")
+            logger.error(f"Failed to parse clip {clip.GetName()}")
     return None
 
 
@@ -327,7 +335,6 @@ def execute(assign_data_level_enabled=True, assign_type=0, parse_metadata_enable
     for clip in clips:
         metadata = parse_metadata(clip, lib) if parse_metadata_enabled else clip.GetMetadata()
         if not metadata:
-            logger.warning(f"Ignore {clip.GetName()}")
             continue
         if is_rcm:
             gamma_notes = metadata.get("Gamma Notes") if metadata.get("Gamma Notes") else ""

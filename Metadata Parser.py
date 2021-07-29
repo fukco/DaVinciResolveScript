@@ -2,13 +2,14 @@
 import logging
 import os
 import sys
-from ctypes import cdll, c_char_p, Structure
+from ctypes import cdll, c_char_p, c_bool, Structure
 
 __author__ = "Michael<https://github.com/fukco>"
-__version__ = "0.2.0"
+__version__ = "0.4.0"
 __license__ = "MIT"
 
 fields_list = [
+    ("IsSupportMedia", c_bool),
     ("Camera Type", c_char_p),
     ("Camera Manufacturer", c_char_p),
     ("Camera Serial #", c_char_p),
@@ -121,12 +122,20 @@ if __name__ == "__main__":
         file_path = clip.GetClipProperty("File Path")
         if len(file_path) > 0:
             resolve_meta_dict = lib.DRProcessMediaFile(file_path.encode("utf-8")).get_dict()
-            meta = {k: v for k, v in resolve_meta_dict.items() if v}
-            if not meta:
-                logger.warning(f"{os.path.basename(file_path)} Not Supported.")
-                continue
-            if clip.SetMetadata(meta):
-                logger.debug(f"Processed {os.path.basename(file_path)} Successfully.")
+            if resolve_meta_dict:
+                if not resolve_meta_dict["IsSupportMedia"]:
+                    logger.warning(f"{os.path.basename(file_path)} Not Supported.")
+                    continue
+                else:
+                    del resolve_meta_dict["IsSupportMedia"]
+                    meta = {k: v for k, v in resolve_meta_dict.items() if v}
+                    if not meta:
+                        logger.debug(f"Ignore clip {os.path.basename(file_path)}.")
+                    else:
+                        if clip.SetMetadata(meta):
+                            logger.debug(f"Process {os.path.basename(file_path)} Successfully.")
+                        else:
+                            logger.error(f"Failed to set {os.path.basename(file_path)} metadata!")
             else:
-                logger.error(f"Processed {os.path.basename(file_path)} Unsuccessfully!")
+                logger.error(f"Failed to parse clip {clip.GetName()}")
     logger.info("Done.")
