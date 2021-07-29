@@ -4,7 +4,7 @@
 
 ### 前提条件
 
-1. Windows：安装Python运行环境，需要安装3.6版本[Windows官网下载链接](https://www.python.org/ftp/python/3.6.8/python-3.6.8.exe)
+1. （LUA脚本跳过此步骤）Windows：安装Python运行环境，需要安装3.6版本[Windows官网下载链接](https://www.python.org/ftp/python/3.6.8/python-3.6.8.exe)
    通过EXE安装的DaVinci Resolve可以识别，其他方法安装的不能识别。<br/>
    Mac：跳过。自带2.7版本跳过本步骤。
 
@@ -127,6 +127,11 @@ color_space_match_list = [ColorSpaceMatchRule("Atomos", "CLog", "Cinema", "Canon
 ---
 
 ## Q&A
+
+Q: LUA脚本与Python脚本怎么选？<br/>
+A: 原则上同名的LUA以及Python脚本提供的功能是一致的。由于DaVinci
+Resolve内置LUA解释器，LUA脚本可以直接运行，而Python脚本需要额外安装解释器，并且达芬奇自身对Python版本有强依赖，所以需要安装指定版本Python，但是Python语言较LUA语言开发上有较大优势（不展开了），
+脚本会优先提供Python版本，LUA脚本更新较慢或者不更，所以还是建议各位安装Python解释器，当然如果有LUA版本脚本会优先在压缩包内提供，具体以压缩包内为准。
 
 Q: 为何没有提供中文界面？<br/>
 A: emmm，本来是要做国际化的，支持中英文版本的，与达芬奇内语言设置同步，找到了对应的API`fusion:GetPrefs("Global.UserInterface.Language")`
