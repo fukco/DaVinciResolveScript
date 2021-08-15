@@ -5,7 +5,7 @@ local getPath=function(str,sep)
     return str:match("(.*"..sep..")")
 end
 
-local lib = ffi.load(ffi.os == "Windows" and getPath(arg[0], "\\").."resolve-metadata.dll" or getPath(arg[0]).."resolve-metadata.so")
+local lib = ffi.load(ffi.os == "Windows" and getPath(script_path, "\\").."resolve-metadata.dll" or getPath(script_path).."resolve-metadata.so")
 ffi.cdef[[
 	typedef struct
 	{
@@ -33,7 +33,7 @@ ffi.cdef[[
 		char *FocalPoint;
 		char *Distance;
 		char *Filter;
-		char *NdFilter;
+		char *NDFilter;
 		char *CompressionRatio;
 		char *CodecBitrate;
 		char *AspectRatioNotes;
@@ -82,7 +82,7 @@ local function processClip( clip )
 		returnVal["Focal Point (mm)"] = ffi.string(res.FocalPoint)
 		returnVal["Distance"] = ffi.string(res.Distance)
 		returnVal["Filter"] = ffi.string(res.Filter)
-		returnVal["ND Filter"] = ffi.string(res.NdFilter)
+		returnVal["ND Filter"] = ffi.string(res.NDFilter)
 		returnVal["Compression Ratio"] = ffi.string(res.CompressionRatio)
 		returnVal["Codec Bitrate"] = ffi.string(res.CodecBitrate)
 		returnVal["Aspect Ratio Notes"] = ffi.string(res.AspectRatioNotes)
