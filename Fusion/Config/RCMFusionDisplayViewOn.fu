@@ -1,0 +1,30 @@
+{
+	Event {
+		Action = "Tool_ViewOn",
+		Targets = {
+			Fusion = {
+				Execute = [[
+
+-- Run the Action as the first step
+rets = self:Default(ctx, args)
+
+-- Get the pointer for the current foreground comp
+cmp = fusion.CurrentComp
+if args.__flags == nil and cmp then
+    if cmp:FindTool("Rec709ColorSpaceDisplay") then
+        cmp:GetPreviewList().RightView:ViewOn(cmp:FindTool("Rec709ColorSpaceDisplay"))
+        if cmp:GetPreviewList().RightView.View.CurrentViewer then
+            cmp:GetPreviewList().RightView.View.CurrentViewer:EnableLUT(false)
+        end
+    elseif cmp:FindTool("WideGamutColorSpaceDisplay") then
+        cmp:GetPreviewList().RightView:ViewOn(cmp:FindTool("WideGamutColorSpaceDisplay"))
+        if cmp:GetPreviewList().RightView.View.CurrentViewer then
+            cmp:GetPreviewList().RightView.View.CurrentViewer:EnableLUT(false)
+        end
+    end
+end
+					]]
+			},
+		},
+	}
+}

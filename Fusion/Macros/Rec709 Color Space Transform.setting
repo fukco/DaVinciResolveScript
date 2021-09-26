@@ -1,0 +1,66 @@
+{
+	Tools = ordered() {
+		Rec709ColorSpaceTransform = ofx.com.blackmagicdesign.resolvefx.ColorSpaceTransformV2 {
+			CtrlWZoom = false,
+			NameSet = true,
+			Inputs = {
+				Source = Input {
+					SourceOp = "Background1",
+					Source = "Output",
+				},
+				colorSpaceTransformGroup = Input { Value = 1, },
+				inputColorSpace = Input { Value = FuID { "TIMELINE_COLORSPACE" }, },
+				inputGamma = Input { Value = FuID { "AUTO_GAMMA" }, },
+				outputColorSpace = Input { Value = FuID { "TIMELINE_COLORSPACE" }, },
+				outputGamma = Input { Value = FuID { "LINEAR_GAMMA" }, },
+				isRec2390ScalingEnabled = Input { Value = 0, },
+				toneMappingGroup = Input { Value = 1, },
+				tmType = Input { Value = FuID { "TM_NONE" }, },
+				isSrcLumMaxCustomEnabled = Input {
+					Value = 0,
+					Disabled = true,
+				},
+				srcLumMax = Input {
+					Value = 100,
+					Disabled = true,
+				},
+				isDstLumMaxCustomEnabled = Input {
+					Value = 0,
+					Disabled = true,
+				},
+				dstLumMax = Input {
+					Value = 100,
+					Disabled = true,
+				},
+				srcLumAvg = Input {
+					Value = 9,
+					Disabled = true,
+				},
+				satRolloffStart = Input { Value = 100, },
+				satRolloffLimit = Input { Value = 10000, },
+				gamutMappingGroup = Input { Value = 1, },
+				gmType = Input { Value = FuID { "GM_NONE" }, },
+				satKnee = Input {
+					Value = 0.899999976158142,
+					Disabled = true,
+				},
+				satMax = Input {
+					Value = 1,
+					Disabled = true,
+				},
+				advancedGroup = Input { Value = 1, },
+				doFwdOOTF = Input { Value = 0, },
+				doInvOOTF = Input { Value = 0, },
+				doCAT = Input { Value = 1, },
+				blendGroup = Input { Value = 0, },
+				blendIn = Input { Value = 1, },
+				blend = Input { Value = 0, },
+				ignoreContentShape = Input { Value = 0, },
+				legacyIsProcessRGBOnly = Input { Value = 0, },
+				refreshTrigger = Input { Value = 1, },
+				resolvefxVersion = Input { Value = "1.1", },
+			},
+			ViewInfo = OperatorInfo { Pos = { 838.667, 92.2121 } },
+		}
+	}
+}

@@ -1,0 +1,17 @@
+{
+	Hotkeys
+	{
+		Target = "FlowView",
+		CONTROL_R = "RunScript{filename = 'Scripts:/Utility/RCM Color Space Match.py'}",
+	},
+	Hotkeys
+	{
+		Target = "FuFrame",
+		CONTROL_R = "RunScript{filename = 'Scripts:/Utility/RCM Color Space Match.py'}",
+	},
+	Hotkeys
+	{
+		Target = "ConsoleView",
+		CONTROL_R = "RunScript{filename = 'Scripts:/Utility/RCM Color Space Match.py'}",
+	},
+}
