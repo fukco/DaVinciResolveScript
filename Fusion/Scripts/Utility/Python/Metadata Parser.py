@@ -69,6 +69,49 @@ def get_cdll_lib():
     return lib
 
 
+def success_message(num):
+    bmd = get_bmd()
+    fusion = bmd.scriptapp("Fusion")
+    ui = fusion.UIManager
+    disp = bmd.UIDispatcher(ui)
+    win = disp.AddWindow({
+        'ID': 'MyWin',
+        'WindowTitle': 'Notification',
+        'Spacing': 10, }, [
+
+        ui.VGroup({'ID': 'root'}, [
+
+            ui.HGroup([
+                ui.Label({
+                    'Text': f"{num} clips in media pool has been parsed.\nMore details in console.",
+                    'Alignment': {'AlignHCenter': True, 'AlignVCenter': True},
+                })
+            ]),
+
+            ui.HGroup({
+                'Weight': 0,
+            }, [
+                ui.Button({
+                    'ID': 'B',
+                    'Text': 'OK',
+                })
+            ]),
+        ]),
+    ])
+    win.Resize([400, 120])
+    win.RecalcLayout()
+
+    def close(ev):
+        disp.ExitLoop()
+
+    win.On['MyWin'].Close = close
+    win.On['B'].Clicked = close
+
+    win.Show()
+    disp.RunLoop()
+    win.Hide()
+
+
 if __name__ == "__main__":
     # create logger
     logger = logging.getLogger("metadata_parser")
@@ -94,6 +137,7 @@ if __name__ == "__main__":
     get_clips(rootFolder, clips)
 
     lib = get_cdll_lib()
+    n = 0
     for clip in clips:
         file_path = clip.GetClipProperty("File Path")
         if len(file_path) > 0:
@@ -110,8 +154,10 @@ if __name__ == "__main__":
                     else:
                         if clip.SetMetadata(meta):
                             logger.debug(f"Process {os.path.basename(file_path)} Successfully.")
+                            n += 1
                         else:
                             logger.error(f"Failed to set {os.path.basename(file_path)} metadata!")
             else:
                 logger.error(f"Failed to parse clip {clip.GetName()}")
     logger.info("Done.")
+    success_message(n)

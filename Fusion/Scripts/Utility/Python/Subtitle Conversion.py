@@ -17,7 +17,7 @@ ui = fusion.UIManager
 dispatcher = bmd.UIDispatcher(ui)
 
 # some element IDs
-winID = "com.xiaoli.JianYingSubtitleConversion"  # should be unique for single instancing
+winID = "com.xiaoli.SubtitleConversion"  # should be unique for single instancing
 tabsID = "MyTabs"
 exec1ID = "Step1ExecuteButton"
 exec2ID = "Step2ExecuteButton"
@@ -38,7 +38,7 @@ if win:
 win = dispatcher.AddWindow({
     'ID': winID,
     'Geometry': [600, 300, 600, 200],
-    'WindowTitle': "JianYing Subtitle Conversion",
+    'WindowTitle': "Subtitle Conversion",
 },
     ui.VGroup([
         ui.TabBar({

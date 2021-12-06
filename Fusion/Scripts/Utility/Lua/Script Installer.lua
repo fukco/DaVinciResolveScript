@@ -22,12 +22,10 @@
 
 local ui = fu.UIManager
 local disp = bmd.UIDispatcher(ui)
-local width, height = 500, 150
 
 win = disp:AddWindow({
     ID = 'ScriptInstaller',
     WindowTitle = 'Script Installer',
-    Geometry = { 100, 100, width, height },
     Spacing = 10,
 
     ui:VGroup {
@@ -72,12 +70,22 @@ win = disp:AddWindow({
 
         ui:VGap(10),
 
-        ui:Button {
-            ID = 'Execute',
-            Text = 'Execute',
-        }
+        ui:HGroup {
+            ui:Button {
+                ID = 'Execute',
+                Text = 'Execute',
+                Weight = 0.5,
+            },
+
+            ui:Label {
+                ID = 'InfoLabel',
+                Weight = 1,
+            }
+        },
     },
 })
+win:Resize({ 500, 120 });
+win:RecalcLayout();
 
 -- The window was closed
 function win.On.ScriptInstaller.Close(ev)
@@ -119,6 +127,7 @@ function win.On.FolderButton.Clicked(ev)
 end
 
 function win.On.Execute.Clicked(ev)
+    itm.InfoLabel.Text = ''
     if FilePath == nil then
         print("please select file path first!")
         return
@@ -138,6 +147,7 @@ function win.On.Execute.Clicked(ev)
     elseif ffi.os == 'OSX' then
         os.execute('unzip -oq "' .. FilePath .. '" -d "' .. destinationPath .. '"')
     end
+    itm.InfoLabel.Text = 'Execute Finished!'
 end
 
 win:Show()

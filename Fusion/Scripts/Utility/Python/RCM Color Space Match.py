@@ -99,21 +99,23 @@ def main_window():
     # define the window UI layout
     win = dispatcher.AddWindow({
         'ID': win_id,
-        'Geometry': [300, 180, 800, 460],
         'WindowTitle': "RCM Color Space Match",
     },
         ui.VGroup([
             # color space match rule
             ui.Tree({"ID": tree_id}),
 
+            ui.VGap(2),
+
             ui.HGroup({"Weight": 0}, [
                 ui.CheckBox(
                     {"ID": "EnableMetadataParser", "Text": "Enable Metadata Parser", "Weight": 0, "Checked": True}),
-                ui.HGap(10),
                 ui.CheckBox(
                     {"ID": "EnableDataLevelAdjustment", "Text": "Enable Assign Atomos Clips' Data Level", "Weight": 0}),
                 ui.ComboBox({"ID": "DataLevelAdjustmentType", "Weight": 1})
             ]),
+
+            ui.VGap(2),
 
             ui.HGroup({"Weight": 0}, [
                 ui.Button({"Text": "Match", "ID": "ExecuteButton", "Weight": 0}),
@@ -122,6 +124,8 @@ def main_window():
             ]),
         ])
     )
+    win.Resize([700, 480])
+    win.RecalcLayout()
 
     def init_tree():
         items = win.GetItems()
@@ -139,7 +143,7 @@ def main_window():
         # Resize the Columns
         items[tree_id]["ColumnWidth"][0] = 200
         items[tree_id]["ColumnWidth"][1] = 200
-        items[tree_id]["ColumnWidth"][2] = 360
+        items[tree_id]["ColumnWidth"][2] = 260
 
     def init_combo():
         items = win.GetItems()
@@ -254,13 +258,17 @@ def execute(assign_data_level_enabled=True, assign_type=0, parse_metadata_enable
         lib = metadata_parser.get_cdll_lib()
     for clip in clips:
         metadata = parse_metadata(clip, lib) if parse_metadata_enabled else clip.GetMetadata()
-        if not metadata:
+        codec = clip.GetClipProperty('Video Codec')
+        if not metadata or 'RED' == codec.upper() or 'RAW' in codec.upper():
             continue
         if is_rcm:
             gamma_notes = metadata.get("Gamma Notes") if metadata.get("Gamma Notes") else ""
             color_space_rotes = metadata.get("Color Space Notes") if metadata.get("Color Space Notes") else ""
             input_color_space = color_space_match_map.get((gamma_notes, color_space_rotes))
             if input_color_space:
+                if clip.GetClipProperty("Input Color Space") == input_color_space:
+                    logger.debug(f"Already Set {clip.GetName()} Input Color Space")
+                    continue
                 if clip.SetClipProperty("Input Color Space", input_color_space):
                     logger.debug(f"{clip.GetName()} Set Input Color Space {input_color_space} Successfully.")
                 else:

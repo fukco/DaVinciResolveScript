@@ -11,11 +11,12 @@
 
 1. 安装Python3.6运行环境（部分脚本做了Python2.7兼容，支持Mac自带Python环境），达芬奇默认只识别通过安装包安装的环境以及Mac自带Python环境【如果只使用LUA脚本跳过此步骤】<br/>
    Windows：[官网下载链接](https://www.python.org/ftp/python/3.6.8/python-3.6.8.exe) <br/>
-   Mac：[官网下载链接](https://www.python.org/ftp/python/3.6.8/python-3.6.8-macosx10.9.pkg) ，M1芯片的Mac不支持。
+   Mac：[官网下载链接](https://www.python.org/ftp/python/3.6.8/python-3.6.8-macosx10.9.pkg) ，使用3.6版本的Python需要在Fusion设置中手动修改默认Python版本，默认为Python2.7，M1芯片的Mac不支持。
 
 
 2. 使用Installer进行安装，无需再拷贝路径了，适配Windows&Mac<br/>
-   1) 将下载好的`Script Installer.lua`拖拽到Fusion界面中释放会出现UI界面<br/>
+   ![脚本安装](assets/脚本安装界面.png)
+   1) 将下载好的`Script Installer.lua`拖拽到Fusion界面中释放会出现UI界面或者复制粘贴代码到控制台运行<br/>
    2) 文件选择框选择下载的压缩包<br/>
    3) 下拉框选择`for all users` Or `for specfic user`<br/>
    4) 点击执行
@@ -29,6 +30,7 @@
 
 2. RCM色彩空间匹配<br/>
    在达芬奇内，打开 工作区->脚本->RCM Color Space Match 执行日志可以在 工作区->控制台 内查看<br/>
+   ![脚本安装](assets/RCM色彩匹配.png)<br/>
    a.视图中展示了RCM（色彩科学DaVinci YRGB Color Managed）色彩空间匹配规则<br/>
    b.支持开启元数据解析，如果未单独解析元数据，需要勾选此选项，默认勾选<br/>
    c.支持Atomos录机LOG素材以及Legal素材Data Level批量修改为Full，同时支持所有Atomos素材Data
@@ -64,7 +66,7 @@
 
 ## 文件说明
 ![目录结构](assets/压缩包目录结构.png)
-压缩包分为：全量版本以及仅Lua版本，前者脚本更全但是需要额外安装Python环境，后者无需安装Python环境使用达芬奇内置的Lua解释器，M1芯片MAC不二选择，但是相对全量版本，脚本没有那么全面，如有需要我会尽力补全Lua版本脚本
+压缩包分为：全量版本以及仅Lua版本，前者脚本更全但是需要额外安装Python环境，后者无需安装Python环境使用达芬奇内置的Lua解释器，M1芯片MAC暂时不支持Python3.6，但是相对全量版本，脚本没有那么全面，如有需要我会尽力补全Lua版本脚本
 
 ### 脚本说明
 全部脚本
@@ -75,42 +77,39 @@
     <th>作用</th>
   </tr>
   <tr>
-    <td rowspan="2">Config</td>
+    <td rowspan="3">Config</td>
     <td>MediaOutContextualMenuFixRCMColorShift.fu</td>
-    <td>MediaOut右键菜单，修复RCM色彩偏移（升级至17.3之后版本，不起作用，使用Tool脚本解决）</td>
+    <td>MediaOut右键菜单，修复RCM色彩偏移（升级至17.3之后版本，不起作用，废弃）</td>
   </tr>
   <tr>
     <td>RCMColorSpaceMatchHotkey.fu</td>
     <td>Fusion快捷键注册，快速调色启动</td>
   </tr>
   <tr>
-    <td rowspan="4">Macros</td>
-    <td>Rec709 Color Space Display.setting</td>
-    <td>RCM Rec709 Fusion颜色偏移显示修正</td>
+    <td>RCMFusionDisplayViewOn.fu</td>
+    <td>Fusion中RCM色彩修正显示节点</td>
   </tr>
   <tr>
-    <td>Rec709 Color Space Transform.setting</td>
-    <td>RCM Rec709 Fusion颜色偏移输出修正</td>
+    <td rowspan="2">Macros</td>
+    <td>RCM Color Space Display.setting</td>
+    <td>RCM Fusion颜色偏移显示修正</td>
   </tr>
   <tr>
-    <td>Wide Gamut Color Space Display.setting</td>
-    <td>RCM WG Fusion颜色偏移显示修正</td>
+    <td>RCM Color Space Transform.setting</td>
+    <td>RCM Fusion颜色偏移输出修正</td>
   </tr>
   <tr>
-    <td>Wide Gamut Color Space Transform.setting</td>
-    <td>RCM WG Fusion颜色偏移输出修正</td>
+    <td>Scripts/Comp</td>
+    <td>Fusion Hotkey Manager.lua</td>
+    <td>Fusion快捷键管理</td>
   </tr>
   <tr>
-    <td rowspan="2">Scripts/Tool</td>
-    <td>RCM Rec709 Color Correct.lua</td>
-    <td>RCM Rec709色彩修正Tool脚本</td>
+    <td>Scripts/Tool</td>
+    <td>RCM Color Shift Fix.lua</td>
+    <td>RCM色彩修正Tool脚本</td>
   </tr>
   <tr>
-    <td>RCM WideGamut Color Correct.lua</td>
-    <td>RCM WG色彩修正Tool脚本</td>
-  </tr>
-  <tr>
-    <td rowspan="9">Scripts/Utility</td>
+    <td rowspan="10">Scripts/Utility</td>
     <td>Color Grading Tool.py</td>
     <td>调色工具</td>
   </tr>
@@ -123,12 +122,16 @@
     <td>脚本依赖</td>
   </tr>
   <tr>
-    <td>JianYing Subtitle Conversion.py</td>
-    <td>剪映字幕导出SRT，兼容Python2.7</td>
+    <td>Subtitle Conversion.py</td>
+    <td>字幕导出SRT，兼容Python2.7</td>
   </tr>
   <tr>
     <td>Metadata Parser.py</td>
     <td>元数据解析</td>
+  </tr>
+  <tr>
+    <td>RCM Fusion Fix.lua</td>
+    <td>RCM色彩空间色彩偏移批量修正</td>
   </tr>
   <tr>
     <td>RCM Color Space Match.py</td>
@@ -156,44 +159,45 @@
     <th>作用</th>
   </tr>
   <tr>
-    <td rowspan="2">Config</td>
+    <td rowspan="3">Config</td>
     <td>MediaOutContextualMenuFixRCMColorShift.fu</td>
-    <td>MediaOut右键菜单，修复RCM色彩偏移（升级至17.3之后版本，不起作用，使用Tool脚本解决）</td>
+    <td>MediaOut右键菜单，修复RCM色彩偏移（升级至17.3之后版本，不起作用，废弃）</td>
   </tr>
   <tr>
     <td>RCMColorSpaceMatchHotkey.fu</td>
     <td>Fusion快捷键注册，快速调色启动</td>
   </tr>
   <tr>
-    <td rowspan="4">Macros</td>
-    <td>Rec709 Color Space Display.setting</td>
-    <td>RCM Rec709 Fusion颜色偏移显示修正</td>
+    <td>RCMFusionDisplayViewOn.fu</td>
+    <td>Fusion中RCM色彩修正显示节点</td>
   </tr>
   <tr>
-    <td>Rec709 Color Space Transform.setting</td>
-    <td>RCM Rec709 Fusion颜色偏移输出修正</td>
+    <td rowspan="2">Macros</td>
+    <td>RCM Color Space Display.setting</td>
+    <td>RCM Fusion颜色偏移显示修正</td>
   </tr>
   <tr>
-    <td>Wide Gamut Color Space Display.setting</td>
-    <td>RCM WG Fusion颜色偏移显示修正</td>
+    <td>RCM Color Space Transform.setting</td>
+    <td>RCM Fusion颜色偏移输出修正</td>
   </tr>
   <tr>
-    <td>Wide Gamut Color Space Transform.setting</td>
-    <td>RCM WG Fusion颜色偏移输出修正</td>
+    <td>Scripts/Comp</td>
+    <td>Fusion Hotkey Manager.lua</td>
+    <td>Fusion快捷键管理</td>
   </tr>
   <tr>
-    <td rowspan="2">Scripts/Tool</td>
-    <td>RCM Rec709 Color Correct.lua</td>
-    <td>RCM Rec709色彩修正Tool脚本</td>
+    <td>Scripts/Tool</td>
+    <td>RCM Color Shift Fix.lua</td>
+    <td>RCM色彩修正Tool脚本</td>
   </tr>
   <tr>
-    <td>RCM WideGamut Color Correct.lua</td>
-    <td>RCM WG色彩修正Tool脚本</td>
-  </tr>
-  <tr>
-    <td rowspan="4">Scripts/Utility</td>
+    <td rowspan="5">Scripts/Utility</td>
     <td>Metadata parser.lua</td>
     <td>元数据解析</td>
+  </tr>
+  <tr>
+    <td>RCM Fusion Fix.lua</td>
+    <td>RCM色彩空间色彩偏移批量修正</td>
   </tr>
   <tr>
     <td>resolve-metadata.dll</td>
@@ -230,8 +234,8 @@
 
 ## 关于源码
 
-1. 源码基于Python3.6开发，并不适配Mac OS自带的2.7版本
-2. 因为M1版本的Mac安装指定版本的Python有一定的难度，达芬奇并不支持2.7以及3.6以外的版本，最新的Mac OS预装的Python3已经高于3.6版本，而Python2官方已经停止维护，综上，M1芯片的不建议使用Python版本脚本。
+1. 源码基于Python3.6开发，并不适配Mac OS自带的2.7版本，特别标注的除外
+2. Mac OS当前版本自带2.7以及高于3.6版本的Python，非M1芯片Mac建议安装Python3.6
 
 ### 源码贡献
 
