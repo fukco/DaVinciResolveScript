@@ -17,7 +17,7 @@ jobs:
           cp -r lib/resolve-metadata* dist/Scripts/Utility/
           7z a target/script_lua.zip ./dist/*
           rm -rf dist/Scripts/Utility/Metadata\ Parser.lua
-          cp Fusion/Scripts/Utility/Python/{Metadata\ Parser.py, RCM\ Color\ Space\ Match.py} dist/Scripts/Utility/
+          cp Fusion/Scripts/Utility/Python/{Metadata\ Parser.py,RCM\ Color\ Space\ Match.py} dist/Scripts/Utility/
           rm -rf dist/Scripts/Utility/get_resolve.py
           cp lib/get_resolve.pyc dist/Scripts/Utility/
           7z a target/script.zip ./dist/*
