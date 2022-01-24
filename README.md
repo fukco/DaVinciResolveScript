@@ -40,14 +40,14 @@
    f.佳能相机暂无法解析到拍摄使用的LOG格式，暂时无法自动匹配，如需批量匹配佳能素材可以使用智能媒体夹过滤佳能素材并全选设置对应输入色彩空间
 
 
-3. DRX文件管理<br/>
+3. ~~DRX文件管理~~【暂未正式推出】<br/>
    在达芬奇内，打开 工作区->脚本->DRX Management 执行日志可以在 工作区->控制台 内查看<br/>
    a.选择需要查找DRX文件的根目录<br/>
    b.点击刷新按钮，更新目录以及递归目录所有DRX文件列表<br/>
    c.如需使用无视图模式：编辑源代码，修改`gui_mode = 1`为`gui_mode = 0`
 
 
-4. 调色工具<br/>
+4. ~~调色工具~~【暂未正式推出】<br/>
    在达芬奇内，打开 工作区->脚本->Color Grading Tool 执行日志可以在 工作区->控制台 内查看<br/><br/>
    I.调色拷贝工具<br/>
    a.选择拷贝至所有时间线项/同一片段的时间线项/相同摄像机类型/相同摄像机序列号/相同关键词/相同输入色彩空间/相同片段色彩/相同旗标<br/>
@@ -61,8 +61,10 @@
    d.点击"保存配置"进行保存配置或"自定义调色"直接执行，执行会自动保存配置<br/>
 
 
-5. 字幕转化工具<br/>
-   你是个聪明的娃er，要学会如何自己去摸索了！
+5. 字幕工具<br/>
+   ![脚本安装](assets/字幕工具.png)<br/>
+   a. 自动读取剪映，必剪项目，根据项目点击导出SRT即可<br/>
+   b. 将导出的srt文件手动导入到项目中，并创建字幕轨道<br/>
 
 ## 文件说明
 ![目录结构](assets/压缩包目录结构.png)
@@ -77,11 +79,7 @@
     <th>作用</th>
   </tr>
   <tr>
-    <td rowspan="3">Config</td>
-    <td>MediaOutContextualMenuFixRCMColorShift.fu</td>
-    <td>MediaOut右键菜单，修复RCM色彩偏移（升级至17.3之后版本，不起作用，废弃）</td>
-  </tr>
-  <tr>
+    <td rowspan="2">Config</td>
     <td>RCMColorSpaceMatchHotkey.fu</td>
     <td>Fusion快捷键注册，快速调色启动</td>
   </tr>
@@ -109,23 +107,7 @@
     <td>RCM色彩修正Tool脚本</td>
   </tr>
   <tr>
-    <td rowspan="10">Scripts/Utility</td>
-    <td>Color Grading Tool.py</td>
-    <td>调色工具</td>
-  </tr>
-  <tr>
-    <td>DRX Management.py</td>
-    <td>DRX文件管理</td>
-  </tr>
-  <tr>
-    <td>get_resolve.pyc</td>
-    <td>脚本依赖</td>
-  </tr>
-  <tr>
-    <td>Subtitle Conversion.py</td>
-    <td>字幕导出SRT，兼容Python2.7</td>
-  </tr>
-  <tr>
+    <td rowspan="5">Scripts/Utility</td>
     <td>Metadata Parser.py</td>
     <td>元数据解析</td>
   </tr>
@@ -138,16 +120,12 @@
     <td>RCM色彩空间匹配</td>
   </tr>
   <tr>
-    <td>resolve-metadata.dll</td>
-    <td>元数据解析Windows动态链接库</td>
-  </tr>
-  <tr>
-    <td>resolve-metadata.dylib</td>
-    <td>元数据解析Mac动态链接库</td>
-  </tr>
-  <tr>
     <td>Script Installer.lua</td>
     <td>脚本安装助手</td>
+  </tr>
+  <tr>
+    <td>Subtitle Tool.lua</td>
+    <td>字幕工具</td>
   </tr>
 </table>
 
@@ -159,11 +137,7 @@
     <th>作用</th>
   </tr>
   <tr>
-    <td rowspan="3">Config</td>
-    <td>MediaOutContextualMenuFixRCMColorShift.fu</td>
-    <td>MediaOut右键菜单，修复RCM色彩偏移（升级至17.3之后版本，不起作用，废弃）</td>
-  </tr>
-  <tr>
+    <td rowspan="2">Config</td>
     <td>RCMColorSpaceMatchHotkey.fu</td>
     <td>Fusion快捷键注册，快速调色启动</td>
   </tr>
@@ -200,16 +174,12 @@
     <td>RCM色彩空间色彩偏移批量修正</td>
   </tr>
   <tr>
-    <td>resolve-metadata.dll</td>
-    <td>元数据解析Windows动态链接库</td>
-  </tr>
-  <tr>
-    <td>resolve-metadata.dylib</td>
-    <td>元数据解析Mac动态链接库</td>
-  </tr>
-  <tr>
     <td>Script Installer.lua</td>
     <td>脚本安装助手</td>
+  </tr>
+  <tr>
+    <td>Subtitle Tool.lua</td>
+    <td>字幕工具</td>
   </tr>
 </table>
 
@@ -230,7 +200,7 @@
   2、基于DRX文件按条件匹配应用调色，支持配置持久化 （DRX文件是达芬奇能够识别的保存节点以及调色信息的文件）
 
 
-* resolve-metadata.dll resolve-metadata.dylib 动态链接库文件供元数据解析脚本使用，源码可参见另外一个项目
+* .dll .dylib后缀文件为动态链接库，源码使用Golang编写，参见另外一个项目
 
 ## 关于源码
 
@@ -275,10 +245,15 @@ color_space_match_list = [ColorSpaceMatchRule("Atomos", "CLog", "Cinema", "Canon
 A: 全量脚本包含Python以及Lua脚本，脚本更全，理论上Python脚本能实现的Lua脚本都能实现，实际上根据语言特点，开发难度上，Lua不占优势。由于个人能力问题，当前有些脚本只提供了Python脚本。
 建议所有Windows用户使用全量版本，M1芯片的Mac也别折腾，当前（17.3版本）只用Lua版本的脚本。至于未来Python脚本是否都会迁移至Lua版本，视需求情况以及达芬奇版本更新情况再定。
 
+**Q: Apple Silicon支持情况？**<br/>
+A: 当前达芬奇版本17.4.3支持的Python版本为3.6，这个版本无法安装在M1的MAC上，至于Lua脚本，单纯的Lua脚本应该是支持的，个人没有相应环境无法测试验证，部分依赖动态链接库的脚本，理论上可以做到支持，
+因为没有开发验证环境，并没有去做相应版本编译构建，所以也不支持。
+
 **Q: 为何没有提供中文界面？**<br/>
 A: emmm，本来是要做国际化的，支持中英文版本的，与达芬奇内语言设置同步，找到了对应的API`fusion:GetPrefs("Global.UserInterface.Language")`
 ，切换中英文无法正确获得语言设置，国际化工作暂时搁置。界面中都是简单英文单词，对各位难度应该不大。 07-02 Update:
 Win系统下%appdata%目录下`%appdata%\Blackmagic Design\DaVinci Resolve\Preferences\config.user.xml`中能够读取到系统语言设置
+字幕工具为纯中文界面
 
 **Q: 喂！有BUG啊，如何反馈？**<br/>
 A: 在你能找到我的方式内联系我，或者按照规范提交ISSUE。
