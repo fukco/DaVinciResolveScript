@@ -14,7 +14,8 @@ jobs:
           cp -r Fusion/* dist/
           rm -rf dist/Scripts/Utility/*
           cp -r Fusion/Scripts/Utility/Lua/* dist/Scripts/Utility/
-          cp -r lib/{*.dll, *.dylib} dist/Scripts/Utility/
+          cp -r lib/* dist/Scripts/Utility/
+          rm -rf dist/Scripts/Utility/get_resolve.pyc
           7z a target/script_lua.zip ./dist/*
           rm -rf dist/Scripts/Utility/Metadata\ Parser.lua
           cp Fusion/Scripts/Utility/Python/{Metadata\ Parser.py,RCM\ Color\ Space\ Match.py} dist/Scripts/Utility/
