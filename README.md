@@ -5,13 +5,20 @@
 
 [English Version](README-EN.md)
 
+## 支持范围
+### 达芬奇版本
+17+
+### 操作系统
+Windows Mac OS(Intel/Apple Silicon均可)
+
 ## 使用方法
 
 ### 前提条件
 
-1. 安装Python3.6运行环境（部分脚本做了Python2.7兼容，支持Mac自带Python环境），达芬奇默认只识别通过安装包安装的环境以及Mac自带Python环境【如果只使用LUA脚本跳过此步骤】<br/>
+1. ~~安装Python3.6运行环境（部分脚本做了Python2.7兼容，支持Mac自带Python环境），达芬奇默认只识别通过安装包安装的环境以及Mac自带Python环境【如果只使用LUA脚本跳过此步骤】<br/>
    Windows：[官网下载链接](https://www.python.org/ftp/python/3.6.8/python-3.6.8.exe) <br/>
-   Mac：[官网下载链接](https://www.python.org/ftp/python/3.6.8/python-3.6.8-macosx10.9.pkg) ，使用3.6版本的Python需要在Fusion设置中手动修改默认Python版本，默认为Python2.7，M1芯片的Mac不支持。
+   Mac：[官网下载链接](https://www.python.org/ftp/python/3.6.8/python-3.6.8-macosx10.9.pkg) ，使用3.6版本的Python需要在Fusion设置中手动修改默认Python版本，默认为Python2.7，M1芯片的Mac不支持。~~<br/>
+   2022/02/11更新：当前(从0.7.0)正式发布的脚本已经使用Lua重写过，无需额外安装Python环境了，后续版本开始暂不打包Python脚本，如果希望使用Python版本，请手动下载，后续默认也只提供Lua版本脚本，特殊情况会说明。
 
 
 2. 使用Installer进行安装，无需再拷贝路径了，适配Windows&Mac<br/>
@@ -71,7 +78,6 @@
 压缩包分为：全量版本以及仅Lua版本，前者脚本更全但是需要额外安装Python环境，后者无需安装Python环境使用达芬奇内置的Lua解释器，M1芯片MAC暂时不支持Python3.6，但是相对全量版本，脚本没有那么全面，如有需要我会尽力补全Lua版本脚本
 
 ### 脚本说明
-全部脚本
 <table>
   <tr>
     <th>文件夹</th>
@@ -108,7 +114,7 @@
   </tr>
   <tr>
     <td rowspan="5">Scripts/Utility</td>
-    <td>Metadata Parser.py</td>
+    <td>Metadata Parser.lua</td>
     <td>元数据解析</td>
   </tr>
   <tr>
@@ -116,7 +122,7 @@
     <td>RCM色彩空间色彩偏移批量修正</td>
   </tr>
   <tr>
-    <td>RCM Color Space Match.py</td>
+    <td>RCM Color Space Match.lua</td>
     <td>RCM色彩空间匹配</td>
   </tr>
   <tr>
@@ -129,7 +135,7 @@
   </tr>
 </table>
 
-仅Lua脚本
+附加的Python脚本
 <table>
   <tr>
     <th>文件夹</th>
@@ -137,49 +143,21 @@
     <th>作用</th>
   </tr>
   <tr>
-    <td rowspan="2">Config</td>
-    <td>RCMColorSpaceMatchHotkey.fu</td>
-    <td>Fusion快捷键注册，快速调色启动</td>
-  </tr>
-  <tr>
-    <td>RCMFusionDisplayViewOn.fu</td>
-    <td>Fusion中RCM色彩修正显示节点</td>
-  </tr>
-  <tr>
-    <td rowspan="2">Macros</td>
-    <td>RCM Color Space Display.setting</td>
-    <td>RCM Fusion颜色偏移显示修正</td>
-  </tr>
-  <tr>
-    <td>RCM Color Space Transform.setting</td>
-    <td>RCM Fusion颜色偏移输出修正</td>
-  </tr>
-  <tr>
-    <td>Scripts/Comp</td>
-    <td>Fusion Hotkey Manager.lua</td>
-    <td>Fusion快捷键管理</td>
-  </tr>
-  <tr>
-    <td>Scripts/Tool</td>
-    <td>RCM Color Shift Fix.lua</td>
-    <td>RCM色彩修正Tool脚本</td>
-  </tr>
-  <tr>
-    <td rowspan="5">Scripts/Utility</td>
-    <td>Metadata parser.lua</td>
+    <td rowspan="4">Scripts/Utility</td>
+    <td>Metadata parser.py</td>
     <td>元数据解析</td>
   </tr>
   <tr>
-    <td>RCM Fusion Fix.lua</td>
-    <td>RCM色彩空间色彩偏移批量修正</td>
+    <td>RCM Color Space Match.py</td>
+    <td>RCM色彩空间匹配</td>
   </tr>
   <tr>
-    <td>Script Installer.lua</td>
-    <td>脚本安装助手</td>
+    <td>DRX Management.py</td>
+    <td>DRX管理</td>
   </tr>
   <tr>
-    <td>Subtitle Tool.lua</td>
-    <td>字幕工具</td>
+    <td>Color Grading Tool.py</td>
+    <td>调色工具</td>
   </tr>
 </table>
 
@@ -204,8 +182,8 @@
 
 ## 关于源码
 
-1. 源码基于Python3.6开发，并不适配Mac OS自带的2.7版本，特别标注的除外
-2. Mac OS当前版本自带2.7以及高于3.6版本的Python，非M1芯片Mac建议安装Python3.6
+1. ~~源码基于Python3.6开发，并不适配Mac OS自带的2.7版本，特别标注的除外~~
+2. ~~Mac OS当前版本自带2.7以及高于3.6版本的Python，非M1芯片Mac建议安装Python3.6~~
 
 ### 源码贡献
 
@@ -216,38 +194,19 @@
 
 ### 色彩空间匹配规则
 
-* 色彩空间匹配规则如需修改，可以修改代码文件`RCM Color Space Match.py`以下部分，按需新增即可，如果遇到更新脚本文件注意备份手动修改部分
-
-```
-color_space_match_list = [ColorSpaceMatchRule("Atomos", "CLog", "Cinema", "Canon Cinema Gamut/Canon Log"),
-                          ColorSpaceMatchRule("Atomos", "CLog2", "Cinema", "Canon Cinema Gamut/Canon Log2"),
-                          ColorSpaceMatchRule("Atomos", "CLog3", "Cinema", "Canon Cinema Gamut/Canon Log3"),
-                          ColorSpaceMatchRule("Atomos", "F-Log", "F-Gamut", "FujiFilm F-Log"),
-                          ColorSpaceMatchRule("Atomos", "V-Log", "V-Gamut", "Panasonic V-Gamut/V-Log"),
-                          ColorSpaceMatchRule("Atomos", "SLog3", "SGamut3", "S-Gamut3/S-Log3"),
-                          ColorSpaceMatchRule("Atomos", "SLog3", "SGamut3Cine", "S-Gamut3.Cine/S-Log3"),
-                          ColorSpaceMatchRule("Atomos", "N-Log", "BT.2020", "Nikon N-Log"),
-                          ColorSpaceMatchRule("Atomos", "HLG", "BT.2020", "Rec.2100 HLG"),
-
-                          ColorSpaceMatchRule("Fujifilm", "F-log", "", "FujiFilm F-Log"),
-
-                          ColorSpaceMatchRule("Panasonic", "V-Log", "V-Gamut", "Panasonic V-Gamut/V-Log"),
-
-                          ColorSpaceMatchRule("Sony", "s-log2", "s-gamut", "S-Gamut/S-Log2"),
-                          ColorSpaceMatchRule("Sony", "s-log3-cine", "s-gamut3-cine", "S-Gamut3.Cine/S-Log3"),
-                          ColorSpaceMatchRule("Sony", "s-log3", "s-gamut3", "S-Gamut3/S-Log3"),
-                          ]
-```
+* 色彩空间匹配规则如果需要添加，可以与我联系，或者自己摸索代码依葫芦画瓢即可。
 
 ## Q&A
 
 **Q: 全量脚本与LUA脚本怎么选？**<br/>
-A: 全量脚本包含Python以及Lua脚本，脚本更全，理论上Python脚本能实现的Lua脚本都能实现，实际上根据语言特点，开发难度上，Lua不占优势。由于个人能力问题，当前有些脚本只提供了Python脚本。
-建议所有Windows用户使用全量版本，M1芯片的Mac也别折腾，当前（17.3版本）只用Lua版本的脚本。至于未来Python脚本是否都会迁移至Lua版本，视需求情况以及达芬奇版本更新情况再定。
+A: ~~全量脚本包含Python以及Lua脚本，脚本更全，理论上Python脚本能实现的Lua脚本都能实现，实际上根据语言特点，开发难度上，Lua不占优势。由于个人能力问题，当前有些脚本只提供了Python脚本。
+建议所有Windows用户使用全量版本，M1芯片的Mac也别折腾，当前（17.3版本）只用Lua版本的脚本。至于未来Python脚本是否都会迁移至Lua版本，视需求情况以及达芬奇版本更新情况再定。~~<br/>
+从0.7.0开始默认只提供Lua版本，Python版本提供的功能均已使用Lua重写过，未发布的功能或希望使用Python版本的脚本可以手动下载。
 
 **Q: Apple Silicon支持情况？**<br/>
-A: 当前达芬奇版本17.4.3支持的Python版本为3.6，这个版本无法安装在M1的MAC上，至于Lua脚本，单纯的Lua脚本应该是支持的，个人没有相应环境无法测试验证，部分依赖动态链接库的脚本，理论上可以做到支持，
-因为没有开发验证环境，并没有去做相应版本编译构建，所以也不支持。
+A: ~~当前达芬奇版本17.4.3支持的Python版本为3.6，这个版本无法安装在M1的MAC上，至于Lua脚本，单纯的Lua脚本应该是支持的，个人没有相应环境无法测试验证，部分依赖动态链接库的脚本，理论上可以做到支持，
+因为没有开发验证环境，并没有去做相应版本编译构建，所以也不支持。~~<br/>
+支持
 
 **Q: 为何没有提供中文界面？**<br/>
 A: emmm，本来是要做国际化的，支持中英文版本的，与达芬奇内语言设置同步，找到了对应的API`fusion:GetPrefs("Global.UserInterface.Language")`

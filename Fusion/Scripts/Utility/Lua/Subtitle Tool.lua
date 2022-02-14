@@ -40,7 +40,17 @@ local getPath = function(str, sep)
     return str:match("(.*" .. sep .. ")")
 end
 
-local lib = ffi.load(ffi.os == "Windows" and getPath(script_path, "\\") .. "subtitle-tool.dll" or getPath(script_path) .. "subtitle-tool.dylib")
+local lib
+if ffi.os == "Windows" then
+    lib = ffi.load(getPath(script_path, "\\") .. "subtitle-tool.dll")
+elseif ffi.os == "OSX" then
+    if ffi.arch == "x64" then
+        lib = ffi.load(getPath(script_path) .. "subtitle-tool-amd64.dylib")
+    elseif ffi.arch == "arm64" then
+        lib = ffi.load(getPath(script_path) .. "subtitle-tool-arm64.dylib")
+    end
+end
+
 ffi.cdef [[
     extern __declspec(dllexport) _Bool JExportByProjectName(char* name, char* basePath, char* outputPath);
     extern __declspec(dllexport) _Bool BExportById(char* name, char* id, char* basePath, char* outputPath);
@@ -99,7 +109,7 @@ function MainWindow()
                     },
                 },
 
-                ui.VGroup {
+                ui:VGroup {
                     Weight = 0,
                     ui:VGroup {
                         Weight = 0,

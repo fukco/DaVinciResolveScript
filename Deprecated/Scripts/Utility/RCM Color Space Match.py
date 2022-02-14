@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""For DaVinci Resolve Color Grading"""
+"""For DaVinci Resolve Space Match"""
 __author__ = "Michael<https://github.com/fukco>"
 __version__ = "0.5.0"
 __license__ = "MIT"
@@ -40,7 +40,6 @@ ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
 
-default_color_version_name = "Auto Generate Color Version"
 color_space_match_list = [ColorSpaceMatchRule("Atomos", "CLog", "Cinema", "Canon Cinema Gamut/Canon Log"),
                           ColorSpaceMatchRule("Atomos", "CLog2", "Cinema", "Canon Cinema Gamut/Canon Log2"),
                           ColorSpaceMatchRule("Atomos", "CLog3", "Cinema", "Canon Cinema Gamut/Canon Log3"),
@@ -60,11 +59,8 @@ color_space_match_list = [ColorSpaceMatchRule("Atomos", "CLog", "Cinema", "Canon
                           ColorSpaceMatchRule("Sony", "s-log3", "s-gamut3", "S-Gamut3/S-Log3"),
                           ]
 color_space_match_map = {}
-input_color_space_list = []
 for item in color_space_match_list:
     color_space_match_map[(item.gamma_notes, item.color_space_notes)] = item.input_color_space
-    if item.input_color_space not in input_color_space_list:
-        input_color_space_list.append(item.input_color_space)
 
 match_rules = {"rules": []}
 manufacturers = []

@@ -5,7 +5,17 @@ local getPath = function(str, sep)
     return str:match("(.*" .. sep .. ")")
 end
 
-local lib = ffi.load(ffi.os == "Windows" and getPath(script_path, "\\") .. "resolve-metadata.dll" or getPath(script_path) .. "resolve-metadata.dylib")
+local lib
+if ffi.os == "Windows" then
+    lib = ffi.load(getPath(script_path, "\\") .. "resolve-metadata.dll")
+elseif ffi.os == "OSX" then
+    if ffi.arch == "x64" then
+        lib = ffi.load(getPath(script_path) .. "resolve-metadata-amd64.dylib")
+    elseif ffi.arch == "arm64" then
+        lib = ffi.load(getPath(script_path) .. "resolve-metadata-arm64.dylib")
+    end
+end
+
 ffi.cdef [[
 	typedef struct
 	{
@@ -50,7 +60,7 @@ end
 local function processClip(clip)
     local filePath = clip:GetClipProperty("File Path")
     if filePath ~= "" then
-        local c_str = ffi.new("char[?]", #filePath)
+        local c_str = ffi.new("char[?]", #filePath+1)
         ffi.copy(c_str, filePath)
         local res = lib.DRProcessMediaFile(c_str)
         if res == nil then

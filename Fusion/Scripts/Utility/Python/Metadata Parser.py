@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import logging
 import os
+import platform
 import sys
 from ctypes import cdll, c_char_p, c_bool, Structure
 
@@ -58,11 +59,14 @@ def get_clips(folder, result):
 
 
 def get_cdll_lib():
-    ext = ".dylib"
     path = os.path.dirname(sys.argv[0])
     if sys.platform.startswith("win") or sys.platform.startswith("cygwin"):
-        ext = ".dll"
-    library = os.path.join(path, f"resolve-metadata{ext}")
+        library = os.path.join(path, "resolve-metadata.dll")
+    else:
+        if platform.machine() == "x86_64":
+            library = os.path.join(path, "resolve-metadata-amd64.dylib")
+        else:
+            library = os.path.join(path, "resolve-metadata-arm64.dylib")
     lib = cdll.LoadLibrary(library)
     lib.DRProcessMediaFile.argtypes = [c_char_p]
     lib.DRProcessMediaFile.restype = DRMetadata
