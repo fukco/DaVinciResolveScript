@@ -33,21 +33,14 @@ end
 
 json = require "json"
 
-local script_path = arg[0]
-
-local getPath = function(str, sep)
-    sep = sep or '/'
-    return str:match("(.*" .. sep .. ")")
-end
-
 local lib
 if ffi.os == "Windows" then
-    lib = ffi.load(getPath(script_path, "\\") .. "subtitle-tool.dll")
+    lib = ffi.load(fusion:MapPath('LuaModules:/subtitle-tool.dll'))
 elseif ffi.os == "OSX" then
     if ffi.arch == "x64" then
-        lib = ffi.load(getPath(script_path) .. "subtitle-tool-amd64.dylib")
+        lib = ffi.load(fusion:MapPath('LuaModules:/subtitle-tool-amd64.dylib'))
     elseif ffi.arch == "arm64" then
-        lib = ffi.load(getPath(script_path) .. "subtitle-tool-arm64.dylib")
+        lib = ffi.load(fusion:MapPath('LuaModules:/subtitle-tool-arm64.dylib'))
     end
 end
 

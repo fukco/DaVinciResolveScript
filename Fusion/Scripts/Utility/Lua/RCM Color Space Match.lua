@@ -44,21 +44,14 @@ for _, value in ipairs(color_space_match_list) do
     end
 end
 
-local script_path = arg[0]
-
-local getPath = function(str, sep)
-    sep = sep or '/'
-    return str:match("(.*" .. sep .. ")")
-end
-
 local lib
 if ffi.os == "Windows" then
-    lib = ffi.load(getPath(script_path, "\\") .. "resolve-metadata.dll")
+    lib = ffi.load(fusion:MapPath('LuaModules:/resolve-metadata.dll'))
 elseif ffi.os == "OSX" then
     if ffi.arch == "x64" then
-        lib = ffi.load(getPath(script_path) .. "resolve-metadata-amd64.dylib")
+        lib = ffi.load(fusion:MapPath('LuaModules:/resolve-metadata-amd64.dylib'))
     elseif ffi.arch == "arm64" then
-        lib = ffi.load(getPath(script_path) .. "resolve-metadata-arm64.dylib")
+        lib = ffi.load(fusion:MapPath('LuaModules:/resolve-metadata-arm64.dylib'))
     end
 end
 
