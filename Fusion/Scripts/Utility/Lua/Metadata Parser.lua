@@ -39,15 +39,17 @@ ffi.cdef [[
 		char *NDFilter;
 		char *CompressionRatio;
 		char *CodecBitrate;
+		char *SensorAreaCaptured;
+		char *PARNotes;
 		char *AspectRatioNotes;
 		char *GammaNotes;
 		char *ColorSpaceNotes;
-	}DRMetadata ;
+	} DRMetadata;
 	extern __declspec(dllexport) DRMetadata DRProcessMediaFile(char* absPath);
 ]]
 
 local function log_line(message)
-    print(os.date("[%Y-%m-%d %X] " .. message))
+    print(string.format("[%s] %s", os.date("%Y-%m-%d %X"), message))
 end
 
 local function processClip(clip)
@@ -92,6 +94,8 @@ local function processClip(clip)
         returnVal["ND Filter"] = ffi.string(res.NDFilter)
         returnVal["Compression Ratio"] = ffi.string(res.CompressionRatio)
         returnVal["Codec Bitrate"] = ffi.string(res.CodecBitrate)
+        returnVal["Sensor Area Captured"] = ffi.string(res.SensorAreaCaptured)
+        returnVal["PAR Notes"] = ffi.string(res.PARNotes)
         returnVal["Aspect Ratio Notes"] = ffi.string(res.AspectRatioNotes)
         returnVal["Gamma Notes"] = ffi.string(res.GammaNotes)
         returnVal["Color Space Notes"] = ffi.string(res.ColorSpaceNotes)
