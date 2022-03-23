@@ -111,15 +111,34 @@
 					Inputs = {
 						Center = Input { Value = { 0.5, 0.279 }, },
 						Size = Input { Value = 0.052, },
+                        FocusAreaSelector = Input { Value = FuID { "5" }, },
 						Input = Input {
 							SourceOp = "SwitchFuse2",
 							Source = "Output",
 						},
-						FocusAreaSelector = Input { Value = 5, },
 					},
 					ViewInfo = OperatorInfo { Pos = { 165, -49.5 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, },
-					UserControls = ordered() { FocusAreaSelector = { { CCS_AddString = "广域" }, { CCS_AddString = "区" }, { CCS_AddString = "中间固定" }, { CCS_AddString = "点/扩展点" }, { CCS_AddString = "手动" }, { CCS_AddString = "未知" }, INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "ComboControl", CC_LabelPosition = "Horizontal", INP_MaxScale = 1, INP_Default = 4, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", LINKS_Name = "对焦区域" } }
+					UserControls = ordered() {
+                        FocusAreaSelector = {
+                            { CCS_AddString = "广域" , CCID_AddID = "0"},
+                            { CCS_AddString = "区" , CCID_AddID = "1"},
+                            { CCS_AddString = "中间固定" , CCID_AddID = "2"},
+                            { CCS_AddString = "点/扩展点" , CCID_AddID = "3"},
+                            { CCS_AddString = "手动" , CCID_AddID = "4"},
+                            { CCS_AddString = "未知" , CCID_AddID = "5"},
+                            INP_MaxAllowed = 1000000,
+                            INP_Integer = false,
+                            INPID_InputControl = "ComboIDControl",
+                            CC_LabelPosition = "Horizontal",
+                            INP_MaxScale = 1,
+                            INP_MinScale = 0,
+                            INP_MinAllowed = -1000000,
+                            LINKID_DataType = "FuID",
+                            ICS_ControlPage = "Controls",
+                            LINKS_Name = "对焦区域"
+                        }
+                    }
 				},
 				Merge8 = Merge {
 					Inputs = {
@@ -198,7 +217,7 @@
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								StyledText = Input {
 									Value = "AF-C",
-									Expression = "Text(iif(FocusAreaTransform.FocusAreaSelector==5, \"\", iif(FocusAreaTransform.FocusAreaSelector==4,\"MF\",\"AF-C\")))",
+									Expression = "Text(iif(FocusAreaTransform.FocusAreaSelector.Value==\"5\", \"\", iif(FocusAreaTransform.FocusAreaSelector.Value==\"4\",\"MF\",\"AF-C\")))",
 								},
 								Font = Input { Value = "Arial", },
 								Style = Input { Value = "Bold", },
@@ -260,7 +279,7 @@
 					Inputs = {
 						Which = Input {
 							Value = 2,
-							Expression = "iif(PPDispMode == 1 or PPTransform.PPSelector == 12, 2, 1)",
+							Expression = "iif(PPDispMode == 1 or PPTransform.PPSelector.Value == \"12\", 2, 1)",
 						},
 						Input1 = Input {
 							SourceOp = "PPTransform",
@@ -282,6 +301,7 @@
 					Inputs = {
 						Center = Input { Value = { 0.474, 0.518 }, },
 						Size = Input { Value = 0.054, },
+                        PPSelector = Input { Value = FuID { "12" }, },
 						Input = Input {
 							SourceOp = "Merge27",
 							Source = "Output",
@@ -289,7 +309,32 @@
 					},
 					ViewInfo = OperatorInfo { Pos = { -385, -214.5 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, },
-					UserControls = ordered() { PPSelector = { { CCS_AddString = "PP OFF" }, { CCS_AddString = "PP1" }, { CCS_AddString = "PP2" }, { CCS_AddString = "PP3" }, { CCS_AddString = "PP4" }, { CCS_AddString = "PP5" }, { CCS_AddString = "PP6" }, { CCS_AddString = "PP7" }, { CCS_AddString = "PP8" }, { CCS_AddString = "PP9" }, { CCS_AddString = "PP10" }, { CCS_AddString = "PP11" }, { CCS_AddString = "N/A" }, INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "ComboControl", CC_LabelPosition = "Horizontal", INP_MaxScale = 1, INP_Default = 13, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", LINKS_Name = "PP值" } }
+					UserControls = ordered() { PPSelector = {
+                            LINKS_Name = "PP值",
+                            LINKID_DataType = "FuID",
+                            INPID_InputControl = "ComboIDControl",
+                            INP_Integer = false,
+                            INP_MinScale = 0,
+                            INP_MaxScale = 1,
+                            INP_MinAllowed = -1000000,
+                            INP_MaxAllowed = 1000000,
+                            { CCS_AddString = "PP OFF", CCID_AddID = "0" },
+                            { CCS_AddString = "PP1", CCID_AddID = "1" },
+                            { CCS_AddString = "PP2", CCID_AddID = "2" },
+                            { CCS_AddString = "PP3", CCID_AddID = "3" },
+                            { CCS_AddString = "PP4", CCID_AddID = "4" },
+                            { CCS_AddString = "PP5", CCID_AddID = "5" },
+                            { CCS_AddString = "PP6", CCID_AddID = "6" },
+                            { CCS_AddString = "PP7", CCID_AddID = "7" },
+                            { CCS_AddString = "PP8", CCID_AddID = "8" },
+                            { CCS_AddString = "PP9", CCID_AddID = "9" },
+                            { CCS_AddString = "PP10", CCID_AddID = "10" },
+                            { CCS_AddString = "PP11", CCID_AddID = "11" },
+                            { CCS_AddString = "N/A", CCID_AddID = "12" },
+                            CC_LabelPosition = "Horizontal",
+                            ICS_ControlPage = "Controls"
+                        }
+                    }
 				},
 				ShowFocalLength35mm = Fuse.Switch {
 					NameSet = true,
@@ -546,7 +591,7 @@
 							CtrlWShown = false,
 							NameSet = true,
 							Inputs = {
-								Size = Input { Expression = "iif(PPTransform.PPSelector == 0, 1, 0)", },
+								Size = Input { Expression = "iif(PPTransform.PPSelector.Value == \"0\", 1, 0)", },
 								Input = Input {
 									SourceOp = "PPOFFText",
 									Source = "Output",
@@ -564,7 +609,7 @@
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								StyledText = Input {
 									Value = "PP11",
-									Expression = "Text(\"PP\" .. iif(PPTransform.PPSelector<12 and PPTransform.PPSelector>0, PPTransform.PPSelector, \"\"))",
+									Expression = "Text(\"PP\" .. iif(tonumber(PPTransform.PPSelector.Value)<12 and tonumber(PPTransform.PPSelector.Value)>0, PPTransform.PPSelector.Value, \"\"))",
 								},
 								Font = Input { Value = "Arial", },
 								Style = Input { Value = "Bold", },
@@ -600,9 +645,9 @@
 							Inputs = {
 								Center = Input {
 									Value = { 0.5, 0.672 },
-									Expression = "iif(PPTransform.PPSelector == 0, Point(0.5, 0.672) , Point(0.5, 0.5))",
+									Expression = "iif(PPTransform.PPSelector.Value == \"0\", Point(0.5, 0.672) , Point(0.5, 0.5))",
 								},
-								Size = Input { Expression = "iif(PPTransform.PPSelector == 12, 0, 1)", },
+								Size = Input { Expression = "iif(PPTransform.PPSelector.Value == \"12\", 0, 1)", },
 								Input = Input {
 									SourceOp = "Merge26",
 									Source = "Output",
@@ -616,7 +661,7 @@
 							Inputs = {
 								Size = Input {
 									Value = 0,
-									Expression = "iif(PPTransform.PPSelector == 0 , 1, 0)",
+									Expression = "iif(PPTransform.PPSelector.Value == \"0\" , 1, 0)",
 								},
 								Input = Input {
 									SourceOp = "Rectangle6",
@@ -678,6 +723,7 @@
 					Inputs = {
 						Center = Input { Value = { 0.478, 0.764 }, },
 						Size = Input { Value = 0.109, },
+                        WBSelector = Input { Value = FuID { "7" }, },
 						Input = Input {
 							SourceOp = "SwitchFuse3",
 							Source = "Output",
@@ -685,7 +731,28 @@
 					},
 					ViewInfo = OperatorInfo { Pos = { -605, -181.5 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, },
-					UserControls = ordered() { WBSelector = { { CCS_AddString = "自动" }, { CCS_AddString = "日光" }, { CCS_AddString = "阴天" }, { CCS_AddString = "白炽灯" }, { CCS_AddString = "荧光灯" }, { CCS_AddString = "阴影 色温/滤光片" }, { CCS_AddString = "自定义" }, { CCS_AddString = "N/A" }, INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "ComboControl", CC_LabelPosition = "Horizontal", INP_MaxScale = 1, INP_Default = 7, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", LINKS_Name = "白平衡模式" } }
+					UserControls = ordered() {
+                        WBSelector = {
+                            { CCS_AddString = "自动" , CCID_AddID = "0"},
+                            { CCS_AddString = "日光" , CCID_AddID = "1"},
+                            { CCS_AddString = "阴天" , CCID_AddID = "2"},
+                            { CCS_AddString = "白炽灯" , CCID_AddID = "3"},
+                            { CCS_AddString = "荧光灯" , CCID_AddID = "4"},
+                            { CCS_AddString = "阴影 色温/滤光片" , CCID_AddID = "5"},
+                            { CCS_AddString = "自定义" , CCID_AddID = "6"},
+                            { CCS_AddString = "N/A" , CCID_AddID = "7"},
+                            INP_MaxAllowed = 1000000,
+                            INP_Integer = false,
+                            INPID_InputControl = "ComboIDControl",
+                            CC_LabelPosition = "Horizontal",
+                            INP_MaxScale = 1,
+                            INP_MinScale = 0,
+                            INP_MinAllowed = -1000000,
+                            LINKID_DataType = "FuID",
+                            ICS_ControlPage = "Controls",
+                            LINKS_Name = "白平衡模式"
+                        }
+                    }
 				},
 				ShutterSpeed = TextPlus {
 					NameSet = true,
@@ -1738,7 +1805,7 @@
 							Inputs = {
 								Which = Input {
 									Value = 5,
-									Expression = "1+FocusAreaTransform.FocusAreaSelector",
+									Expression = "1+tonumber(FocusAreaTransform.FocusAreaSelector.Value)",
 								},
 								Input1 = Input {
 									SourceOp = "sRender1_2_1",
@@ -2990,7 +3057,7 @@
 							Inputs = {
 								Which = Input {
 									Value = 8,
-									Expression = "1+WBTransform.WBSelector",
+									Expression = "1+tonumber(WBTransform.WBSelector.Value)",
 								},
 								Input1 = Input {
 									SourceOp = "Transform4",

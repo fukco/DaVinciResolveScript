@@ -172,21 +172,21 @@ function handleRtmdByFrame(res)
         end
         lastWhiteBalance = ffi.string(res.WhiteBalanceModeArray.array[i].Data)
         if lastWhiteBalance == "Auto" then
-            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = 0
+            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = "0"
         elseif lastWhiteBalance == "SunLight" then
-            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = 1
+            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = "1"
         elseif lastWhiteBalance == "Cloudy" then
-            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = 2
+            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = "2"
         elseif lastWhiteBalance == "Incandescent" then
-            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = 3
+            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = "3"
         elseif lastWhiteBalance == "Fluorescent" then
-            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = 4
+            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = "4"
         elseif lastWhiteBalance == "Other" then
-            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = 5
+            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = "5"
         elseif lastWhiteBalance == "Custom" then
-            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = 6
+            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = "6"
         elseif lastWhiteBalance == "Unknown" then
-            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = 7
+            comp.WBTransform.WBSelector[res.WhiteBalanceModeArray.array[i].Frame] = "7"
         end
         :: continue ::
     end
@@ -224,15 +224,17 @@ function handleRtmdByFrame(res)
         end
         lastAutoFocusSensingArea = ffi.string(res.AutoFocusSensingAreaArray.array[i].Data)
         if lastAutoFocusSensingArea == "AF Whole" then
-            comp.FocusAreaTransform.FocusAreaSelector[res.AutoFocusSensingAreaArray.array[i].Frame] = 0
+            comp.FocusAreaTransform.FocusAreaSelector[res.AutoFocusSensingAreaArray.array[i].Frame] = "0"
         elseif lastAutoFocusSensingArea == "AF Multi" then
-            comp.FocusAreaTransform.FocusAreaSelector[res.AutoFocusSensingAreaArray.array[i].Frame] = 1
+            comp.FocusAreaTransform.FocusAreaSelector[res.AutoFocusSensingAreaArray.array[i].Frame] = "1"
         elseif lastAutoFocusSensingArea == "AF Center" then
-            comp.FocusAreaTransform.FocusAreaSelector[res.AutoFocusSensingAreaArray.array[i].Frame] = 2
+            comp.FocusAreaTransform.FocusAreaSelector[res.AutoFocusSensingAreaArray.array[i].Frame] = "2"
         elseif lastAutoFocusSensingArea == "AF Spot" then
-            comp.FocusAreaTransform.FocusAreaSelector[res.AutoFocusSensingAreaArray.array[i].Frame] = 3
+            comp.FocusAreaTransform.FocusAreaSelector[res.AutoFocusSensingAreaArray.array[i].Frame] = "3"
         elseif lastAutoFocusSensingArea == "MF" then
-            comp.FocusAreaTransform.FocusAreaSelector[res.AutoFocusSensingAreaArray.array[i].Frame] = 4
+            comp.FocusAreaTransform.FocusAreaSelector[res.AutoFocusSensingAreaArray.array[i].Frame] = "4"
+        else
+            comp.FocusAreaTransform.FocusAreaSelector[res.AutoFocusSensingAreaArray.array[i].Frame] = "5"
         end
         :: continue ::
     end
@@ -289,23 +291,23 @@ function handleRtmdByFrame(res)
         lastGammaEquation = ffi.string(res.CaptureGammaEquationArray.array[i].Data)
         comp.GammaEquation.StyledText[res.CaptureGammaEquationArray.array[i].Frame] = lastGammaEquation
         if lastGammaEquation == "rec709/Still" then
-            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = 2
+            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = "2"
         elseif lastGammaEquation == "rec709/Cine1" then
-            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = 5
+            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = "5"
         elseif lastGammaEquation == "rec709/Cine2" then
-            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = 6
+            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = "6"
         elseif lastGammaEquation == "S-Gamut/S-Log2" then
-            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = 7
+            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = "7"
         elseif lastGammaEquation == "S-Gamut3.Cine/S-Log3-Cine" then
-            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = 8
+            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = "8"
         elseif lastGammaEquation == "S-Gamut3/S-Log3" then
-            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = 9
+            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = "9"
         elseif lastGammaEquation == "rec2020/Rec2100-HLG" then
-            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = 10
+            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = "10"
         elseif lastGammaEquation == "rec709/S-Cinetone" then
-            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = 11
+            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = "11"
         else
-            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = 12
+            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = "12"
         end
         :: continue ::
     end
