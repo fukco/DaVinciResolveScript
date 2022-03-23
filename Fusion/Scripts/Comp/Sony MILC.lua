@@ -96,7 +96,7 @@ local function getSonyNrtmd(filePath)
         comp.ModelName.StyledText = ffi.string(res.ModelName)
         comp.CaptureFramerate.StyledText = string.gsub(ffi.string(res.CaptureFPS), "p", "fps")
         comp.ModelName.StyledText = ffi.string(res.ModelName)
-        comp.DateTime.Timestamp = tonumber(res.CreationTimestamp)
+        comp.DateTime.Timestamp = tostring(tonumber(res.CreationTimestamp))
         comp.Timecode.FirstFrameTimeInSec = res.TimecodeSecs
         comp.Timecode.FirstFrameFrameNum = res.TimecodeFrame
         local fps = ffi.string(res.FormatFPS):gsub("p", "")

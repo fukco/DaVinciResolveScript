@@ -1027,7 +1027,7 @@
 						CharacterSpacing = Input { Value = 0.941, },
 						StyledText = Input {
 							Value = "20-10-01 14:20:00",
-							Expression = "Text(os.date('!%Y-%m-%d %H:%M:%S', tonumber(Timestamp.Value) + time / Timecode.RecFrameRate))",
+							Expression = "Text(os.date('%Y-%m-%d %H:%M:%S', tonumber(Timestamp.Value) + time / Timecode.RecFrameRate))",
 						},
 						Font = Input { Value = "Arial", },
 						Style = Input { Value = "Bold", },
