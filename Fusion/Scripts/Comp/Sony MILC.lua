@@ -365,8 +365,11 @@ function Main()
     else
         return
     end
-    comp.SonyMILC:SetAttrs({ TOOLB_PassThrough = true })
+    if comp:FindTool("SonyMILC") == nil then
+        return
+    end
 
+    comp.SonyMILC:SetAttrs({ TOOLB_PassThrough = true })
     local filePath = mediaIn:GetData("MediaProps.MEDIA_PATH")
     log_line("获取静态数据")
     getSonyNrtmd(filePath)
