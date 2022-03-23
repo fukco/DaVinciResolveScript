@@ -305,7 +305,7 @@ function handleRtmdByFrame(res)
         elseif lastGammaEquation == "rec709/S-Cinetone" then
             comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = 11
         else
-            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = 13
+            comp.PPTransform.PPSelector[res.CaptureGammaEquationArray.array[i].Frame] = 12
         end
         :: continue ::
     end

@@ -260,7 +260,7 @@
 					Inputs = {
 						Which = Input {
 							Value = 2,
-							Expression = "iif(PPDispMode == 1 or PPTransform.PPSelector == 13, 2, 1)",
+							Expression = "iif(PPDispMode == 1 or PPTransform.PPSelector == 12, 2, 1)",
 						},
 						Input1 = Input {
 							SourceOp = "PPTransform",
@@ -289,7 +289,7 @@
 					},
 					ViewInfo = OperatorInfo { Pos = { -385, -214.5 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, },
-					UserControls = ordered() { PPSelector = { { CCS_AddString = "PP0" }, { CCS_AddString = "PP1" }, { CCS_AddString = "PP2" }, { CCS_AddString = "PP3" }, { CCS_AddString = "PP4" }, { CCS_AddString = "PP5" }, { CCS_AddString = "PP6" }, { CCS_AddString = "PP7" }, { CCS_AddString = "PP8" }, { CCS_AddString = "PP9" }, { CCS_AddString = "PP10" }, { CCS_AddString = "PP11" }, { CCS_AddString = "PP OFF" }, { CCS_AddString = "N/A" }, INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "ComboControl", CC_LabelPosition = "Horizontal", INP_MaxScale = 1, INP_Default = 13, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", LINKS_Name = "PP值" } }
+					UserControls = ordered() { PPSelector = { { CCS_AddString = "PP OFF" }, { CCS_AddString = "PP1" }, { CCS_AddString = "PP2" }, { CCS_AddString = "PP3" }, { CCS_AddString = "PP4" }, { CCS_AddString = "PP5" }, { CCS_AddString = "PP6" }, { CCS_AddString = "PP7" }, { CCS_AddString = "PP8" }, { CCS_AddString = "PP9" }, { CCS_AddString = "PP10" }, { CCS_AddString = "PP11" }, { CCS_AddString = "N/A" }, INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "ComboControl", CC_LabelPosition = "Horizontal", INP_MaxScale = 1, INP_Default = 13, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", LINKS_Name = "PP值" } }
 				},
 				ShowFocalLength35mm = Fuse.Switch {
 					NameSet = true,
@@ -546,7 +546,7 @@
 							CtrlWShown = false,
 							NameSet = true,
 							Inputs = {
-								Size = Input { Expression = "iif(PPTransform.PPSelector == 12, 1, 0)", },
+								Size = Input { Expression = "iif(PPTransform.PPSelector == 0, 1, 0)", },
 								Input = Input {
 									SourceOp = "PPOFFText",
 									Source = "Output",
@@ -564,7 +564,7 @@
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								StyledText = Input {
 									Value = "PP11",
-									Expression = "Text(\"PP\" .. iif(PPTransform.PPSelector<12, PPTransform.PPSelector, \"\"))",
+									Expression = "Text(\"PP\" .. iif(PPTransform.PPSelector<12 and PPTransform.PPSelector>0, PPTransform.PPSelector, \"\"))",
 								},
 								Font = Input { Value = "Arial", },
 								Style = Input { Value = "Bold", },
@@ -600,9 +600,9 @@
 							Inputs = {
 								Center = Input {
 									Value = { 0.5, 0.672 },
-									Expression = "iif(PPTransform.PPSelector == 12, Point(0.5, 0.672) , Point(0.5, 0.5))",
+									Expression = "iif(PPTransform.PPSelector == 0, Point(0.5, 0.672) , Point(0.5, 0.5))",
 								},
-								Size = Input { Expression = "iif(PPTransform.PPSelector == 13, 0, 1)", },
+								Size = Input { Expression = "iif(PPTransform.PPSelector == 12, 0, 1)", },
 								Input = Input {
 									SourceOp = "Merge26",
 									Source = "Output",
@@ -616,7 +616,7 @@
 							Inputs = {
 								Size = Input {
 									Value = 0,
-									Expression = "iif(PPTransform.PPSelector == 12 , 1, 0)",
+									Expression = "iif(PPTransform.PPSelector == 0 , 1, 0)",
 								},
 								Input = Input {
 									SourceOp = "Rectangle6",
