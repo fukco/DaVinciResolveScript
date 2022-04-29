@@ -8,28 +8,22 @@
 ## 支持范围
 ### 达芬奇版本
 17+
+
 ### 操作系统
-Windows Mac OS(Intel/Apple Silicon均可)
+* Windows
+* Mac OS(Intel/Apple Silicon均可)
 
 ## 使用方法
 
-### 前提条件
-
-1. ~~安装Python3.6运行环境（部分脚本做了Python2.7兼容，支持Mac自带Python环境），达芬奇默认只识别通过安装包安装的环境以及Mac自带Python环境【如果只使用LUA脚本跳过此步骤】<br/>
-   Windows：[官网下载链接](https://www.python.org/ftp/python/3.6.8/python-3.6.8.exe) <br/>
-   Mac：[官网下载链接](https://www.python.org/ftp/python/3.6.8/python-3.6.8-macosx10.9.pkg) ，使用3.6版本的Python需要在Fusion设置中手动修改默认Python版本，默认为Python2.7，M1芯片的Mac不支持。~~<br/>
-   2022/02/11更新：当前(从0.7.0)正式发布的脚本已经使用Lua重写过，无需额外安装Python环境了，后续版本开始暂不打包Python脚本，如果希望使用Python版本，请手动下载，后续默认也只提供Lua版本脚本，特殊情况会说明。
-
-
-2. 使用Installer进行安装，无需再拷贝路径了，适配Windows&Mac<br/>
+### 安装
    ![脚本安装](assets/脚本安装界面.png)
-   1) 将下载好的`Script Installer.lua`拖拽到Fusion界面中释放会出现UI界面或者复制粘贴代码到控制台运行<br/>
-   2) 文件选择框选择下载的压缩包<br/>
-   3) 下拉框选择`for all users` Or `for specfic user`<br/>
-   4) 点击执行
-   5) 安装我的压缩后，后续可以通过点击【工作区/脚本/Script Installer】执行
+1. 将下载好的`Script Installer.lua`拖拽到Fusion界面中释放会出现UI界面或者复制粘贴代码到控制台运行<br/>
+2. 文件选择框选择下载的压缩包<br/>
+3. 下拉框选择`for all users` Or `for specfic user`<br/>
+4. 点击执行
+5. 安装压缩包后，后续可以通过点击【工作区/脚本/Script Installer】执行
 
-### 如何使用
+### 使用
 
 1. 元数据解析<br/>
    在达芬奇内，打开 工作区->脚本->Metadata Parser 执行日志可以在 工作区->控制台 内查看
@@ -213,10 +207,11 @@ A: ~~当前达芬奇版本17.4.3支持的Python版本为3.6，这个版本无法
 支持
 
 **Q: 为何没有提供中文界面？**<br/>
-A: emmm，本来是要做国际化的，支持中英文版本的，与达芬奇内语言设置同步，找到了对应的API`fusion:GetPrefs("Global.UserInterface.Language")`
+A: 本来是要做国际化的，支持中英文版本的，与达芬奇内语言设置同步，精力原因，以及考虑受众接受度情况，新增脚本界面会以中文为主。<br/>
+~~找到了对应的API`fusion:GetPrefs("Global.UserInterface.Language")`
 ，切换中英文无法正确获得语言设置，国际化工作暂时搁置。界面中都是简单英文单词，对各位难度应该不大。 07-02 Update:
 Win系统下%appdata%目录下`%appdata%\Blackmagic Design\DaVinci Resolve\Preferences\config.user.xml`中能够读取到系统语言设置
-字幕工具为纯中文界面
+字幕工具为纯中文界面~~
 
 **Q: 喂！有BUG啊，如何反馈？**<br/>
 A: 在你能找到我的方式内联系我，或者按照规范提交ISSUE。
