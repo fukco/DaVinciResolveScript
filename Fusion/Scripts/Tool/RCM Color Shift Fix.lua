@@ -11,6 +11,7 @@ source_color_space_rec709 = "Rec.709"
 source_color_space_rec2020 = "Rec.2020"
 source_color_space_dw = "DaVinci WG"
 
+source_gamma_twoPointTwo = "Gamma 2.2"
 source_gamma_twoPointFour = "Gamma 2.4"
 source_gamma_hlg = "Rec.2100 HLG"
 source_gamma_pq = "Rec.2100 ST2084"
@@ -21,6 +22,7 @@ target_color_space_rec2020 = "REC2020_COLORSPACE"
 target_color_space_dw = "DWG_COLORSPACE"
 
 target_gamma_default = "TWOPOINTFOUR_GAMMA"
+target_gamma_2_2 = "TWOPOINTTWO_GAMMA"
 target_gamma_hlg = "GAMMA_REC2100_HLG_EOTF"
 target_gamma_pq = "GAMMA_REC2100_PQ_EOTF"
 target_gamma_di = "DAV_INTER_OETF_GAMMA"
@@ -51,6 +53,9 @@ local function getOutputColorSpaceAndGamma()
         if color_space_output == "Rec.709 Gamma 2.4" then
             source_output_color_space = source_color_space_rec709
             source_output_gamma = source_gamma_twoPointFour
+        elseif color_space_output == "Rec.709 Gamma 2.2" then
+            source_output_color_space = source_color_space_rec709
+            source_output_gamma = source_gamma_twoPointTwo
         elseif color_space_output == "Rec.2020 Gamma 2.4" then
             source_output_color_space = source_color_space_rec2020
             source_output_gamma = source_gamma_twoPointFour
@@ -76,6 +81,8 @@ local function getOutputColorSpaceAndGamma()
 
     if source_output_gamma == source_gamma_twoPointFour then
         target_gamma = target_gamma_default
+    elseif source_output_gamma == source_gamma_twoPointTwo then
+        target_gamma = target_gamma_2_2
     elseif source_output_gamma == source_gamma_hlg then
         target_gamma = target_gamma_hlg
     elseif source_output_gamma == source_gamma_pq then
@@ -90,10 +97,10 @@ local function change_transform1(tool)
         tool.tmType = "TM_NONE"
     else
         tool.dstLumMax = tonumber(timeline_luminance)
-        tool.inputColorSpace = target_color_space
-        tool.inputGamma = target_gamma
-        tool.doInvOOTF = 1
     end
+    tool.inputColorSpace = target_color_space
+    tool.inputGamma = target_gamma
+    tool.doInvOOTF = 1
 end
 
 local function change_display2(tool)
@@ -101,10 +108,10 @@ local function change_display2(tool)
         tool.tmType = "TM_NONE"
     else
         tool.srcLumMax = tonumber(timeline_luminance)
-        tool.outputColorSpace = target_color_space
-        tool.outputGamma = target_gamma
-        tool.doFwdOOTF = 1
     end
+    tool.outputColorSpace = target_color_space
+    tool.outputGamma = target_gamma
+    tool.doFwdOOTF = 1
 end
 
 if color_science_mode == 'davinciYRGBColorManagedv2' then
