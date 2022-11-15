@@ -25,6 +25,12 @@ target_gamma_hlg = "GAMMA_REC2100_HLG_EOTF"
 target_gamma_pq = "GAMMA_REC2100_PQ_EOTF"
 target_gamma_di = "DAV_INTER_OETF_GAMMA"
 
+version_greater_equal_than_18_1 = false
+local versions = resolve:GetVersion()
+if versions[1] > 18 or (versions[1] == 18 and versions[2] >= 1) then
+    version_greater_equal_than_18_1 = true
+end
+
 local function getLuminance()
     if timeline_working_luminance_mode == 'Custom' then
         timeline_luminance = timeline_working_luminance
@@ -80,17 +86,25 @@ local function getOutputColorSpaceAndGamma()
 end
 
 local function change_transform1(tool)
-    tool.dstLumMax = tonumber(timeline_luminance)
-    tool.inputColorSpace = target_color_space
-    tool.inputGamma = target_gamma
-    tool.doInvOOTF = 1
+    if version_greater_equal_than_18_1 then
+        tool.tmType = "TM_NONE"
+    else
+        tool.dstLumMax = tonumber(timeline_luminance)
+        tool.inputColorSpace = target_color_space
+        tool.inputGamma = target_gamma
+        tool.doInvOOTF = 1
+    end
 end
 
 local function change_display2(tool)
-    tool.srcLumMax = tonumber(timeline_luminance)
-    tool.outputColorSpace = target_color_space
-    tool.outputGamma = target_gamma
-    tool.doFwdOOTF = 1
+    if version_greater_equal_than_18_1 then
+        tool.tmType = "TM_NONE"
+    else
+        tool.srcLumMax = tonumber(timeline_luminance)
+        tool.outputColorSpace = target_color_space
+        tool.outputGamma = target_gamma
+        tool.doFwdOOTF = 1
+    end
 end
 
 if color_science_mode == 'davinciYRGBColorManagedv2' then
@@ -100,10 +114,14 @@ if color_science_mode == 'davinciYRGBColorManagedv2' then
 
     local addTransformNode = true
     local addDisplayNode = true
-    if mediaInNode and mediaInNode:GetData('MediaProps').MEDIA_IS_SOURCE_RES then
-        addTransformNode = false
-        if mediaInNode:GetData('MediaProps').MEDIA_FORMAT_TYPE == 'DNG' then
-            addDisplayNode = false
+
+    if version_greater_equal_than_18_1 then
+        if mediaInNode then
+            addTransformNode = false
+        end
+    else
+        if mediaInNode and mediaInNode:GetData('MediaProps').MEDIA_FORMAT_TYPE then
+            addTransformNode = false
         end
     end
 

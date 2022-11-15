@@ -71,6 +71,11 @@ end
 local ui = fu.UIManager
 local disp = bmd.UIDispatcher(ui)
 
+resolve = Resolve()
+projectManager = resolve:GetProjectManager()
+project = projectManager:GetCurrentProject()
+mediaPool = project:GetMediaPool()
+
 -- some element IDs
 tabsID = "MyTabs"
 stackID = "MyStack"
@@ -168,6 +173,8 @@ function MainWindow()
                 local c_selectPath = ffi.new("char[?]", #selectedPath)
                 ffi.copy(c_selectPath, selectedPath)
                 local res = lib.JExportByProjectName(c_name, c_projectPath, c_selectPath)
+                GotoSRTFolder()
+                mediaPool:ImportMedia({ selectedPath .. "/" .. name })
                 AlertWindow(res)
             end
 
@@ -261,6 +268,16 @@ function MainWindow()
     disp:RunLoop()
     win:Hide()
     return win, win:GetItems()
+end
+
+function GotoSRTFolder()
+    for _, v in ipairs(rootFolder:GetSubFolderList()) do
+        if 'Subtitles' == v:GetName() then
+            mediaPool:SetCurrentFolder(v)
+            return
+        end
+    end
+    SRTFolder = mediaPool:AddSubFolder(rootFolder, 'Subtitles')
 end
 
 function AlertWindow(success)

@@ -13,6 +13,7 @@ jobs:
           mkdir dist target
           cp -r Fusion/* dist/
           rm -rf dist/Scripts/Utility/*
+          rm -rf dist/Config/RCMColorSpaceMatchHotkey.fu
           cp -r Fusion/Scripts/Utility/Lua/* dist/Scripts/Utility/
           7z a target/script.zip ./dist/*
           cp Fusion/Scripts/Utility/Lua/Script\ Installer.lua target/
