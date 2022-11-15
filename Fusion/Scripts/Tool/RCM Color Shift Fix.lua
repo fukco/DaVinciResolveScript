@@ -115,14 +115,8 @@ if color_science_mode == 'davinciYRGBColorManagedv2' then
     local addTransformNode = true
     local addDisplayNode = true
 
-    if version_greater_equal_than_18_1 then
-        if mediaInNode then
-            addTransformNode = false
-        end
-    else
-        if mediaInNode and mediaInNode:GetData('MediaProps').MEDIA_FORMAT_TYPE then
-            addTransformNode = false
-        end
+    if mediaInNode then
+        addTransformNode = false
     end
 
     if mediaOutNode then
