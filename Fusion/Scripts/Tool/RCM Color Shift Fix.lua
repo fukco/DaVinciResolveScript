@@ -33,7 +33,7 @@ if versions[1] > 18 or (versions[1] == 18 and versions[2] >= 1) then
     version_greater_equal_than_18_1 = true
 end
 
-local function getLuminance()
+local function GetLuminance()
     if timeline_working_luminance_mode == 'Custom' then
         timeline_luminance = timeline_working_luminance
     else
@@ -45,7 +45,7 @@ local function getLuminance()
     end
 end
 
-local function getOutputColorSpaceAndGamma()
+local function GetOutputColorSpaceAndGamma()
     if tonumber(separate_color_space_and_gamma) == 1 then
         source_output_color_space = color_space_output
         source_output_gamma = color_space_output_gamma
@@ -92,7 +92,7 @@ local function getOutputColorSpaceAndGamma()
     end
 end
 
-local function change_transform1(tool)
+local function ChangeTransform1(tool)
     if version_greater_equal_than_18_1 then
         tool.tmType = "TM_NONE"
     else
@@ -117,24 +117,11 @@ end
 if color_science_mode == 'davinciYRGBColorManagedv2' then
     mediaOutNode = comp:FindToolByID("MediaOut")
     mediaInNode = comp:FindToolByID("MediaIn")
-    comp:SetActiveTool(mediaOutNode)
-
-    local addTransformNode = true
-    local addDisplayNode = true
-
-    if mediaInNode then
-        addTransformNode = false
-    end
 
     if mediaOutNode then
-        -- Step1. Add Display Fix Macro
-        if addDisplayNode and not comp:FindTool("RCMColorSpaceDisplay") and not comp:FindTool("RCMFusionDisplay1") then
-            comp:DoAction("AddSetting", { filename = "Macros:/RCM Color Space Display.setting" })
-        end
-
-        -- Step2. Add Color Space Transform Macro
-        if addTransformNode and not comp:FindTool("RCMColorSpaceTransform") and not comp:FindTool("RCMFusionTransform1") then
-            if mediaOutNode:FindMainInput(1) and mediaOutNode:FindMainInput(1):GetConnectedOutput() then
+        -- Step1. Add Color Space Transform Macro
+        if not comp:FindTool("RCMColorSpaceTransform") and not comp:FindTool("RCMFusionTransform1") then
+            if mediaOutNode:FindMainInput(1) and mediaOutNode:FindMainInput(1):GetConnectedOutput() and mediaOutNode:FindMainInput(1):GetConnectedOutput():GetTool() ~= mediaInNode then
                 connectedNode = mediaOutNode:FindMainInput(1):GetConnectedOutput():GetTool()
                 while connectedNode.ParentTool do
                     connectedNode = connectedNode.ParentTool
@@ -144,19 +131,24 @@ if color_science_mode == 'davinciYRGBColorManagedv2' then
             else
                 comp:SetActiveTool()
                 comp:DoAction("AddSetting", { filename = "Macros:/RCM Color Space Transform.setting" })
-                mediaOutNode.Input:ConnectTo(comp.ActiveTool.Output)
             end
         end
 
+        -- Step2. Add Display Fix Macro
+        if not comp:FindTool("RCMColorSpaceDisplay") and not comp:FindTool("RCMFusionDisplay1") then
+            comp:SetActiveTool(mediaOutNode)
+            comp:DoAction("AddSetting", { filename = "Macros:/RCM Color Space Display.setting" })
+        end
+
         -- Step3. Change Params
-        getLuminance()
-        getOutputColorSpaceAndGamma()
+        GetLuminance()
+        GetOutputColorSpaceAndGamma()
         group_transform = comp:FindTool("RCMColorSpaceTransform")
         group_display = comp:FindTool("RCMColorSpaceDisplay")
         if group_transform then
             for _, child in ipairs(group_transform:GetChildrenList()) do
                 if child:GetInput('inputColorSpace') ~= "TIMELINE_COLORSPACE" then
-                    change_transform1(child)
+                    ChangeTransform1(child)
                 end
             end
         end
@@ -168,14 +160,14 @@ if color_science_mode == 'davinciYRGBColorManagedv2' then
             end
         end
         if comp:FindTool("RCMFusionTransform1") then
-            change_transform1(comp:FindTool("RCMFusionTransform1"))
+            ChangeTransform1(comp:FindTool("RCMFusionTransform1"))
         end
         if comp:FindTool("RCMFusionDisplay2") then
             change_display2(comp:FindTool("RCMFusionDisplay2"))
         end
 
         -- Step4. Disable Viewer LUT
-        if addTransformNode and comp:GetPreviewList().LeftView.View.CurrentViewer then
+        if needTransformNode and comp:GetPreviewList().LeftView.View.CurrentViewer then
             comp:GetPreviewList().LeftView.View.CurrentViewer:EnableLUT(false)
         end
         displayNode = comp:FindTool("RCMColorSpaceDisplay")

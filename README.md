@@ -97,11 +97,7 @@
     <td>RCM Fusion颜色偏移输出修正</td>
   </tr>
   <tr>
-    <td rowspan="2">Scripts/Comp</td>
-    <td>Fusion Hotkey Manager.lua</td>
-    <td>Fusion快捷键管理</td>
-  </tr>
-  <tr>
+    <td rowspan="1">Scripts/Comp</td>
     <td>Sony MILC.lua</td>
     <td>索尼微单参数界面</td>
   </tr>

@@ -4,6 +4,7 @@
 			CtrlWZoom = false,
 			NameSet = true,
 			Inputs = ordered() {
+				Comments = Input { Value = "1、注意适当增删RCM Color Space Transform节点，一般情况是Fusion颜色需要添加修正，相机输入画面不需要添加修正节点,复杂情况请自行判断；\n2、有合并节点请注意Transform节点放置位置，原则就是只修正需要修正的节点（组）！\n3、脚本没有那么智能，目前也只是解决官方颜色不匹配的过度方案，等到官方更新版本解决RCM下Fusion颜色问题才是最优解！", },
 				Input1 = InstanceInput {
 					SourceOp = "ColorSpaceTransform1",
 					Source = "Source",
