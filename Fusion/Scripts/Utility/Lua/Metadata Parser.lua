@@ -78,7 +78,6 @@ local function processClip(clip)
         returnVal["Time-Lapse Interval"] = ffi.string(res.TimeLapseInterval)
         returnVal["Camera FPS"] = ffi.string(res.CameraFps)
         returnVal["Shutter Type"] = ffi.string(res.ShutterType)
-        returnVal["Shutter"] = ffi.string(res.Shutter)
         returnVal["ISO"] = ffi.string(res.ISO)
         returnVal["White Point (Kelvin)"] = ffi.string(res.WhitePoint)
         returnVal["White Balance Tint"] = ffi.string(res.WhiteBalanceTint)
@@ -109,6 +108,10 @@ local function processClip(clip)
             return
         end
         if clip:SetMetadata(metadata) then
+            --18.5开始Shutter修改为Shutter Speed
+            if not clip:SetMetadata("Shutter", ffi.string(res.Shutter)) then
+                clip:SetMetadata("Shutter Speed", ffi.string(res.Shutter))
+            end
             log_line("Process clip " .. filePath .. " successfully.")
             return true
         else
