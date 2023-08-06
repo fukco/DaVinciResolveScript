@@ -1,7 +1,7 @@
 [![GitHub release](https://img.shields.io/github/release/fukco/DaVinciResolveScript?&style=flat-square)](https://github.com/fukco/DaVinciResolveScript/releases/latest)
 [![Paypal Donate](https://img.shields.io/badge/donate-paypal-00457c.svg?logo=paypal&style=flat-square)](https://www.paypal.com/donate/?business=9BGFEVJPEFZAQ&no_recurring=0&currency_code=USD&source=qr)
 [![Bilibili](https://img.shields.io/badge/dynamic/json?label=Bilibili&query=%24.data.follower&url=https%3A%2F%2Fapi.bilibili.com%2Fx%2Frelation%2Fstat%3Fvmid%3D26755389&style=social&logo=Bilibili)](https://space.bilibili.com/26755389)
-[![Youtube](https://img.shields.io/youtube/channel/subscribers/UCb7NsYnLmtPTn-yddNTcVKA?style=social&label=Youtube)](https://www.youtube.com/channel/UCb7NsYnLmtPTn-yddNTcVKA)
+[![Youtube](https://img.shields.io/youtube/channel/subscribers/UCb7NsYnLmtPTn-yddNTcVKA?style=social&label=Youtube)](https://www.youtube.com/@geek-lee)
 
 [English Version](README-EN.md)
 
