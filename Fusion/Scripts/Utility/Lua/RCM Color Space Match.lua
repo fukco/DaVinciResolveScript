@@ -12,8 +12,16 @@ local color_space_match_list = {
         { gamma_notes = "N-Log", color_science_mode = "BT.2020", input_color_space = "Nikon N-Log" },
         { gamma_notes = "HLG", color_science_mode = "BT.2020", input_color_space = "Rec.2100 HLG" }
     } },
+    { manufacturer = "Canon", details = {
+        { gamma_notes = "Canon Log", color_science_mode = "", input_color_space = "Canon Cinema Gamut/Canon Log" },
+        { gamma_notes = "Canon Log 2", color_science_mode = "", input_color_space = "Canon Cinema Gamut/Canon Log2" },
+        { gamma_notes = "Canon Log 3", color_science_mode = "", input_color_space = "Canon Cinema Gamut/Canon Log3" },
+    } },
     { manufacturer = "Fujifilm", details = {
         { gamma_notes = "F-log", color_science_mode = "", input_color_space = "FujiFilm F-Log" }
+    } },
+    { manufacturer = "Nikon", details = {
+        { gamma_notes = "N-LOG", color_science_mode = "", input_color_space = "Nikon N-Log" }
     } },
     { manufacturer = "Panasonic", details = {
         { gamma_notes = "V-Log", color_science_mode = "V-Gamut", input_color_space = "Panasonic V-Gamut/V-Log" }
@@ -238,21 +246,24 @@ local function Execute(assign_data_level_enabled, assign_type, parse_metadata_en
         end
         if is_rcm then
             gamma_notes = metadata["Gamma Notes"]
-            color_space_rotes = metadata["Color Space Notes"]
+            color_space_notes = metadata["Color Space Notes"]
             if gamma_notes == nil then
                 gamma_notes = ""
             end
-            if not color_space_rotes then
-                color_space_rotes = ""
+            if not color_space_notes then
+                color_space_notes = ""
             end
-            if gamma_notes == "" and color_space_rotes == "" then
+            if gamma_notes == "" and color_space_notes == "" then
                 goto continue
             end
             input_color_space = ""
             if color_space_match_map[gamma_notes] then
-                input_color_space = color_space_match_map[gamma_notes][color_space_rotes]
+                input_color_space = color_space_match_map[gamma_notes][""]
+                if input_color_space == nil then
+                    input_color_space = color_space_match_map[gamma_notes][color_space_notes]
+                end
             end
-            if input_color_space ~= "" then
+            if input_color_space ~= nil and input_color_space ~= "" then
                 if clip:GetClipProperty("Input Color Space") == input_color_space then
                     LogLine(string.format("%s Input Color Space is already set", clip:GetName()))
                     goto continue

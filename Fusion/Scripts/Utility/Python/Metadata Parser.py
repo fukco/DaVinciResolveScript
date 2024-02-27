@@ -23,7 +23,7 @@ fields_list = [
     ("Time-Lapse Interval", c_char_p),
     ("Camera FPS", c_char_p),
     ("Shutter Type", c_char_p),
-    ("Shutter", c_char_p),
+    # ("Shutter", c_char_p),
     ("ISO", c_char_p),
     ("White Point (Kelvin)", c_char_p),
     ("White Balance Tint", c_char_p),
@@ -39,6 +39,8 @@ fields_list = [
     ("ND Filter", c_char_p),
     ("Compression Ratio", c_char_p),
     ("Codec Bitrate", c_char_p),
+    ("Sensor Area Captured", c_char_p),
+    ("PAR Notes", c_char_p),
     ("Aspect Ratio Notes", c_char_p),
     ("Gamma Notes", c_char_p),
     ("Color Space Notes", c_char_p)]
