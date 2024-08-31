@@ -7,8 +7,8 @@
 
 ## 支持范围
 ### 达芬奇版本
-17+
-Sony MILC使用了Multi Merge节点，需要18.5+版本
+17+ <br/>
+Sony MILC使用了Multi Merge节点，需要18.5+版本 <br/>
 从达芬奇19开始，BMD修复了开启RCM，色差偏移的bug，所以移除了相关修复脚本，如果需要请从Deprecated目录手动下载并放置指定目录
 
 ### 操作系统
