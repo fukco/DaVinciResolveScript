@@ -27,6 +27,7 @@ local color_space_match_list = {
         { gamma_notes = "V-Log", color_science_mode = "V-Gamut", input_color_space = "Panasonic V-Gamut/V-Log" }
     } },
     { manufacturer = "Sony", details = {
+        { gamma_notes = "s-log2", color_science_mode = "", input_color_space = "S-Gamut/S-Log2" },
         { gamma_notes = "s-log2", color_science_mode = "s-gamut", input_color_space = "S-Gamut/S-Log2" },
         { gamma_notes = "s-log3-cine", color_science_mode = "s-gamut3-cine", input_color_space = "S-Gamut3.Cine/S-Log3" },
         { gamma_notes = "s-log3", color_science_mode = "s-gamut3", input_color_space = "S-Gamut3/S-Log3" },
@@ -39,15 +40,15 @@ local color_space_match_map = {}
 
 for _, value in ipairs(color_space_match_list) do
     for _, detail in ipairs(value["details"]) do
-        if color_space_match_map[detail["gamma_notes"]] then
-            local exist = color_space_match_map[detail["gamma_notes"]]
-            if exist[detail["color_science_mode"]] == nil then
-                exist[detail["color_science_mode"]] = detail["input_color_space"]
+        if color_space_match_map[detail["gamma_notes"]:lower()] then
+            local exist = color_space_match_map[detail["gamma_notes"]:lower()]
+            if exist[detail["color_science_mode"]:lower()] == nil then
+                exist[detail["color_science_mode"]:lower()] = detail["input_color_space"]
             end
         else
             local child = {}
-            child[detail["color_science_mode"]] = detail["input_color_space"]
-            color_space_match_map[detail["gamma_notes"]] = child
+            child[detail["color_science_mode"]:lower()] = detail["input_color_space"]
+            color_space_match_map[detail["gamma_notes"]:lower()] = child
         end
     end
 end
@@ -67,6 +68,7 @@ ffi.cdef [[
 	typedef struct
 	{
 		bool IsSupportMedia;
+		char *DateRecorded;
 		char *CameraType;
 		char *CameraManufacturer;
 		char *CameraSerial;
@@ -77,11 +79,13 @@ ffi.cdef [[
 		char *TimeLapseInterval;
 		char *CameraFps;
 		char *ShutterType;
+		char *ShutterAngle;
 		char *Shutter;
 		char *ISO;
 		char *WhitePoint;
 		char *WhiteBalanceTint;
 		char *CameraFirmware;
+		char *LUTUsed;
 		char *LensType;
 		char *LensNumber;
 		char *LensNotes;
@@ -122,6 +126,7 @@ local function ProcessClip(clip)
         end
         local metadata = {}
         local returnVal = {}
+        returnVal["Date Recorded"] = ffi.string(res.DateRecorded)
         returnVal["Camera Type"] = ffi.string(res.CameraType)
         returnVal["Camera Manufacturer"] = ffi.string(res.CameraManufacturer)
         returnVal["Camera Serial #"] = ffi.string(res.CameraSerial)
@@ -132,10 +137,12 @@ local function ProcessClip(clip)
         returnVal["Time-Lapse Interval"] = ffi.string(res.TimeLapseInterval)
         returnVal["Camera FPS"] = ffi.string(res.CameraFps)
         returnVal["Shutter Type"] = ffi.string(res.ShutterType)
+        returnVal["Shutter Angle"] = ffi.string(res.ShutterAngle)
         returnVal["ISO"] = ffi.string(res.ISO)
         returnVal["White Point (Kelvin)"] = ffi.string(res.WhitePoint)
         returnVal["White Balance Tint"] = ffi.string(res.WhiteBalanceTint)
         returnVal["Camera Firmware"] = ffi.string(res.CameraFirmware)
+        returnVal["LUT Used"] = ffi.string(res.LUTUsed)
         returnVal["Lens Type"] = ffi.string(res.LensType)
         returnVal["Lens Number"] = ffi.string(res.LensNumber)
         returnVal["Lens Notes"] = ffi.string(res.LensNotes)
@@ -245,14 +252,8 @@ local function Execute(assign_data_level_enabled, assign_type, parse_metadata_en
             goto continue
         end
         if is_rcm then
-            gamma_notes = metadata["Gamma Notes"]
-            color_space_notes = metadata["Color Space Notes"]
-            if gamma_notes == nil then
-                gamma_notes = ""
-            end
-            if not color_space_notes then
-                color_space_notes = ""
-            end
+            gamma_notes = metadata["Gamma Notes"] and metadata["Gamma Notes"]:lower() or ""
+            color_space_notes = metadata["Color Space Notes"] and  metadata["Color Space Notes"]:lower() or ""
             if gamma_notes == "" and color_space_notes == "" then
                 goto continue
             end

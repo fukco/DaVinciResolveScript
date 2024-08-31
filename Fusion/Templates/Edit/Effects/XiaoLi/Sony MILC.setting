@@ -28,7 +28,7 @@
 					Default = 1,
 				},
 				MainInput1 = InstanceInput {
-					SourceOp = "Merge8",
+					SourceOp = "Merge1",
 					Source = "Background",
 				},
 				Input10 = InstanceInput {
@@ -46,6 +46,7 @@
 				Input8 = InstanceInput {
 					SourceOp = "ShowFileAndRecordSettings",
 					Source = "ShowRecordSetting",
+					Width = 1,
 					Page = "Controls",
 					Default = 1,
 				},
@@ -64,93 +65,87 @@
 					SourceOp = "ShowPPMode",
 					Source = "PPDispMode",
 					Page = "Controls",
-				},
+				}
 			},
 			Outputs = {
 				MainOutput1 = InstanceOutput {
-					SourceOp = "Merge8",
+					SourceOp = "Merge1",
 					Source = "Output",
 				}
 			},
-			ViewInfo = GroupInfo { Pos = { 0, 0 } },
+			ViewInfo = GroupInfo {
+				Pos = { -110, 16.5 },
+				Flags = {
+					AllowPan = false,
+					GridSnap = true,
+					ConnectedSnap = true,
+					AutoSnap = true,
+					RemoveRouters = true
+				},
+				Size = { 1611, 627.364, 805.5, 24.2424 },
+				Direction = "Horizontal",
+				PipeStyle = "Direct",
+				Scale = 1,
+				Offset = { 0, 0 }
+			},
 			Tools = ordered() {
 				Backgroud1 = Background {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						EffectMask = Input {
-							SourceOp = "Merge32",
+							SourceOp = "MultiMerge6",
 							Source = "Output",
 						},
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
-						TopLeftRed = Input { Value = 0.9450980392157, },
-						TopLeftGreen = Input { Value = 0.9450980392157, },
-						TopLeftBlue = Input { Value = 0.9450980392157, },
+						TopLeftRed = Input { Value = 1, },
+						TopLeftGreen = Input { Value = 1, },
+						TopLeftBlue = Input { Value = 1, }
 					},
-					ViewInfo = OperatorInfo { Pos = { 605, -181.5 } },
+					ViewInfo = OperatorInfo { Pos = { 577, 404.258 } },
 					Colors = { TileColor = { R = 0.584313725490196, G = 0.294117647058824, B = 0.803921568627451 }, }
 				},
-				Merge29 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "Merge24",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "FocusAreaTransform",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { 165, -16.5 } },
-				},
 				FocusAreaTransform = Transform {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Center = Input { Value = { 0.5, 0.279 }, },
 						Size = Input { Value = 0.052, },
-                        FocusAreaSelector = Input { Value = FuID { "5" }, },
 						Input = Input {
 							SourceOp = "SwitchFuse2",
 							Source = "Output",
 						},
+						FocusAreaSelector = Input { Value = FuID { "5" }, }
 					},
-					ViewInfo = OperatorInfo { Pos = { 165, -49.5 } },
+					ViewInfo = OperatorInfo { Pos = { 137, 536.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, },
 					UserControls = ordered() {
-                        FocusAreaSelector = {
-                            { CCS_AddString = "广域" , CCID_AddID = "0"},
-                            { CCS_AddString = "区" , CCID_AddID = "1"},
-                            { CCS_AddString = "中间固定" , CCID_AddID = "2"},
-                            { CCS_AddString = "点/扩展点" , CCID_AddID = "3"},
-                            { CCS_AddString = "手动" , CCID_AddID = "4"},
-                            { CCS_AddString = "未知" , CCID_AddID = "5"},
-                            INP_MaxAllowed = 1000000,
-                            INP_Integer = false,
-                            INPID_InputControl = "ComboIDControl",
-                            CC_LabelPosition = "Horizontal",
-                            INP_MaxScale = 1,
-                            INP_MinScale = 0,
-                            INP_MinAllowed = -1000000,
-                            LINKID_DataType = "FuID",
-                            ICS_ControlPage = "Controls",
-                            LINKS_Name = "对焦区域"
-                        }
-                    }
-				},
-				Merge8 = Merge {
-					Inputs = {
-						Foreground = Input {
-							SourceOp = "Backgroud1",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { 770, -181.5 } },
+						FocusAreaSelector = {
+							{ CCS_AddString = "广域", CCID_AddID = "0" },
+							{ CCS_AddString = "区", CCID_AddID = "1" },
+							{ CCS_AddString = "中间固定", CCID_AddID = "2" },
+							{ CCS_AddString = "点/扩展点", CCID_AddID = "3" },
+							{ CCS_AddString = "手动", CCID_AddID = "4" },
+							{ CCS_AddString = "未知", CCID_AddID = "5" },
+							INP_MaxAllowed = 1000000,
+							INP_Integer = false,
+							INPID_InputControl = "ComboIDControl",
+							CC_LabelPosition = "Horizontal",
+							INP_MaxScale = 1,
+							INP_MinScale = 0,
+							INP_MinAllowed = -1000000,
+							LINKID_DataType = "FuID",
+							ICS_ControlPage = "Controls",
+							LINKS_Name = "对焦区域"
+						}
+					}
 				},
 				FocusMode = GroupOperator {
+					CtrlWShown = false,
 					NameSet = true,
 					Outputs = {
 						Output1 = InstanceOutput {
@@ -158,7 +153,19 @@
 							Source = "Output",
 						}
 					},
-					ViewInfo = GroupInfo { Pos = { 0, -49.5 } },
+					ViewInfo = GroupInfo {
+						Pos = { -55, 511.5 },
+						Flags = {
+							AllowPan = false,
+							AutoSnap = true,
+							RemoveRouters = true
+						},
+						Size = { 346, 132.364, 173, 24.2424 },
+						Direction = "Horizontal",
+						PipeStyle = "Direct",
+						Scale = 1,
+						Offset = { 0, 0 }
+					},
 					Tools = ordered() {
 						Background3 = Background {
 							CtrlWShown = false,
@@ -167,15 +174,16 @@
 									SourceOp = "Rectangle2",
 									Source = "Mask",
 								},
-								Width = Input { Value = 1920, },
-								Height = Input { Value = 1080, },
+								GlobalOut = Input { Value = 124, },
+								Width = Input { Value = 3840, },
+								Height = Input { Value = 1920, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								TopLeftRed = Input { Value = 1, },
 								TopLeftGreen = Input { Value = 1, },
-								TopLeftBlue = Input { Value = 1, },
+								TopLeftBlue = Input { Value = 1, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -990, 280.5 } },
+							ViewInfo = OperatorInfo { Pos = { -110, 74.7576 } },
 						},
 						MatteControl2 = MatteControl {
 							CtrlWShown = false,
@@ -188,9 +196,9 @@
 								Background = Input {
 									SourceOp = "Background3",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -880, 280.5 } },
+							ViewInfo = OperatorInfo { Pos = { 0, 74.7576 } },
 						},
 						Transform3 = Transform {
 							CtrlWShown = false,
@@ -203,16 +211,17 @@
 								Input = Input {
 									SourceOp = "MatteControl2",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -770, 280.5 } },
+							ViewInfo = OperatorInfo { Pos = { 110, 74.7576 } },
 						},
 						FocusModeText = TextPlus {
 							CtrlWShown = false,
 							NameSet = true,
 							Inputs = {
-								Width = Input { Value = 1920, },
-								Height = Input { Value = 1080, },
+								GlobalOut = Input { Value = 124, },
+								Width = Input { Value = 3840, },
+								Height = Input { Value = 1920, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								StyledText = Input {
@@ -223,43 +232,46 @@
 								Style = Input { Value = "Bold", },
 								Size = Input { Value = 0.5, },
 								VerticalJustificationNew = Input { Value = 3, },
-								HorizontalJustificationNew = Input { Value = 3, },
+								HorizontalJustificationNew = Input { Value = 3, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -880, 214.5 } },
+							ViewInfo = OperatorInfo { Pos = { 0, 8.75757 } },
 						},
 						Rectangle2 = RectangleMask {
 							CtrlWShown = false,
 							Inputs = {
 								Filter = Input { Value = FuID { "Fast Gaussian" }, },
-								MaskWidth = Input { Value = 1920, },
-								MaskHeight = Input { Value = 1080, },
+								MaskWidth = Input { Value = 3840, },
+								MaskHeight = Input { Value = 1920, },
 								PixelAspect = Input { Value = { 1, 1 }, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								ClippingMode = Input { Value = FuID { "None" }, },
 								Width = Input { Value = 1, },
 								Height = Input { Value = 0.8, },
-								CornerRadius = Input { Value = 0.244, },
+								CornerRadius = Input { Value = 0.244, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -990, 214.5 } },
+							ViewInfo = OperatorInfo { Pos = { -110, 8.75757 } },
 						}
 					},
 				},
 				FooterTransform = Transform {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Center = Input { Value = { 0.5, 0.045 }, },
 						Input = Input {
-							SourceOp = "Merge4",
+							SourceOp = "MultiMerge4",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { 165, -313.5 } },
+					ViewInfo = OperatorInfo { Pos = { 137, 272.258 } },
 				},
 				GammaEquation = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.5, 0.506 }, },
@@ -269,12 +281,13 @@
 						VerticalTopCenterBottom = Input { Value = 1, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = 1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -495, -247.5 } },
+					ViewInfo = OperatorInfo { Pos = { -523, 338.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
 				ShowPPMode = Fuse.Switch {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Which = Input {
@@ -288,55 +301,58 @@
 						Input2 = Input {
 							SourceOp = "GammaEquation",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { -495, -214.5 } },
+					ViewInfo = OperatorInfo { Pos = { -523, 371.258 } },
 					Colors = { TileColor = { R = 0.584313725490196, G = 0.294117647058824, B = 0.803921568627451 }, },
 					UserControls = ordered() { PPDispMode = { { CCS_AddString = "显示PP值" }, { CCS_AddString = "显示详细" }, INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "ComboControl", CC_LabelPosition = "Horizontal", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, ICS_ControlPage = "Controls", LINKS_Name = "色彩空间显示方式" } },
 					Version = 172
 				},
 				PPTransform = Transform {
 					CtrlWZoom = false,
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Center = Input { Value = { 0.474, 0.518 }, },
 						Size = Input { Value = 0.054, },
-                        PPSelector = Input { Value = FuID { "12" }, },
 						Input = Input {
 							SourceOp = "Merge27",
 							Source = "Output",
 						},
+						PPSelector = Input { Value = FuID { "12" }, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -385, -214.5 } },
+					ViewInfo = OperatorInfo { Pos = { -413, 371.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, },
-					UserControls = ordered() { PPSelector = {
-                            LINKS_Name = "PP值",
-                            LINKID_DataType = "FuID",
-                            INPID_InputControl = "ComboIDControl",
-                            INP_Integer = false,
-                            INP_MinScale = 0,
-                            INP_MaxScale = 1,
-                            INP_MinAllowed = -1000000,
-                            INP_MaxAllowed = 1000000,
-                            { CCS_AddString = "PP OFF", CCID_AddID = "0" },
-                            { CCS_AddString = "PP1", CCID_AddID = "1" },
-                            { CCS_AddString = "PP2", CCID_AddID = "2" },
-                            { CCS_AddString = "PP3", CCID_AddID = "3" },
-                            { CCS_AddString = "PP4", CCID_AddID = "4" },
-                            { CCS_AddString = "PP5", CCID_AddID = "5" },
-                            { CCS_AddString = "PP6", CCID_AddID = "6" },
-                            { CCS_AddString = "PP7", CCID_AddID = "7" },
-                            { CCS_AddString = "PP8", CCID_AddID = "8" },
-                            { CCS_AddString = "PP9", CCID_AddID = "9" },
-                            { CCS_AddString = "PP10", CCID_AddID = "10" },
-                            { CCS_AddString = "PP11", CCID_AddID = "11" },
-                            { CCS_AddString = "N/A", CCID_AddID = "12" },
-                            CC_LabelPosition = "Horizontal",
-                            ICS_ControlPage = "Controls"
-                        }
-                    }
+					UserControls = ordered() {
+						PPSelector = {
+							{ CCS_AddString = "PP OFF", CCID_AddID = "0" },
+							{ CCS_AddString = "PP1", CCID_AddID = "1" },
+							{ CCS_AddString = "PP2", CCID_AddID = "2" },
+							{ CCS_AddString = "PP3", CCID_AddID = "3" },
+							{ CCS_AddString = "PP4", CCID_AddID = "4" },
+							{ CCS_AddString = "PP5", CCID_AddID = "5" },
+							{ CCS_AddString = "PP6", CCID_AddID = "6" },
+							{ CCS_AddString = "PP7", CCID_AddID = "7" },
+							{ CCS_AddString = "PP8", CCID_AddID = "8" },
+							{ CCS_AddString = "PP9", CCID_AddID = "9" },
+							{ CCS_AddString = "PP10", CCID_AddID = "10" },
+							{ CCS_AddString = "PP11", CCID_AddID = "11" },
+							{ CCS_AddString = "N/A", CCID_AddID = "12" },
+							INP_MaxAllowed = 1000000,
+							INP_Integer = false,
+							INPID_InputControl = "ComboIDControl",
+							CC_LabelPosition = "Horizontal",
+							INP_MaxScale = 1,
+							INP_MinScale = 0,
+							INP_MinAllowed = -1000000,
+							LINKID_DataType = "FuID",
+							ICS_ControlPage = "Controls",
+							LINKS_Name = "PP值"
+						}
+					}
 				},
 				ShowFocalLength35mm = Fuse.Switch {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Which = Input {
@@ -350,18 +366,20 @@
 						Input2 = Input {
 							SourceOp = "FocalLength_35mm",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { -220, -214.5 } },
+					ViewInfo = OperatorInfo { Pos = { -248, 371.258 } },
 					Colors = { TileColor = { R = 0.584313725490196, G = 0.294117647058824, B = 0.803921568627451 }, },
-					UserControls = ordered() { Show35mmFocalLength = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "CheckboxControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, ICS_ControlPage = "Controls", CBC_TriState = false, LINKS_Name = "切换35mm等效焦距" } },
+					UserControls = ordered() { Show35mmFocalLength = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "CheckboxControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, CBC_TriState = false, ICS_ControlPage = "Controls", LINKS_Name = "切换35mm等效焦距" } },
 					Version = 172
 				},
 				FocalLength_35mm = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.5, 0.26 }, },
@@ -371,16 +389,18 @@
 						VerticalTopCenterBottom = Input { Value = 1, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = 1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -110, -214.5 } },
+					ViewInfo = OperatorInfo { Pos = { -138, 371.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
 				FocalLength = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.5, 0.26 }, },
@@ -390,16 +410,18 @@
 						VerticalTopCenterBottom = Input { Value = 1, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = 1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -220, -247.5 } },
+					ViewInfo = OperatorInfo { Pos = { -248, 338.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
 				ExposureMode = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.546, 0.516 }, },
@@ -409,16 +431,18 @@
 						VerticalTopCenterBottom = Input { Value = -1, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = -1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -385, -82.5 } },
+					ViewInfo = OperatorInfo { Pos = { -413, 503.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
 				CaptureFramerate = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input {
@@ -433,79 +457,25 @@
 						},
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = 1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -165, -49.5 } },
+					ViewInfo = OperatorInfo { Pos = { -165, 511.5 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
-				Merge10 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "LeftTransform",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "Merge20",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { 330, -181.5 } },
-				},
-				Merge32 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "Merge10",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "HeaderTransform",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { 440, -181.5 } },
-				},
 				RightTransform = Transform {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Center = Input { Value = { 0.982, 0.5 }, },
 						Input = Input {
-							SourceOp = "Merge15",
+							SourceOp = "MultiMerge3",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { 55, -181.5 } },
-				},
-				Merge20 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "RightTransform",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "FooterTransform",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { 165, -181.5 } },
-				},
-				Merge15 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "Merge28",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "ShowFocalLength35mm",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { -220, -181.5 } },
+					ViewInfo = OperatorInfo { Pos = { 27, 404.258 } },
 				},
 				Merge18 = Merge {
+					CtrlWShown = false,
 					Inputs = {
 						Background = Input {
 							SourceOp = "RecordModeTransform",
@@ -515,11 +485,12 @@
 							SourceOp = "ExposureMode",
 							Source = "Output",
 						},
-						PerformDepthMerge = Input { Value = 0, },
+						PerformDepthMerge = Input { Value = 0, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -385, -16.5 } },
+					ViewInfo = OperatorInfo { Pos = { -413, 569.258 } },
 				},
 				RecordModeTransform = Transform {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Center = Input { Value = { 0.266, 0.5 }, },
@@ -527,24 +498,26 @@
 						Input = Input {
 							SourceOp = "SwitchFuse1",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { -495, -16.5 } },
+					ViewInfo = OperatorInfo { Pos = { -523, 569.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, },
 					UserControls = ordered() { RecordMode = { { CCS_AddString = "正常" }, { CCS_AddString = "S&Q" }, INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "ComboControl", CC_LabelPosition = "Horizontal", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, ICS_ControlPage = "Controls", LINKS_Name = "录制模式" } }
 				},
 				HeaderTransform = Transform {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Center = Input { Value = { 0.5, 0.932 }, },
 						Input = Input {
-							SourceOp = "Merge31",
+							SourceOp = "MultiMerge5",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { 440, -346.5 } },
+					ViewInfo = OperatorInfo { Pos = { 412, 239.258 } },
 				},
 				PP = GroupOperator {
+					CtrlWShown = false,
 					NameSet = true,
 					Outputs = {
 						Output1 = InstanceOutput {
@@ -552,7 +525,19 @@
 							Source = "Output",
 						}
 					},
-					ViewInfo = GroupInfo { Pos = { -385, -247.5 } },
+					ViewInfo = GroupInfo {
+						Pos = { -413, 338.258 },
+						Flags = {
+							AllowPan = false,
+							AutoSnap = true,
+							RemoveRouters = true
+						},
+						Size = { 621, 132.364, 310.5, 24.2424 },
+						Direction = "Horizontal",
+						PipeStyle = "Direct",
+						Scale = 1,
+						Offset = { 0, 0 }
+					},
 					Tools = ordered() {
 						Merge27 = Merge {
 							CtrlWShown = false,
@@ -565,7 +550,7 @@
 									SourceOp = "PPOFFTextTransform",
 									Source = "Output",
 								},
-								PerformDepthMerge = Input { Value = 0, },
+								PerformDepthMerge = Input { Value = 0, }
 							},
 							ViewInfo = OperatorInfo { Pos = { 247, 74.7576 } },
 						},
@@ -573,8 +558,9 @@
 							CtrlWShown = false,
 							NameSet = true,
 							Inputs = {
-								Width = Input { Value = 1920, },
-								Height = Input { Value = 1080, },
+								GlobalOut = Input { Value = 124, },
+								Width = Input { Value = 3840, },
+								Height = Input { Value = 1920, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								Center = Input { Value = { 0.736, 0.243 }, },
@@ -583,7 +569,7 @@
 								Style = Input { Value = "Bold", },
 								Size = Input { Value = 0.3798, },
 								VerticalJustificationNew = Input { Value = 3, },
-								HorizontalJustificationNew = Input { Value = 3, },
+								HorizontalJustificationNew = Input { Value = 3, }
 							},
 							ViewInfo = OperatorInfo { Pos = { 247, 8.75756 } },
 						},
@@ -595,7 +581,7 @@
 								Input = Input {
 									SourceOp = "PPOFFText",
 									Source = "Output",
-								},
+								}
 							},
 							ViewInfo = OperatorInfo { Pos = { 247, 41.7576 } },
 						},
@@ -603,8 +589,9 @@
 							CtrlWShown = false,
 							NameSet = true,
 							Inputs = {
-								Width = Input { Value = 1920, },
-								Height = Input { Value = 1080, },
+								GlobalOut = Input { Value = 124, },
+								Width = Input { Value = 3840, },
+								Height = Input { Value = 1920, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								StyledText = Input {
@@ -616,7 +603,7 @@
 								Size = Input { Value = 0.5, },
 								VerticalTopCenterBottom = Input { Value = 0.11, },
 								VerticalJustificationNew = Input { Value = 3, },
-								HorizontalJustificationNew = Input { Value = 3, },
+								HorizontalJustificationNew = Input { Value = 3, }
 							},
 							ViewInfo = OperatorInfo { Pos = { -248, 74.7576 } },
 						},
@@ -635,7 +622,7 @@
 									SourceOp = "Rectangle5",
 									Source = "Mask",
 								},
-								PerformDepthMerge = Input { Value = 0, },
+								PerformDepthMerge = Input { Value = 0, }
 							},
 							ViewInfo = OperatorInfo { Pos = { -83, 74.7576 } },
 						},
@@ -651,7 +638,7 @@
 								Input = Input {
 									SourceOp = "Merge26",
 									Source = "Output",
-								},
+								}
 							},
 							ViewInfo = OperatorInfo { Pos = { 82, 74.7576 } },
 						},
@@ -666,7 +653,7 @@
 								Input = Input {
 									SourceOp = "Rectangle6",
 									Source = "Mask",
-								},
+								}
 							},
 							ViewInfo = OperatorInfo { Pos = { 27, 41.7576 } },
 						},
@@ -675,13 +662,13 @@
 							Inputs = {
 								Filter = Input { Value = FuID { "Fast Gaussian" }, },
 								Invert = Input { Value = 1, },
-								MaskWidth = Input { Value = 1920, },
-								MaskHeight = Input { Value = 1080, },
+								MaskWidth = Input { Value = 3840, },
+								MaskHeight = Input { Value = 1920, },
 								PixelAspect = Input { Value = { 1, 1 }, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								ClippingMode = Input { Value = FuID { "None" }, },
 								Center = Input { Value = { 0.741777777777778, 0.0134281200631911 }, },
-								Width = Input { Value = 0.565, },
+								Width = Input { Value = 0.565, }
 							},
 							ViewInfo = OperatorInfo { Pos = { 27, 8.75756 } },
 						},
@@ -692,73 +679,62 @@
 								BorderWidth = Input { Value = 0.025, },
 								Solid = Input { Value = 0, },
 								CapStyle = Input { Value = 0, },
-								MaskWidth = Input { Value = 1920, },
-								MaskHeight = Input { Value = 1080, },
+								MaskWidth = Input { Value = 3840, },
+								MaskHeight = Input { Value = 1920, },
 								PixelAspect = Input { Value = { 1, 1 }, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								ClippingMode = Input { Value = FuID { "None" }, },
 								Width = Input { Value = 0.894, },
-								Height = Input { Value = 0.591, },
+								Height = Input { Value = 0.591, }
 							},
 							ViewInfo = OperatorInfo { Pos = { -83, 8.75756 } },
 						}
 					},
 				},
-				Merge28 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "WBTransform",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "ShowPPMode",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { -495, -181.5 } },
-				},
 				WBTransform = Transform {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Center = Input { Value = { 0.478, 0.764 }, },
 						Size = Input { Value = 0.109, },
-                        WBSelector = Input { Value = FuID { "7" }, },
 						Input = Input {
 							SourceOp = "SwitchFuse3",
 							Source = "Output",
 						},
+						WBSelector = Input { Value = FuID { "7" }, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -605, -181.5 } },
+					ViewInfo = OperatorInfo { Pos = { -633, 404.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, },
 					UserControls = ordered() {
-                        WBSelector = {
-                            { CCS_AddString = "自动" , CCID_AddID = "0"},
-                            { CCS_AddString = "日光" , CCID_AddID = "1"},
-                            { CCS_AddString = "阴天" , CCID_AddID = "2"},
-                            { CCS_AddString = "白炽灯" , CCID_AddID = "3"},
-                            { CCS_AddString = "荧光灯" , CCID_AddID = "4"},
-                            { CCS_AddString = "阴影 色温/滤光片" , CCID_AddID = "5"},
-                            { CCS_AddString = "自定义" , CCID_AddID = "6"},
-                            { CCS_AddString = "N/A" , CCID_AddID = "7"},
-                            INP_MaxAllowed = 1000000,
-                            INP_Integer = false,
-                            INPID_InputControl = "ComboIDControl",
-                            CC_LabelPosition = "Horizontal",
-                            INP_MaxScale = 1,
-                            INP_MinScale = 0,
-                            INP_MinAllowed = -1000000,
-                            LINKID_DataType = "FuID",
-                            ICS_ControlPage = "Controls",
-                            LINKS_Name = "白平衡模式"
-                        }
-                    }
+						WBSelector = {
+							{ CCS_AddString = "自动", CCID_AddID = "0" },
+							{ CCS_AddString = "日光", CCID_AddID = "1" },
+							{ CCS_AddString = "阴天", CCID_AddID = "2" },
+							{ CCS_AddString = "白炽灯", CCID_AddID = "3" },
+							{ CCS_AddString = "荧光灯", CCID_AddID = "4" },
+							{ CCS_AddString = "阴影 色温/滤光片", CCID_AddID = "5" },
+							{ CCS_AddString = "自定义", CCID_AddID = "6" },
+							{ CCS_AddString = "N/A", CCID_AddID = "7" },
+							INP_MaxAllowed = 1000000,
+							INP_Integer = false,
+							INPID_InputControl = "ComboIDControl",
+							CC_LabelPosition = "Horizontal",
+							INP_MaxScale = 1,
+							INP_MinScale = 0,
+							INP_MinAllowed = -1000000,
+							LINKID_DataType = "FuID",
+							ICS_ControlPage = "Controls",
+							LINKS_Name = "白平衡模式"
+						}
+					}
 				},
 				ShutterSpeed = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.078, 0.5 }, },
@@ -768,82 +744,13 @@
 						VerticalTopCenterBottom = Input { Value = 1, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = -1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -715, -313.5 } },
+					ViewInfo = OperatorInfo { Pos = { -743, 272.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
-				Merge11 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "ShutterSpeed",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "Aperture",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { -550, -313.5 } },
-				},
-				Merge13 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "Merge11",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "ISO",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { -440, -313.5 } },
-				},
-				Merge7 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "Merge13",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "GainAdjustment",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { -330, -313.5 } },
-				},
-				Merge17 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "Merge7",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "FocusPosition",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { -220, -313.5 } },
-				},
-				Merge4 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "Merge17",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "ShowTimecode",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { -55, -313.5 } },
-				},
 				ShowTimecode = Fuse.Switch {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Which = Input {
@@ -857,14 +764,15 @@
 						Input2 = Input {
 							SourceOp = "EmptyText",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { -55, -346.5 } },
+					ViewInfo = OperatorInfo { Pos = { -83, 239.258 } },
 					Colors = { TileColor = { R = 0.584313725490196, G = 0.294117647058824, B = 0.803921568627451 }, },
-					UserControls = ordered() { ShowTimecode = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "CheckboxControl", INP_MaxScale = 1, INP_Default = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, ICS_ControlPage = "Controls", CBC_TriState = false, LINKS_Name = "显示时间码" } },
+					UserControls = ordered() { ShowTimecode = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "CheckboxControl", INP_MaxScale = 1, INP_Default = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, CBC_TriState = false, ICS_ControlPage = "Controls", LINKS_Name = "显示时间码" } },
 					Version = 172
 				},
 				SwitchFuse6 = Fuse.Switch {
+					CtrlWShown = false,
 					Inputs = {
 						Which = Input {
 							Value = 2,
@@ -877,16 +785,18 @@
 						Input2 = Input {
 							SourceOp = "EmptyText",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { -55, -379.5 } },
+					ViewInfo = OperatorInfo { Pos = { -83, 206.258 } },
 					Version = 172
 				},
 				Timecode = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.5, 0.593 }, },
@@ -897,17 +807,19 @@
 						Size = Input { Value = 0.04, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalJustificationNew = Input { Value = 3, },
-						RecFrameRate = Input { Value = 25, },
+						RecFrameRate = Input { Value = 25, }
 					},
-					ViewInfo = OperatorInfo { Pos = { 110, -379.5 } },
+					ViewInfo = OperatorInfo { Pos = { 82, 206.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, },
 					UserControls = ordered() { FirstFrameTimeInSec = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "SliderControl", IC_Steps = 1, INP_MaxScale = 1000000, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, LINKS_Name = "FirstFrameTimeInSec", }, FirstFrameFrameNum = { INP_Integer = false, INP_External = false, LINKID_DataType = "Number", INPID_InputControl = "SliderControl", INP_MinScale = 0, INP_MaxScale = 1000, LINKS_Name = "FirstFrameFrameNum", }, RecFrameRate = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "SliderControl", IC_Steps = 1, INP_MaxScale = 1000, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, LINKS_Name = "RecFrameRate", } }
 				},
 				FocusPosition = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.923, 0.5 }, },
@@ -917,9 +829,9 @@
 						VerticalTopCenterBottom = Input { Value = 1, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = 1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -220, -379.5 } },
+					ViewInfo = OperatorInfo { Pos = { -248, 206.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
 				ShowFileAndRecordSettings = Fuse.Switch {
@@ -936,14 +848,15 @@
 						Input2 = Input {
 							SourceOp = "EmptyText",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { -165, -445.5 } },
+					ViewInfo = OperatorInfo { Pos = { -193, 140.258 } },
 					Colors = { TileColor = { R = 0.584313725490196, G = 0.294117647058824, B = 0.803921568627451 }, },
-					UserControls = ordered() { ShowRecordSetting = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "CheckboxControl", INP_MaxScale = 1, INP_Default = 1, INP_External = false, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", CBC_TriState = false, ICD_Width = 1, LINKS_Name = "显示文件录制信息" } },
+					UserControls = ordered() { ShowRecordSetting = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "CheckboxControl", INP_MaxScale = 1, INP_Default = 1, INP_MinAllowed = -1000000, INP_MinScale = 0, INP_External = false, LINKID_DataType = "Number", ICD_Width = 1, CBC_TriState = false, ICS_ControlPage = "Controls", LINKS_Name = "显示文件录制信息" } },
 					Version = 172
 				},
 				ShowModelName = Fuse.Switch {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Which = Input {
@@ -957,14 +870,15 @@
 						Input2 = Input {
 							SourceOp = "EmptyText",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { -55, -478.5 } },
+					ViewInfo = OperatorInfo { Pos = { -83, 107.258 } },
 					Colors = { TileColor = { R = 0.584313725490196, G = 0.294117647058824, B = 0.803921568627451 }, },
-					UserControls = ordered() { ShowModel = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "CheckboxControl", INP_MaxScale = 1, INP_Default = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, CBC_TriState = false, ICS_ControlPage = "Controls", LINKS_Name = "显示相机型号" } },
+					UserControls = ordered() { ShowModel = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "CheckboxControl", INP_MaxScale = 1, INP_Default = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, ICS_ControlPage = "Controls", CBC_TriState = false, LINKS_Name = "显示相机型号" } },
 					Version = 172
 				},
 				ShowDateTime = Fuse.Switch {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Which = Input {
@@ -978,14 +892,15 @@
 						Input2 = Input {
 							SourceOp = "EmptyText",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { 110, -478.5 } },
+					ViewInfo = OperatorInfo { Pos = { 82, 107.258 } },
 					Colors = { TileColor = { R = 0.584313725490196, G = 0.294117647058824, B = 0.803921568627451 }, },
-					UserControls = ordered() { ShowDateTime = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "CheckboxControl", INP_MaxScale = 1, INP_Default = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, ICS_ControlPage = "Controls", CBC_TriState = false, LINKS_Name = "显示时间" } },
+					UserControls = ordered() { ShowDateTime = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "CheckboxControl", INP_MaxScale = 1, INP_Default = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, CBC_TriState = false, ICS_ControlPage = "Controls", LINKS_Name = "显示时间" } },
 					Version = 172
 				},
 				SwitchFuse4 = Fuse.Switch {
+					CtrlWShown = false,
 					Inputs = {
 						Which = Input {
 							Value = 2,
@@ -998,12 +913,13 @@
 						Input2 = Input {
 							SourceOp = "EmptyText",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { 220, -478.5 } },
+					ViewInfo = OperatorInfo { Pos = { 192, 107.258 } },
 					Version = 172
 				},
 				ProxyIconTx = Transform {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Center = Input { Value = { 0.581, 0.508 }, },
@@ -1011,13 +927,14 @@
 						Input = Input {
 							SourceOp = "Merge30",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { 330, -478.5 } },
+					ViewInfo = OperatorInfo { Pos = { 302, 107.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, },
 					UserControls = ordered() { ProxyOn = { { CCS_AddString = "关闭" }, { CCS_AddString = "开启" }, INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "ComboControl", CC_LabelPosition = "Horizontal", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, ICS_ControlPage = "Controls", LINKS_Name = "代理状态" } }
 				},
 				SwitchFuse5 = Fuse.Switch {
+					CtrlWShown = false,
 					Inputs = {
 						Which = Input {
 							Value = 2,
@@ -1030,31 +947,18 @@
 						Input2 = Input {
 							SourceOp = "EmptyText",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { 440, -478.5 } },
+					ViewInfo = OperatorInfo { Pos = { 412, 107.258 } },
 					Version = 172
 				},
-				Merge31 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "Merge5",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "SwitchFuse5",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-						ReferenceSize = Input { Value = 1, },
-					},
-					ViewInfo = OperatorInfo { Pos = { 440, -445.5 } },
-				},
 				GainAdjustment = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.748, 0.5 }, },
@@ -1064,30 +968,18 @@
 						VerticalTopCenterBottom = Input { Value = 1, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = 1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -330, -379.5 } },
+					ViewInfo = OperatorInfo { Pos = { -358, 206.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
-				Merge5 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "Merge9",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "ShowDateTime",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { 110, -445.5 } },
-				},
 				DateTime = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.989, 0.5 }, },
@@ -1103,17 +995,19 @@
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = 1, },
 						HorizontalJustificationNew = Input { Value = 3, },
-						Timestamp = Input { Value = "0", },
+						Timestamp = Input { Value = "0", }
 					},
-					ViewInfo = OperatorInfo { Pos = { 220, -511.5 } },
+					ViewInfo = OperatorInfo { Pos = { 192, 74.2576 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, },
-					UserControls = ordered() { Timestamp = { TEC_ReadOnly = false, INP_External = false, LINKID_DataType = "Text", LINKS_Name = "Timestamp", INPID_InputControl = "TextEditControl", TEC_Lines = 1, TEC_Wrap = false, } }
+					UserControls = ordered() { Timestamp = { TEC_ReadOnly = false, INP_External = false, LINKID_DataType = "Text", TEC_Wrap = false, INPID_InputControl = "TextEditControl", TEC_Lines = 1, LINKS_Name = "Timestamp", } }
 				},
 				ISO = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.452, 0.5 }, },
@@ -1123,12 +1017,13 @@
 						VerticalTopCenterBottom = Input { Value = 1, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = -1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -440, -379.5 } },
+					ViewInfo = OperatorInfo { Pos = { -468, 206.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
 				ProxyIcon = GroupOperator {
+					CtrlWShown = false,
 					NameSet = true,
 					Outputs = {
 						Output1 = InstanceOutput {
@@ -1136,7 +1031,19 @@
 							Source = "Output",
 						}
 					},
-					ViewInfo = GroupInfo { Pos = { 330, -511.5 } },
+					ViewInfo = GroupInfo {
+						Pos = { 302, 74.2576 },
+						Flags = {
+							AllowPan = false,
+							AutoSnap = true,
+							RemoveRouters = true
+						},
+						Size = { 346, 99.3636, 173, 24.2424 },
+						Direction = "Horizontal",
+						PipeStyle = "Direct",
+						Scale = 1,
+						Offset = { 0, 0 }
+					},
 					Tools = ordered() {
 						Merge30 = Merge {
 							CtrlWShown = false,
@@ -1145,9 +1052,9 @@
 									SourceOp = "MatteControl3",
 									Source = "Output",
 								},
-								PerformDepthMerge = Input { Value = 0, },
+								PerformDepthMerge = Input { Value = 0, }
 							},
-							ViewInfo = OperatorInfo { Pos = { 1485, -412.5 } },
+							ViewInfo = OperatorInfo { Pos = { 110, 41.2576 } },
 						},
 						Background5 = Background {
 							CtrlWShown = false,
@@ -1156,22 +1063,24 @@
 									SourceOp = "Rectangle3",
 									Source = "Mask",
 								},
-								Width = Input { Value = 1920, },
-								Height = Input { Value = 1080, },
+								GlobalOut = Input { Value = 124, },
+								Width = Input { Value = 3840, },
+								Height = Input { Value = 1920, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								TopLeftRed = Input { Value = 1, },
 								TopLeftGreen = Input { Value = 1, },
-								TopLeftBlue = Input { Value = 1, },
+								TopLeftBlue = Input { Value = 1, }
 							},
-							ViewInfo = OperatorInfo { Pos = { 1265, -412.5 } },
+							ViewInfo = OperatorInfo { Pos = { -110, 41.2576 } },
 						},
 						FixedProxyText = TextPlus {
 							CtrlWShown = false,
 							NameSet = true,
 							Inputs = {
-								Width = Input { Value = 1920, },
-								Height = Input { Value = 1080, },
+								GlobalOut = Input { Value = 124, },
+								Width = Input { Value = 3840, },
+								Height = Input { Value = 1920, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								Center = Input { Value = { 0.5, 0.538 }, },
@@ -1181,9 +1090,9 @@
 								Style = Input { Value = "Bold", },
 								Size = Input { Value = 0.85, },
 								VerticalJustificationNew = Input { Value = 3, },
-								HorizontalJustificationNew = Input { Value = 3, },
+								HorizontalJustificationNew = Input { Value = 3, }
 							},
-							ViewInfo = OperatorInfo { Pos = { 1375, -445.5 } },
+							ViewInfo = OperatorInfo { Pos = { 0, 8.25757 } },
 						},
 						MatteControl3 = MatteControl {
 							CtrlWShown = false,
@@ -1196,32 +1105,34 @@
 								Background = Input {
 									SourceOp = "Background5",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { 1375, -412.5 } },
+							ViewInfo = OperatorInfo { Pos = { 0, 41.2576 } },
 						},
 						Rectangle3 = RectangleMask {
 							CtrlWShown = false,
 							Inputs = {
 								Filter = Input { Value = FuID { "Fast Gaussian" }, },
-								MaskWidth = Input { Value = 1920, },
-								MaskHeight = Input { Value = 1080, },
+								MaskWidth = Input { Value = 3840, },
+								MaskHeight = Input { Value = 1920, },
 								PixelAspect = Input { Value = { 1, 1 }, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								ClippingMode = Input { Value = FuID { "None" }, },
 								Width = Input { Value = 0.678, },
 								Height = Input { Value = 0.851, },
-								CornerRadius = Input { Value = 0.236, },
+								CornerRadius = Input { Value = 0.236, }
 							},
-							ViewInfo = OperatorInfo { Pos = { 1265, -445.5 } },
+							ViewInfo = OperatorInfo { Pos = { -110, 8.25757 } },
 						}
 					},
 				},
 				Aperture = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.265, 0.5 }, },
@@ -1231,44 +1142,34 @@
 						VerticalTopCenterBottom = Input { Value = 1, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = -1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -550, -379.5 } },
+					ViewInfo = OperatorInfo { Pos = { -578, 206.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
-				Merge9 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "ShowModelName",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "ShowFileAndRecordSettings",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { -55, -445.5 } },
-				},
 				EmptyText = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Font = Input { Value = "Open Sans", },
 						Style = Input { Value = "Bold", },
 						VerticalJustificationNew = Input { Value = 3, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { 55, -577.5 } },
+					ViewInfo = OperatorInfo { Pos = { 27, 8.25757 } },
 				},
 				ModelName = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.01, 0.5 }, },
@@ -1279,26 +1180,29 @@
 						VerticalTopCenterBottom = Input { Value = 1, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = -1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -55, -511.5 } },
+					ViewInfo = OperatorInfo { Pos = { -83, 74.2576 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
 				Transform5 = Transform {
+					CtrlWShown = false,
 					Inputs = {
 						Center = Input { Value = { 0.218, 0.5 }, },
 						Input = Input {
-							SourceOp = "Merge1",
+							SourceOp = "MultiMerge7",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { -275, -445.5 } },
+					ViewInfo = OperatorInfo { Pos = { -303, 140.258 } },
 				},
 				FixedBit = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input {
@@ -1315,15 +1219,17 @@
 						VerticalTopCenterBottom = Input { Value = 1, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = -1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -385, -511.5 } },
+					ViewInfo = OperatorInfo { Pos = { -413, 74.2576 } },
 				},
 				Profile = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.864, 0.5 }, },
@@ -1335,16 +1241,18 @@
 						VerticalTopCenterBottom = Input { Value = 1, },
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = -1, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -495, -511.5 } },
+					ViewInfo = OperatorInfo { Pos = { -523, 74.2576 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
 				BitrateText = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Font = Input { Value = "Arial", },
@@ -1352,16 +1260,18 @@
 						Size = Input { Value = 0.5, },
 						VerticalTopCenterBottom = Input { Value = 0.06, },
 						VerticalJustificationNew = Input { Value = 3, },
-						HorizontalJustificationNew = Input { Value = 3, },
+						HorizontalJustificationNew = Input { Value = 3, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -605, -511.5 } },
+					ViewInfo = OperatorInfo { Pos = { -633, 74.2576 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
 				FileFormatAndFrameRate = TextPlus {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
-						Width = Input { Value = 1920, },
-						Height = Input { Value = 1080, },
+						GlobalOut = Input { Value = 124, },
+						Width = Input { Value = 3840, },
+						Height = Input { Value = 1920, },
 						UseFrameFormatSettings = Input { Value = 1, },
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Center = Input { Value = { 0.806, 0.5 }, },
@@ -1374,93 +1284,25 @@
 						VerticalJustificationNew = Input { Value = 3, },
 						HorizontalLeftCenterRight = Input { Value = 1, },
 						HorizontalJustificationNew = Input { Value = 3, },
-						TabSpacing = Input { Value = 1, },
+						TabSpacing = Input { Value = 1, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -715, -445.5 } },
+					ViewInfo = OperatorInfo { Pos = { -742.333, 140.258 } },
 					Colors = { TileColor = { R = 0.92156862745098, G = 0.431372549019608, B = 0 }, }
 				},
-				Merge2 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "FileFormatAndFrameRate",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "BitrateTransform",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { -605, -445.5 } },
-				},
-				Merge3 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "Merge2",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "Profile",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { -495, -445.5 } },
-				},
-				Merge1 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "Merge3",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "FixedBit",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { -385, -445.5 } },
-				},
 				LeftTransform = Transform {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Center = Input { Value = { 0.034, 0.5 }, },
 						Input = Input {
-							SourceOp = "Merge29",
+							SourceOp = "MultiMerge2",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { 330, -16.5 } },
-				},
-				Merge6 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "FilmModeTransform",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "CaptureFramerate",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { -165, -16.5 } },
-				},
-				Merge24 = Merge {
-					Inputs = {
-						Background = Input {
-							SourceOp = "Merge6",
-							Source = "Output",
-						},
-						Foreground = Input {
-							SourceOp = "Transform3",
-							Source = "Output",
-						},
-						PerformDepthMerge = Input { Value = 0, },
-					},
-					ViewInfo = OperatorInfo { Pos = { 0, -16.5 } },
+					ViewInfo = OperatorInfo { Pos = { 302, 569.258 } },
 				},
 				FocusArea = GroupOperator {
+					CtrlWShown = false,
 					NameSet = true,
 					Outputs = {
 						Output1 = InstanceOutput {
@@ -1468,7 +1310,19 @@
 							Source = "Output",
 						}
 					},
-					ViewInfo = GroupInfo { Pos = { 165, -82.5 } },
+					ViewInfo = GroupInfo {
+						Pos = { 137, 503.258 },
+						Flags = {
+							AllowPan = false,
+							AutoSnap = true,
+							RemoveRouters = true
+						},
+						Size = { 236, 231.364, 118, 24.2424 },
+						Direction = "Horizontal",
+						PipeStyle = "Direct",
+						Scale = 1,
+						Offset = { 0, 0 }
+					},
 					Tools = ordered() {
 						FASpot_1 = GroupOperator {
 							CtrlWShown = false,
@@ -1479,7 +1333,19 @@
 									Source = "Output",
 								}
 							},
-							ViewInfo = GroupInfo { Pos = { -55, 173.258 } },
+							ViewInfo = GroupInfo {
+								Pos = { -55, 173.258 },
+								Flags = {
+									AllowPan = false,
+									AutoSnap = true,
+									RemoveRouters = true
+								},
+								Size = { 511, 165.364, 255.5, 24.2424 },
+								Direction = "Horizontal",
+								PipeStyle = "Direct",
+								Scale = 1,
+								Offset = { 0, 0 }
+							},
 							Tools = ordered() {
 								sRectangle1_5_1 = sRectangle {
 									CtrlWShown = false,
@@ -1490,7 +1356,7 @@
 										Height = Input {
 											Value = 0.5625,
 											Expression = "Width*9/16",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -193, 107.258 } },
 								},
@@ -1499,9 +1365,9 @@
 									Inputs = {
 										Sides = Input { Value = 4, },
 										Width = Input { Value = 0.48, },
-										Angle = Input { Value = 90, },
+										Angle = Input { Value = 90, }
 									},
-									ViewInfo = OperatorInfo { Pos = { -193, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { -193, 41.2572 } },
 								},
 								sRectangle2_5_1 = sRectangle {
 									CtrlWShown = false,
@@ -1510,9 +1376,9 @@
 										Height = Input {
 											Value = 0.338,
 											Expression = "Width",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { -83, 8.25726 } },
+									ViewInfo = OperatorInfo { Pos = { -83, 8.25721 } },
 								},
 								sBoolean1_5_1 = sBoolean {
 									CtrlWShown = false,
@@ -1525,9 +1391,9 @@
 										Input2 = Input {
 											SourceOp = "sRectangle2_5_1",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { -83, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { -83, 41.2572 } },
 								},
 								sMerge1_4_1 = sMerge {
 									CtrlWShown = false,
@@ -1543,7 +1409,7 @@
 										Input4 = Input {
 											SourceOp = "sEllipse1_1_1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 27, 107.258 } },
 								},
@@ -1551,21 +1417,22 @@
 									CtrlWShown = false,
 									Inputs = {
 										Width = Input { Value = 0.146, },
-										Height = Input { Value = 0.127, },
+										Height = Input { Value = 0.127, }
 									},
-									ViewInfo = OperatorInfo { Pos = { 82, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { 82, 41.2572 } },
 								},
 								sRender1_5_1 = sRender {
 									CtrlWShown = false,
 									Inputs = {
-										Width = Input { Value = 1920, },
-										Height = Input { Value = 1080, },
+										GlobalOut = Input { Value = 124, },
+										Width = Input { Value = 3840, },
+										Height = Input { Value = 1920, },
 										UseFrameFormatSettings = Input { Value = 1, },
 										["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 										Input = Input {
 											SourceOp = "sMerge1_4_1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 192, 107.258 } },
 								}
@@ -1580,7 +1447,19 @@
 									Source = "Output",
 								}
 							},
-							ViewInfo = GroupInfo { Pos = { -55, 140.258 } },
+							ViewInfo = GroupInfo {
+								Pos = { -55, 140.258 },
+								Flags = {
+									AllowPan = false,
+									AutoSnap = true,
+									RemoveRouters = true
+								},
+								Size = { 566, 165.364, 283, 24.2424 },
+								Direction = "Horizontal",
+								PipeStyle = "Direct",
+								Scale = 1,
+								Offset = { 0, 0 }
+							},
 							Tools = ordered() {
 								sRectangle1_4_1 = sRectangle {
 									CtrlWShown = false,
@@ -1591,7 +1470,7 @@
 										Height = Input {
 											Value = 0.5625,
 											Expression = "Width*9/16",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -220, 107.258 } },
 								},
@@ -1602,9 +1481,9 @@
 										Height = Input {
 											Value = 0.338625,
 											Expression = "Width*9/16",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { -165, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { -165, 41.2572 } },
 								},
 								sBoolean1_4_1 = sBoolean {
 									CtrlWShown = false,
@@ -1617,17 +1496,17 @@
 										Input2 = Input {
 											SourceOp = "sRectangle3_4_1",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { -55, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { -55, 41.2572 } },
 								},
 								sRectangle3_4_1 = sRectangle {
 									CtrlWShown = false,
 									Inputs = {
 										Width = Input { Value = 0.518, },
-										Height = Input { Value = 0.26, },
+										Height = Input { Value = 0.26, }
 									},
-									ViewInfo = OperatorInfo { Pos = { -55, 8.25726 } },
+									ViewInfo = OperatorInfo { Pos = { -55, 8.25721 } },
 								},
 								sMerge1_3_1 = sMerge {
 									CtrlWShown = false,
@@ -1639,30 +1518,31 @@
 										Input2 = Input {
 											SourceOp = "sBoolean2_4_1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 55, 107.258 } },
 								},
 								sRender1_4_1 = sRender {
 									CtrlWShown = false,
 									Inputs = {
-										Width = Input { Value = 1920, },
-										Height = Input { Value = 1080, },
+										GlobalOut = Input { Value = 124, },
+										Width = Input { Value = 3840, },
+										Height = Input { Value = 1920, },
 										UseFrameFormatSettings = Input { Value = 1, },
 										["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 										Input = Input {
 											SourceOp = "sMerge1_3_1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 220, 107.258 } },
 								},
 								sRectangle4_3_1 = sRectangle {
 									CtrlWShown = false,
 									Inputs = {
-										Width = Input { Value = 0.416, },
+										Width = Input { Value = 0.416, }
 									},
-									ViewInfo = OperatorInfo { Pos = { 55, 8.25726 } },
+									ViewInfo = OperatorInfo { Pos = { 55, 8.25721 } },
 								},
 								sBoolean2_4_1 = sBoolean {
 									CtrlWShown = false,
@@ -1675,9 +1555,9 @@
 										Input2 = Input {
 											SourceOp = "sRectangle4_3_1",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { 55, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { 55, 41.2572 } },
 								}
 							},
 						},
@@ -1690,7 +1570,19 @@
 									Source = "Output",
 								}
 							},
-							ViewInfo = GroupInfo { Pos = { -55, 107.258 } },
+							ViewInfo = GroupInfo {
+								Pos = { -55, 107.258 },
+								Flags = {
+									AllowPan = false,
+									AutoSnap = true,
+									RemoveRouters = true
+								},
+								Size = { 566, 165.364, 283, 24.2424 },
+								Direction = "Horizontal",
+								PipeStyle = "Direct",
+								Scale = 1,
+								Offset = { 0, 0 }
+							},
 							Tools = ordered() {
 								sRectangle1_3_1 = sRectangle {
 									CtrlWShown = false,
@@ -1701,21 +1593,22 @@
 										Height = Input {
 											Value = 0.5625,
 											Expression = "Width*9/16",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -220, 107.258 } },
 								},
 								sRender1_3_1 = sRender {
 									CtrlWShown = false,
 									Inputs = {
-										Width = Input { Value = 1920, },
-										Height = Input { Value = 1080, },
+										GlobalOut = Input { Value = 124, },
+										Width = Input { Value = 3840, },
+										Height = Input { Value = 1920, },
 										UseFrameFormatSettings = Input { Value = 1, },
 										["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 										Input = Input {
 											SourceOp = "sMerge1_2_1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 220, 107.258 } },
 								},
@@ -1729,7 +1622,7 @@
 										Input2 = Input {
 											SourceOp = "sGrid1_2_1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 0, 107.258 } },
 								},
@@ -1737,17 +1630,17 @@
 									CtrlWShown = false,
 									Inputs = {
 										Width = Input { Value = 0.234, },
-										Height = Input { Value = 0.375, },
+										Height = Input { Value = 0.375, }
 									},
-									ViewInfo = OperatorInfo { Pos = { -220, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { -220, 41.2572 } },
 								},
 								sRectangle3_3_1 = sRectangle {
 									CtrlWShown = false,
 									Inputs = {
 										Width = Input { Value = 0.142, },
-										Height = Input { Value = 0.28, },
+										Height = Input { Value = 0.28, }
 									},
-									ViewInfo = OperatorInfo { Pos = { -110, 8.25726 } },
+									ViewInfo = OperatorInfo { Pos = { -110, 8.25721 } },
 								},
 								sBoolean1_3_1 = sBoolean {
 									CtrlWShown = false,
@@ -1760,16 +1653,16 @@
 										Input2 = Input {
 											SourceOp = "sRectangle3_3_1",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { -110, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { -110, 41.2572 } },
 								},
 								sRectangle4_2_1 = sRectangle {
 									CtrlWShown = false,
 									Inputs = {
-										Height = Input { Value = 0.215, },
+										Height = Input { Value = 0.215, }
 									},
-									ViewInfo = OperatorInfo { Pos = { 0, 8.25726 } },
+									ViewInfo = OperatorInfo { Pos = { 0, 8.25721 } },
 								},
 								sBoolean2_3_1 = sBoolean {
 									CtrlWShown = false,
@@ -1782,9 +1675,9 @@
 										Input2 = Input {
 											SourceOp = "sRectangle4_2_1",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { 0, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { 0, 41.2572 } },
 								},
 								sGrid1_2_1 = sGrid {
 									CtrlWShown = false,
@@ -1794,9 +1687,9 @@
 										Input = Input {
 											SourceOp = "sBoolean2_3_1",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { 110, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { 110, 41.2572 } },
 								}
 							},
 						},
@@ -1826,9 +1719,9 @@
 								Input5 = Input {
 									SourceOp = "Instance_EmptyText",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { 55, 8.25736 } },
+							ViewInfo = OperatorInfo { Pos = { 55, 8.25726 } },
 							Version = 172
 						},
 						FAWide_1 = GroupOperator {
@@ -1840,7 +1733,19 @@
 									Source = "Output",
 								}
 							},
-							ViewInfo = GroupInfo { Pos = { -55, 74.2574 } },
+							ViewInfo = GroupInfo {
+								Pos = { -55, 74.2573 },
+								Flags = {
+									AllowPan = false,
+									AutoSnap = true,
+									RemoveRouters = true
+								},
+								Size = { 731, 132.364, 365.5, 24.2424 },
+								Direction = "Horizontal",
+								PipeStyle = "Direct",
+								Scale = 1,
+								Offset = { 0, 0 }
+							},
 							Tools = ordered() {
 								sRectangle1_2_1 = sRectangle {
 									CtrlWShown = false,
@@ -1851,7 +1756,7 @@
 										Height = Input {
 											Value = 0.5625,
 											Expression = "Width*9/16",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -303, 74.7576 } },
 								},
@@ -1859,14 +1764,14 @@
 									CtrlWShown = false,
 									Inputs = {
 										Width = Input { Value = 0.251, },
-										Height = Input { Value = 0.397, },
+										Height = Input { Value = 0.397, }
 									},
 									ViewInfo = OperatorInfo { Pos = { -248, 41.7576 } },
 								},
 								sRectangle3_2_1 = sRectangle {
 									CtrlWShown = false,
 									Inputs = {
-										Height = Input { Value = 0.208, },
+										Height = Input { Value = 0.208, }
 									},
 									ViewInfo = OperatorInfo { Pos = { -138, 8.75756 } },
 								},
@@ -1881,7 +1786,7 @@
 										Input2 = Input {
 											SourceOp = "sRectangle3_2_1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -138, 41.7576 } },
 								},
@@ -1899,7 +1804,7 @@
 										Input3 = Input {
 											SourceOp = "sBoolean4_1_1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -28, 74.7576 } },
 								},
@@ -1907,7 +1812,7 @@
 									CtrlWShown = false,
 									Inputs = {
 										Width = Input { Value = 0.163, },
-										Height = Input { Value = 0.307, },
+										Height = Input { Value = 0.307, }
 									},
 									ViewInfo = OperatorInfo { Pos = { -28, 8.75756 } },
 								},
@@ -1922,21 +1827,22 @@
 										Input2 = Input {
 											SourceOp = "sRectangle4_1_1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -28, 41.7576 } },
 								},
 								sRender1_2_1 = sRender {
 									CtrlWShown = false,
 									Inputs = {
-										Width = Input { Value = 1920, },
-										Height = Input { Value = 1080, },
+										GlobalOut = Input { Value = 124, },
+										Width = Input { Value = 3840, },
+										Height = Input { Value = 1920, },
 										UseFrameFormatSettings = Input { Value = 1, },
 										["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 										Input = Input {
 											SourceOp = "sMerge1_1_1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 302, 74.7576 } },
 								},
@@ -1944,7 +1850,7 @@
 									CtrlWShown = false,
 									Inputs = {
 										Width = Input { Value = 0.742, },
-										Height = Input { Value = 0.222, },
+										Height = Input { Value = 0.222, }
 									},
 									ViewInfo = OperatorInfo { Pos = { 82, 41.7576 } },
 								},
@@ -1963,7 +1869,7 @@
 										Input2 = Input {
 											SourceOp = "sRectangle7_1_1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 302, 41.7576 } },
 								},
@@ -1978,7 +1884,7 @@
 										Input2 = Input {
 											SourceOp = "sRectangle6_1_1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 192, 41.7576 } },
 								},
@@ -1986,7 +1892,7 @@
 									CtrlWShown = false,
 									Inputs = {
 										Width = Input { Value = 0.648, },
-										Height = Input { Value = 0.134, },
+										Height = Input { Value = 0.134, }
 									},
 									ViewInfo = OperatorInfo { Pos = { 192, 8.75756 } },
 								}
@@ -1997,42 +1903,73 @@
 							NameSet = true,
 							SourceOp = "EmptyText",
 							Inputs = {
-								EffectMask = Input { },
-								SettingsNest = Input { },
-								ImageNest = Input { },
-								["Gamut.ColorSpaceNest"] = Input { },
-								["Gamut.GammaSpaceNest"] = Input { },
-								Layout = Input { },
-								LayoutRotation = Input { },
-								Background = Input { },
-								TransformTransform = Input { },
-								TransformRotation = Input { },
-								TransformShear = Input { },
-								TransformSize = Input { },
-								Properties1 = Input { },
-								Softness1 = Input { },
-								Position1 = Input { },
-								Rotation1 = Input { },
-								Shear1 = Input { },
-								Size1 = Input { },
-								TextText = Input { },
-								TabSpacing = Input { },
-								AdvancedFontControls = Input { },
-								ClearSelectedKerning = Input { },
-								ClearAllKerning = Input { },
-								ClearSelectedPlacement = Input { },
-								ClearAllPlacement = Input { },
-								Internal = Input { },
-								CommentsNest = Input { },
-								FrameRenderScriptNest = Input { },
-								StartRenderScripts = Input { },
-								EndRenderScripts = Input { },
+								EffectMask = Input {
+								},
+								SettingsNest = Input {
+								},
+								ImageNest = Input {
+								},
+								["Gamut.ColorSpaceNest"] = Input {
+								},
+								["Gamut.GammaSpaceNest"] = Input {
+								},
+								Layout = Input {
+								},
+								LayoutRotation = Input {
+								},
+								Background = Input {
+								},
+								TransformTransform = Input {
+								},
+								TransformRotation = Input {
+								},
+								TransformShear = Input {
+								},
+								TransformSize = Input {
+								},
+								Properties1 = Input {
+								},
+								Softness1 = Input {
+								},
+								Position1 = Input {
+								},
+								Rotation1 = Input {
+								},
+								Shear1 = Input {
+								},
+								Size1 = Input {
+								},
+								TextText = Input {
+								},
+								TabSpacing = Input {
+								},
+								AdvancedFontControls = Input {
+								},
+								ClearSelectedKerning = Input {
+								},
+								ClearAllKerning = Input {
+								},
+								ClearSelectedPlacement = Input {
+								},
+								ClearAllPlacement = Input {
+								},
+								Internal = Input {
+								},
+								CommentsNest = Input {
+								},
+								FrameRenderScriptNest = Input {
+								},
+								StartRenderScripts = Input {
+								},
+								EndRenderScripts = Input {
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -55, 41.2574 } },
+							ViewInfo = OperatorInfo { Pos = { -55, 41.2573 } },
 						}
 					},
 				},
 				Bitrate = GroupOperator {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = ordered() {
 						Input1 = InstanceInput {
@@ -2046,7 +1983,19 @@
 							Source = "Output",
 						}
 					},
-					ViewInfo = GroupInfo { Pos = { -605, -478.5 } },
+					ViewInfo = GroupInfo {
+						Pos = { -633, 107.258 },
+						Flags = {
+							AllowPan = false,
+							AutoSnap = true,
+							RemoveRouters = true
+						},
+						Size = { 786, 198.364, 393, 24.2424 },
+						Direction = "Horizontal",
+						PipeStyle = "Direct",
+						Scale = 1,
+						Offset = { 0, 0 }
+					},
 					Tools = ordered() {
 						BitrateTransform = Transform {
 							CtrlWShown = false,
@@ -2061,9 +2010,9 @@
 								Input = Input {
 									SourceOp = "MatteControl4",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -605, -379.5 } },
+							ViewInfo = OperatorInfo { Pos = { 330, 140.758 } },
 						},
 						Rectangle7 = RectangleMask {
 							CtrlWShown = false,
@@ -2071,15 +2020,15 @@
 								Filter = Input { Value = FuID { "Fast Gaussian" }, },
 								BorderWidth = Input { Expression = "iif(ProxyIconTx.ProxyOn == 1,0,-0.8)", },
 								JoinStyle = Input { Value = 1, },
-								MaskWidth = Input { Value = 1920, },
-								MaskHeight = Input { Value = 1080, },
+								MaskWidth = Input { Value = 3840, },
+								MaskHeight = Input { Value = 1920, },
 								PixelAspect = Input { Value = { 1, 1 }, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								ClippingMode = Input { Value = FuID { "None" }, },
 								Center = Input { Value = { 0.841361256544503, 0.31654 }, },
-								CornerRadius = Input { Value = 0.268, },
+								CornerRadius = Input { Value = 0.268, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -605, -511.5 } },
+							ViewInfo = OperatorInfo { Pos = { 330, 8.75757 } },
 						},
 						MatteControl4 = MatteControl {
 							CtrlWShown = false,
@@ -2093,9 +2042,9 @@
 								Background = Input {
 									SourceOp = "BitrateEnablePxTx",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -605, -445.5 } },
+							ViewInfo = OperatorInfo { Pos = { 330, 74.7576 } },
 						},
 						sBoolean1_1 = sBoolean {
 							CtrlWShown = false,
@@ -2108,31 +2057,32 @@
 								Input2 = Input {
 									SourceOp = "sGrid1_1",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -1155, -445.5 } },
+							ViewInfo = OperatorInfo { Pos = { -220, 74.7576 } },
 						},
 						sRectangle1_1 = sRectangle {
 							CtrlWShown = false,
 							Inputs = {
 								Width = Input { Value = 1, },
-								Height = Input { Value = 0.439, },
+								Height = Input { Value = 0.439, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -1265, -445.5 } },
+							ViewInfo = OperatorInfo { Pos = { -330, 74.7576 } },
 						},
 						sRender1_1 = sRender {
 							CtrlWShown = false,
 							Inputs = {
-								Width = Input { Value = 1920, },
-								Height = Input { Value = 1080, },
+								GlobalOut = Input { Value = 124, },
+								Width = Input { Value = 3840, },
+								Height = Input { Value = 1920, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								Input = Input {
 									SourceOp = "sBoolean2_1",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -935, -445.5 } },
+							ViewInfo = OperatorInfo { Pos = { 0, 74.7576 } },
 						},
 						Merge1_1 = Merge {
 							CtrlWShown = false,
@@ -2145,9 +2095,9 @@
 									SourceOp = "BitrateText",
 									Source = "Output",
 								},
-								PerformDepthMerge = Input { Value = 0, },
+								PerformDepthMerge = Input { Value = 0, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -825, -445.5 } },
+							ViewInfo = OperatorInfo { Pos = { 110, 74.7576 } },
 						},
 						sBoolean2_1 = sBoolean {
 							CtrlWShown = false,
@@ -2160,9 +2110,9 @@
 								Input2 = Input {
 									SourceOp = "sRectangle3_1",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -1045, -445.5 } },
+							ViewInfo = OperatorInfo { Pos = { -110, 74.7576 } },
 						},
 						BitrateEnablePxTx = Transform {
 							CtrlWShown = false,
@@ -2179,25 +2129,25 @@
 								Input = Input {
 									SourceOp = "Merge1_1",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -715, -445.5 } },
+							ViewInfo = OperatorInfo { Pos = { 220, 74.7576 } },
 						},
 						sRectangle3_1 = sRectangle {
 							CtrlWShown = false,
 							Inputs = {
 								Width = Input { Value = 0.646, },
-								Height = Input { Value = 0.331, },
+								Height = Input { Value = 0.331, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -1045, -478.5 } },
+							ViewInfo = OperatorInfo { Pos = { -110, 41.7576 } },
 						},
 						sRectangle2_1 = sRectangle {
 							CtrlWShown = false,
 							Inputs = {
 								Width = Input { Value = 0.063, },
-								Height = Input { Value = 0.049, },
+								Height = Input { Value = 0.049, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -1155, -511.5 } },
+							ViewInfo = OperatorInfo { Pos = { -220, 8.75757 } },
 						},
 						sGrid1_1 = sGrid {
 							CtrlWShown = false,
@@ -2208,13 +2158,14 @@
 								Input = Input {
 									SourceOp = "sRectangle2_1",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -1155, -478.5 } },
+							ViewInfo = OperatorInfo { Pos = { -220, 41.7576 } },
 						}
 					},
 				},
 				SwitchFuse1 = Fuse.Switch {
+					CtrlWShown = false,
 					Inputs = {
 						Which = Input {
 							Value = 1,
@@ -2227,12 +2178,13 @@
 						Input2 = Input {
 							SourceOp = "MatteControl1",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { -605, -16.5 } },
+					ViewInfo = OperatorInfo { Pos = { -633, 569.258 } },
 					Version = 172
 				},
 				NormalRecord = GroupOperator {
+					CtrlWShown = false,
 					NameSet = true,
 					Outputs = {
 						Output1 = InstanceOutput {
@@ -2240,21 +2192,34 @@
 							Source = "Output",
 						}
 					},
-					ViewInfo = GroupInfo { Pos = { -715, -16.5 } },
+					ViewInfo = GroupInfo {
+						Pos = { -743, 569.258 },
+						Flags = {
+							AllowPan = false,
+							AutoSnap = true,
+							RemoveRouters = true
+						},
+						Size = { 566, 132.364, 283, 24.2424 },
+						Direction = "Horizontal",
+						PipeStyle = "Direct",
+						Scale = 1,
+						Offset = { 0, 0 }
+					},
 					Tools = ordered() {
 						sRender1 = sRender {
 							CtrlWShown = false,
 							Inputs = {
-								Width = Input { Value = 1920, },
-								Height = Input { Value = 1080, },
+								GlobalOut = Input { Value = 124, },
+								Width = Input { Value = 3840, },
+								Height = Input { Value = 1920, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								Input = Input {
 									SourceOp = "sBoolean3",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -605, 107.758 } },
+							ViewInfo = OperatorInfo { Pos = { 220, 74.7578 } },
 						},
 						Background4 = Background {
 							CtrlWShown = false,
@@ -2263,12 +2228,13 @@
 									SourceOp = "sRender1",
 									Source = "Output",
 								},
-								Width = Input { Value = 1920, },
-								Height = Input { Value = 1080, },
+								GlobalOut = Input { Value = 124, },
+								Width = Input { Value = 3840, },
+								Height = Input { Value = 1920, },
 								UseFrameFormatSettings = Input { Value = 1, },
-								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -605, 49.5 } },
+							ViewInfo = OperatorInfo { Pos = { 220, 16.4998 } },
 						},
 						sGrid2 = sGrid {
 							CtrlWShown = false,
@@ -2279,9 +2245,9 @@
 								Input = Input {
 									SourceOp = "sRectangle4",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -715, 74.7576 } },
+							ViewInfo = OperatorInfo { Pos = { 110, 41.7574 } },
 						},
 						sBoolean3 = sBoolean {
 							CtrlWShown = false,
@@ -2294,9 +2260,9 @@
 								Input2 = Input {
 									SourceOp = "sGrid2",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -715, 107.758 } },
+							ViewInfo = OperatorInfo { Pos = { 110, 74.7578 } },
 						},
 						sRectangle4 = sRectangle {
 							CtrlWShown = false,
@@ -2308,17 +2274,17 @@
 								Height = Input {
 									Value = 0.064,
 									Expression = "sRectangle2.Height",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -715, 41.7576 } },
+							ViewInfo = OperatorInfo { Pos = { 110, 8.75737 } },
 						},
 						sRectangle3 = sRectangle {
 							CtrlWShown = false,
 							Inputs = {
 								Width = Input { Value = 0.392, },
-								Height = Input { Value = 0.325, },
+								Height = Input { Value = 0.325, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -825, 41.7576 } },
+							ViewInfo = OperatorInfo { Pos = { 0, 8.75737 } },
 						},
 						sBoolean2 = sBoolean {
 							CtrlWShown = false,
@@ -2331,9 +2297,9 @@
 								Input2 = Input {
 									SourceOp = "sRectangle3",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -825, 107.758 } },
+							ViewInfo = OperatorInfo { Pos = { 0, 74.7578 } },
 						},
 						sBoolean1 = sBoolean {
 							CtrlWShown = false,
@@ -2346,25 +2312,25 @@
 								Input2 = Input {
 									SourceOp = "sGrid1",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -935, 107.758 } },
+							ViewInfo = OperatorInfo { Pos = { -110, 74.7578 } },
 						},
 						sRectangle1 = sRectangle {
 							CtrlWShown = false,
 							Inputs = {
 								Width = Input { Value = 0.764, },
-								Height = Input { Value = 0.63, },
+								Height = Input { Value = 0.63, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -1045, 107.758 } },
+							ViewInfo = OperatorInfo { Pos = { -220, 74.7578 } },
 						},
 						sRectangle2 = sRectangle {
 							CtrlWShown = false,
 							Inputs = {
 								Width = Input { Value = 0.076, },
-								Height = Input { Value = 0.064, },
+								Height = Input { Value = 0.064, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -935, 41.7576 } },
+							ViewInfo = OperatorInfo { Pos = { -110, 8.75737 } },
 						},
 						sGrid1 = sGrid {
 							CtrlWShown = false,
@@ -2376,13 +2342,14 @@
 								Input = Input {
 									SourceOp = "sRectangle2",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -935, 74.7576 } },
+							ViewInfo = OperatorInfo { Pos = { -110, 41.7574 } },
 						}
 					},
 				},
 				SlowAndQuick = GroupOperator {
+					CtrlWShown = false,
 					NameSet = true,
 					Outputs = {
 						Output1 = InstanceOutput {
@@ -2390,7 +2357,19 @@
 							Source = "Output",
 						}
 					},
-					ViewInfo = GroupInfo { Pos = { -715, -82.5 } },
+					ViewInfo = GroupInfo {
+						Pos = { -743, 503.258 },
+						Flags = {
+							AllowPan = false,
+							AutoSnap = true,
+							RemoveRouters = true
+						},
+						Size = { 447.938, 132.364, 223.969, 24.2424 },
+						Direction = "Horizontal",
+						PipeStyle = "Direct",
+						Scale = 1,
+						Offset = { 0, 0 }
+					},
 					Tools = ordered() {
 						Background2 = Background {
 							CtrlWShown = false,
@@ -2399,37 +2378,39 @@
 									SourceOp = "Rectangle2_1",
 									Source = "Mask",
 								},
-								Width = Input { Value = 1920, },
-								Height = Input { Value = 1080, },
+								GlobalOut = Input { Value = 124, },
+								Width = Input { Value = 3840, },
+								Height = Input { Value = 1920, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								TopLeftRed = Input { Value = 1, },
 								TopLeftGreen = Input { Value = 1, },
-								TopLeftBlue = Input { Value = 1, },
+								TopLeftBlue = Input { Value = 1, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -825, 115.5 } },
+							ViewInfo = OperatorInfo { Pos = { -0.96875, 74.7576 } },
 						},
 						Rectangle2_1 = RectangleMask {
 							CtrlWShown = false,
 							Inputs = {
 								Filter = Input { Value = FuID { "Fast Gaussian" }, },
-								MaskWidth = Input { Value = 1920, },
-								MaskHeight = Input { Value = 1080, },
+								MaskWidth = Input { Value = 3840, },
+								MaskHeight = Input { Value = 1920, },
 								PixelAspect = Input { Value = { 1, 1 }, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								ClippingMode = Input { Value = FuID { "None" }, },
 								Width = Input { Value = 0.763, },
 								Height = Input { Value = 0.66, },
-								CornerRadius = Input { Value = 0.244, },
+								CornerRadius = Input { Value = 0.244, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -990, 115.5 } },
+							ViewInfo = OperatorInfo { Pos = { -165.969, 74.7576 } },
 						},
 						SlowAndQuickText = TextPlus {
 							CtrlWShown = false,
 							NameSet = true,
 							Inputs = {
-								Width = Input { Value = 1920, },
-								Height = Input { Value = 1080, },
+								GlobalOut = Input { Value = 124, },
+								Width = Input { Value = 3840, },
+								Height = Input { Value = 1920, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								StyledText = Input { Value = "S&Q", },
@@ -2437,9 +2418,9 @@
 								Style = Input { Value = "Bold", },
 								Size = Input { Value = 0.4148, },
 								VerticalJustificationNew = Input { Value = 3, },
-								HorizontalJustificationNew = Input { Value = 3, },
+								HorizontalJustificationNew = Input { Value = 3, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -660, 49.5 } },
+							ViewInfo = OperatorInfo { Pos = { 164.031, 8.75758 } },
 						},
 						MatteControl1 = MatteControl {
 							CtrlWShown = false,
@@ -2452,13 +2433,14 @@
 								Background = Input {
 									SourceOp = "Background2",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -660, 115.5 } },
+							ViewInfo = OperatorInfo { Pos = { 164.031, 74.7576 } },
 						}
 					},
 				},
 				WB = GroupOperator {
+					CtrlWShown = false,
 					NameSet = true,
 					Outputs = {
 						Output1 = InstanceOutput {
@@ -2466,7 +2448,19 @@
 							Source = "Output",
 						}
 					},
-					ViewInfo = GroupInfo { Pos = { -715, -181.5 } },
+					ViewInfo = GroupInfo {
+						Pos = { -743, 404.258 },
+						Flags = {
+							AllowPan = false,
+							AutoSnap = true,
+							RemoveRouters = true
+						},
+						Size = { 456, 264.364, 228, 24.2424 },
+						Direction = "Horizontal",
+						PipeStyle = "Direct",
+						Scale = 1,
+						Offset = { 0, 0 }
+					},
 					Tools = ordered() {
 						WBOther = GroupOperator {
 							CtrlWShown = false,
@@ -2477,7 +2471,19 @@
 									Source = "Output",
 								}
 							},
-							ViewInfo = GroupInfo { Pos = { -770, 181.5 } },
+							ViewInfo = GroupInfo {
+								Pos = { -165, 173.758 },
+								Flags = {
+									AllowPan = false,
+									AutoSnap = true,
+									RemoveRouters = true
+								},
+								Size = { 291, 132.364, 145.5, 24.2424 },
+								Direction = "Horizontal",
+								PipeStyle = "Direct",
+								Scale = 1,
+								Offset = { 0, 0 }
+							},
 							Tools = ordered() {
 								Shade = GroupOperator {
 									CtrlWShown = false,
@@ -2488,7 +2494,19 @@
 											Source = "Output",
 										}
 									},
-									ViewInfo = GroupInfo { Pos = { -83, 8.75756 } },
+									ViewInfo = GroupInfo {
+										Pos = { -83, 8.75756 },
+										Flags = {
+											AllowPan = false,
+											AutoSnap = true,
+											RemoveRouters = true
+										},
+										Size = { 676, 165.364, 338, 24.2424 },
+										Direction = "Horizontal",
+										PipeStyle = "Direct",
+										Scale = 1,
+										Offset = { 0, 0 }
+									},
 									Tools = ordered() {
 										sBoolean5 = sBoolean {
 											CtrlWShown = false,
@@ -2501,7 +2519,7 @@
 												Input2 = Input {
 													SourceOp = "sRectangle7",
 													Source = "Output",
-												},
+												}
 											},
 											ViewInfo = OperatorInfo { Pos = { -55, 107.258 } },
 										},
@@ -2511,9 +2529,9 @@
 												["Translate.X"] = Input { Value = 0.058, },
 												["Translate.Y"] = Input { Value = -0.145, },
 												Height = Input { Value = 0.039, },
-												Angle = Input { Value = -45, },
+												Angle = Input { Value = -45, }
 											},
-											ViewInfo = OperatorInfo { Pos = { 55, 8.25736 } },
+											ViewInfo = OperatorInfo { Pos = { 55, 8.25726 } },
 										},
 										sMerge2 = sMerge {
 											CtrlWShown = false,
@@ -2525,7 +2543,7 @@
 												Input2 = Input {
 													SourceOp = "sRectangle6",
 													Source = "Output",
-												},
+												}
 											},
 											ViewInfo = OperatorInfo { Pos = { -165, 107.258 } },
 										},
@@ -2536,7 +2554,7 @@
 												BorderWidth = Input { Value = 0.022, },
 												Width = Input { Value = 0.173, },
 												Height = Input { Value = 0.346, },
-												Angle = Input { Value = 90, },
+												Angle = Input { Value = 90, }
 											},
 											ViewInfo = OperatorInfo { Pos = { -275, 107.258 } },
 										},
@@ -2550,7 +2568,7 @@
 												Input2 = Input {
 													SourceOp = "sBoolean6",
 													Source = "Output",
-												},
+												}
 											},
 											ViewInfo = OperatorInfo { Pos = { 55, 107.258 } },
 										},
@@ -2562,21 +2580,22 @@
 												Input = Input {
 													SourceOp = "sMerge3",
 													Source = "Output",
-												},
+												}
 											},
 											ViewInfo = OperatorInfo { Pos = { 165, 107.258 } },
 										},
 										sRender3 = sRender {
 											CtrlWShown = false,
 											Inputs = {
-												Width = Input { Value = 1920, },
-												Height = Input { Value = 1080, },
+												GlobalOut = Input { Value = 124, },
+												Width = Input { Value = 3840, },
+												Height = Input { Value = 1920, },
 												UseFrameFormatSettings = Input { Value = 1, },
 												["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 												Input = Input {
 													SourceOp = "sTransform1",
 													Source = "Output",
-												},
+												}
 											},
 											ViewInfo = OperatorInfo { Pos = { 275, 107.258 } },
 										},
@@ -2586,9 +2605,9 @@
 												["Translate.X"] = Input { Value = 0.274, },
 												["Translate.Y"] = Input { Value = -0.17, },
 												Width = Input { Value = 0.268, },
-												Height = Input { Value = 0.21, },
+												Height = Input { Value = 0.21, }
 											},
-											ViewInfo = OperatorInfo { Pos = { 165, 74.2574 } },
+											ViewInfo = OperatorInfo { Pos = { 165, 74.2573 } },
 										},
 										sBoolean6 = sBoolean {
 											CtrlWShown = false,
@@ -2600,9 +2619,9 @@
 												Input2 = Input {
 													SourceOp = "sDuplicate2",
 													Source = "Output",
-												},
+												}
 											},
-											ViewInfo = OperatorInfo { Pos = { 55, 74.2574 } },
+											ViewInfo = OperatorInfo { Pos = { 55, 74.2573 } },
 										},
 										sDuplicate2 = sDuplicate {
 											CtrlWShown = false,
@@ -2613,8 +2632,12 @@
 													SourceOp = "sRectangle9",
 													Source = "Output",
 												},
+												Polyline = Input {
+													Value = Polyline {
+													},
+												}
 											},
-											ViewInfo = OperatorInfo { Pos = { 55, 41.2574 } },
+											ViewInfo = OperatorInfo { Pos = { 55, 41.2573 } },
 										},
 										sRectangle7 = sRectangle {
 											CtrlWShown = false,
@@ -2628,9 +2651,9 @@
 												Height = Input {
 													Value = 0.0585,
 													Expression = "Width",
-												},
+												}
 											},
-											ViewInfo = OperatorInfo { Pos = { -55, 74.2574 } },
+											ViewInfo = OperatorInfo { Pos = { -55, 74.2573 } },
 										},
 										sRectangle6 = sRectangle {
 											CtrlWShown = false,
@@ -2641,9 +2664,9 @@
 													Expression = "sNGon1.Translate.Y-0.16",
 												},
 												Width = Input { Value = 0.255, },
-												Height = Input { Value = 0.233, },
+												Height = Input { Value = 0.233, }
 											},
-											ViewInfo = OperatorInfo { Pos = { -165, 74.2574 } },
+											ViewInfo = OperatorInfo { Pos = { -165, 74.2573 } },
 										}
 									},
 								},
@@ -2656,42 +2679,72 @@
 											Source = "Output",
 										}
 									},
-									ViewInfo = GroupInfo { Pos = { -83, 74.7576 } },
+									ViewInfo = GroupInfo {
+										Pos = { -83, 74.7576 },
+										Flags = {
+											AllowPan = false,
+											AutoSnap = true,
+											RemoveRouters = true
+										},
+										Size = { 566, 231.364, 283, 24.2424 },
+										Direction = "Horizontal",
+										PipeStyle = "Direct",
+										Scale = 1,
+										Offset = { 0, 0 }
+									},
 									Tools = ordered() {
 										Instance_Instance_Ellipse1 = EllipseMask {
 											CtrlWShown = false,
 											SourceOp = "Instance_Ellipse1",
 											Inputs = {
-												EffectMask = Input { },
-												SettingsNest = Input { },
-												Solid = Input { },
-												["ShapeRasterizer.Nest"] = Input { },
-												CommentsNest = Input { },
-												FrameRenderScriptNest = Input { },
-												StartRenderScripts = Input { },
-												EndRenderScripts = Input { },
+												EffectMask = Input {
+												},
+												SettingsNest = Input {
+												},
+												Solid = Input {
+												},
+												["ShapeRasterizer.Nest"] = Input {
+												},
+												CommentsNest = Input {
+												},
+												FrameRenderScriptNest = Input {
+												},
+												StartRenderScripts = Input {
+												},
+												EndRenderScripts = Input {
+												}
 											},
-											ViewInfo = OperatorInfo { Pos = { 220, 8.25736 } },
+											ViewInfo = OperatorInfo { Pos = { 220, 8.25726 } },
 										},
 										Instance_Transform7 = Transform {
 											CtrlWShown = false,
 											SourceOp = "Transform7",
 											Inputs = {
-												EffectMask = Input { },
-												SettingsNest = Input { },
-												TransformNest = Input { },
-												Pivot = Input { Expression = "Ellipse1.Center" },
-												ReferenceSize = Input { },
+												EffectMask = Input {
+												},
+												SettingsNest = Input {
+												},
+												TransformNest = Input {
+												},
+												Pivot = Input {
+													Expression = "Ellipse1.Center"
+												},
+												ReferenceSize = Input {
+												},
 												Input = Input {
 													SourceOp = "Instance_Instance_Ellipse1",
 													Source = "Mask",
 												},
-												CommentsNest = Input { },
-												FrameRenderScriptNest = Input { },
-												StartRenderScripts = Input { },
-												EndRenderScripts = Input { },
+												CommentsNest = Input {
+												},
+												FrameRenderScriptNest = Input {
+												},
+												StartRenderScripts = Input {
+												},
+												EndRenderScripts = Input {
+												}
 											},
-											ViewInfo = OperatorInfo { Pos = { 220, 74.2574 } },
+											ViewInfo = OperatorInfo { Pos = { 220, 74.2573 } },
 										},
 										Merge19 = Merge {
 											CtrlWShown = false,
@@ -2704,7 +2757,7 @@
 													SourceOp = "Text1",
 													Source = "Output",
 												},
-												PerformDepthMerge = Input { Value = 0, },
+												PerformDepthMerge = Input { Value = 0, }
 											},
 											ViewInfo = OperatorInfo { Pos = { -110, 173.258 } },
 										},
@@ -2715,7 +2768,7 @@
 												Input = Input {
 													SourceOp = "Merge19",
 													Source = "Output",
-												},
+												}
 											},
 											ViewInfo = OperatorInfo { Pos = { 55, 173.258 } },
 										},
@@ -2726,13 +2779,14 @@
 													SourceOp = "Merge33",
 													Source = "Output",
 												},
-												Width = Input { Value = 1920, },
-												Height = Input { Value = 1080, },
+												GlobalOut = Input { Value = 124, },
+												Width = Input { Value = 3840, },
+												Height = Input { Value = 1920, },
 												UseFrameFormatSettings = Input { Value = 1, },
 												["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 												TopLeftRed = Input { Value = 1, },
 												TopLeftGreen = Input { Value = 1, },
-												TopLeftBlue = Input { Value = 1, },
+												TopLeftBlue = Input { Value = 1, }
 											},
 											ViewInfo = OperatorInfo { Pos = { -110, 140.258 } },
 										},
@@ -2740,17 +2794,17 @@
 											CtrlWShown = false,
 											Inputs = {
 												Filter = Input { Value = FuID { "Fast Gaussian" }, },
-												MaskWidth = Input { Value = 1920, },
-												MaskHeight = Input { Value = 1080, },
+												MaskWidth = Input { Value = 3840, },
+												MaskHeight = Input { Value = 1920, },
 												PixelAspect = Input { Value = { 1, 1 }, },
 												UseFrameFormatSettings = Input { Value = 1, },
 												ClippingMode = Input { Value = FuID { "None" }, },
 												Center = Input { Value = { 0.769, 0.5 }, },
 												Width = Input { Value = 1, },
 												Height = Input { Value = 0.038, },
-												Angle = Input { Value = 45, },
+												Angle = Input { Value = 45, }
 											},
-											ViewInfo = OperatorInfo { Pos = { 55, 8.25736 } },
+											ViewInfo = OperatorInfo { Pos = { 55, 8.25726 } },
 										},
 										Merge33 = Merge {
 											CtrlWShown = false,
@@ -2767,7 +2821,7 @@
 													SourceOp = "Duplicate1",
 													Source = "Output",
 												},
-												PerformDepthMerge = Input { Value = 0, },
+												PerformDepthMerge = Input { Value = 0, }
 											},
 											ViewInfo = OperatorInfo { Pos = { 55, 107.258 } },
 										},
@@ -2776,30 +2830,46 @@
 											Inputs = {
 												Copies = Input { Value = 3, },
 												Center = Input { Value = { 0.588, 0.5 }, },
+												Polyline = Input {
+													Value = Polyline {
+													},
+												},
 												RandomSeed = Input { Value = 26024, },
 												Background = Input {
 													SourceOp = "Rectangle4",
 													Source = "Mask",
-												},
+												}
 											},
-											ViewInfo = OperatorInfo { Pos = { 55, 41.2574 } },
+											ViewInfo = OperatorInfo { Pos = { 55, 41.2573 } },
 										},
 										Instance_Ellipse1 = EllipseMask {
 											CtrlWShown = false,
 											SourceOp = "Ellipse1",
 											Inputs = {
-												EffectMask = Input { },
-												SettingsNest = Input { },
-												BorderWidth = Input { Value = 0.016, },
-												Invert = Input { },
-												Solid = Input { Value = 0, },
-												["ShapeRasterizer.Nest"] = Input { },
-												CommentsNest = Input { },
-												FrameRenderScriptNest = Input { },
-												StartRenderScripts = Input { },
-												EndRenderScripts = Input { },
+												EffectMask = Input {
+												},
+												SettingsNest = Input {
+												},
+												BorderWidth = Input {
+													Value = 0.016,
+												},
+												Invert = Input {
+												},
+												Solid = Input {
+													Value = 0,
+												},
+												["ShapeRasterizer.Nest"] = Input {
+												},
+												CommentsNest = Input {
+												},
+												FrameRenderScriptNest = Input {
+												},
+												StartRenderScripts = Input {
+												},
+												EndRenderScripts = Input {
+												}
 											},
-											ViewInfo = OperatorInfo { Pos = { -110, 41.2574 } },
+											ViewInfo = OperatorInfo { Pos = { -110, 41.2573 } },
 										},
 										Transform7 = Transform {
 											CtrlWShown = false,
@@ -2809,25 +2879,25 @@
 												Input = Input {
 													SourceOp = "Instance_Ellipse1",
 													Source = "Mask",
-												},
+												}
 											},
-											ViewInfo = OperatorInfo { Pos = { -110, 74.2574 } },
+											ViewInfo = OperatorInfo { Pos = { -110, 74.2573 } },
 										},
 										Ellipse1 = EllipseMask {
 											CtrlWShown = false,
 											Inputs = {
 												Filter = Input { Value = FuID { "Fast Gaussian" }, },
 												Invert = Input { Value = 1, },
-												MaskWidth = Input { Value = 1920, },
-												MaskHeight = Input { Value = 1080, },
+												MaskWidth = Input { Value = 3840, },
+												MaskHeight = Input { Value = 1920, },
 												PixelAspect = Input { Value = { 1, 1 }, },
 												UseFrameFormatSettings = Input { Value = 1, },
 												ClippingMode = Input { Value = FuID { "None" }, },
 												Center = Input { Value = { 0.687434554973822, 0.343575418994413 }, },
 												Width = Input { Value = 0.3872279058342, },
-												Height = Input { Value = 0.3872279058342, },
+												Height = Input { Value = 0.3872279058342, }
 											},
-											ViewInfo = OperatorInfo { Pos = { -110, 8.25736 } },
+											ViewInfo = OperatorInfo { Pos = { -110, 8.25726 } },
 										},
 										Text1 = TextPlus {
 											CtrlWShown = false,
@@ -2836,8 +2906,9 @@
 													SourceOp = "Ellipse1",
 													Source = "Mask",
 												},
-												Width = Input { Value = 1920, },
-												Height = Input { Value = 1080, },
+												GlobalOut = Input { Value = 124, },
+												Width = Input { Value = 3840, },
+												Height = Input { Value = 1920, },
 												UseFrameFormatSettings = Input { Value = 1, },
 												["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 												Center = Input { Value = { 0.392, 0.748 }, },
@@ -2856,9 +2927,9 @@
 												ExtendHorizontal2 = Input { Value = 0.57, },
 												ExtendVertical2 = Input { Value = -0.245, },
 												Green2 = Input { Value = 1, },
-												Blue2 = Input { Value = 1, },
+												Blue2 = Input { Value = 1, }
 											},
-											ViewInfo = OperatorInfo { Pos = { -220, 8.25736 } },
+											ViewInfo = OperatorInfo { Pos = { -220, 8.25726 } },
 										}
 									},
 								},
@@ -2869,7 +2940,7 @@
 										Input = Input {
 											SourceOp = "sRender3",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 82, 8.75756 } },
 								},
@@ -2884,7 +2955,7 @@
 											SourceOp = "Transform9",
 											Source = "Output",
 										},
-										PerformDepthMerge = Input { Value = 0, },
+										PerformDepthMerge = Input { Value = 0, }
 									},
 									ViewInfo = OperatorInfo { Pos = { 82, 74.7576 } },
 								}
@@ -2894,39 +2965,55 @@
 							CtrlWShown = false,
 							SourceOp = "Transform4",
 							Inputs = {
-								EffectMask = Input { },
-								SettingsNest = Input { },
-								TransformNest = Input { },
-								ReferenceSize = Input { },
+								EffectMask = Input {
+								},
+								SettingsNest = Input {
+								},
+								TransformNest = Input {
+								},
+								ReferenceSize = Input {
+								},
 								Input = Input {
 									SourceOp = "Transform2",
 									Source = "Output",
 								},
-								CommentsNest = Input { },
-								FrameRenderScriptNest = Input { },
-								StartRenderScripts = Input { },
-								EndRenderScripts = Input { },
+								CommentsNest = Input {
+								},
+								FrameRenderScriptNest = Input {
+								},
+								StartRenderScripts = Input {
+								},
+								EndRenderScripts = Input {
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -660, 214.5 } },
+							ViewInfo = OperatorInfo { Pos = { -55, 206.758 } },
 						},
 						Instance_Transform4_5 = Transform {
 							CtrlWShown = false,
 							SourceOp = "Transform4",
 							Inputs = {
-								EffectMask = Input { },
-								SettingsNest = Input { },
-								TransformNest = Input { },
-								ReferenceSize = Input { },
+								EffectMask = Input {
+								},
+								SettingsNest = Input {
+								},
+								TransformNest = Input {
+								},
+								ReferenceSize = Input {
+								},
 								Input = Input {
 									SourceOp = "Merge34",
 									Source = "Output",
 								},
-								CommentsNest = Input { },
-								FrameRenderScriptNest = Input { },
-								StartRenderScripts = Input { },
-								EndRenderScripts = Input { },
+								CommentsNest = Input {
+								},
+								FrameRenderScriptNest = Input {
+								},
+								StartRenderScripts = Input {
+								},
+								EndRenderScripts = Input {
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -660, 181.5 } },
+							ViewInfo = OperatorInfo { Pos = { -55, 173.758 } },
 						},
 						WBCustom = GroupOperator {
 							CtrlWShown = false,
@@ -2937,7 +3024,19 @@
 									Source = "Output",
 								}
 							},
-							ViewInfo = GroupInfo { Pos = { -770, 214.5 } },
+							ViewInfo = GroupInfo {
+								Pos = { -165, 206.758 },
+								Flags = {
+									AllowPan = false,
+									AutoSnap = true,
+									RemoveRouters = true
+								},
+								Size = { 557.938, 198.364, 278.969, 24.2424 },
+								Direction = "Horizontal",
+								PipeStyle = "Direct",
+								Scale = 1,
+								Offset = { 0, 0 }
+							},
 							Tools = ordered() {
 								Polygon1_1 = PolylineMask {
 									DrawMode = "InsertAndModify",
@@ -2948,22 +3047,22 @@
 										BorderWidth = Input { Value = 0.0366, },
 										Solid = Input { Value = 0, },
 										JoinStyle = Input { Value = 2, },
-										MaskWidth = Input { Value = 1920, },
-										MaskHeight = Input { Value = 1080, },
+										MaskWidth = Input { Value = 3840, },
+										MaskHeight = Input { Value = 1920, },
 										PixelAspect = Input { Value = { 1, 1 }, },
 										UseFrameFormatSettings = Input { Value = 1, },
 										ClippingMode = Input { Value = FuID { "None" }, },
 										Polyline = Input {
-											SourceOp = "Polygon1_1Polyline",
+											SourceOp = "Polygon1_1多边形折线",
 											Source = "Value",
 										},
 										Polyline2 = Input {
 											Value = Polyline {
 											},
 											Disabled = true,
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { -220.969, 8.75726 } },
+									ViewInfo = OperatorInfo { Pos = { -220.969, 8.75721 } },
 								},
 								Rectangle1 = RectangleMask {
 									CtrlWShown = false,
@@ -2973,17 +3072,17 @@
 											Source = "Mask",
 										},
 										Filter = Input { Value = FuID { "Fast Gaussian" }, },
-										MaskWidth = Input { Value = 1920, },
-										MaskHeight = Input { Value = 1080, },
+										MaskWidth = Input { Value = 3840, },
+										MaskHeight = Input { Value = 1920, },
 										PixelAspect = Input { Value = { 1, 1 }, },
 										UseFrameFormatSettings = Input { Value = 1, },
 										ClippingMode = Input { Value = FuID { "None" }, },
 										Center = Input { Value = { 0.5, 0.578 }, },
 										Width = Input { Value = 0.268, },
 										Height = Input { Value = 0.299, },
-										CornerRadius = Input { Value = 0.717, },
+										CornerRadius = Input { Value = 0.717, }
 									},
-									ViewInfo = OperatorInfo { Pos = { -220.969, 74.7573 } },
+									ViewInfo = OperatorInfo { Pos = { -220.969, 74.7572 } },
 								},
 								Merge1_2 = Merge {
 									CtrlWShown = false,
@@ -2996,9 +3095,9 @@
 											SourceOp = "Rectangle1",
 											Source = "Mask",
 										},
-										PerformDepthMerge = Input { Value = 0, },
+										PerformDepthMerge = Input { Value = 0, }
 									},
-									ViewInfo = OperatorInfo { Pos = { -55.9684, 74.7573 } },
+									ViewInfo = OperatorInfo { Pos = { -55.9682, 74.7572 } },
 								},
 								Transform1 = Transform {
 									CtrlWShown = false,
@@ -3007,9 +3106,9 @@
 										Input = Input {
 											SourceOp = "Polygon1_1",
 											Source = "Mask",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { -55.9684, 8.75726 } },
+									ViewInfo = OperatorInfo { Pos = { -55.9682, 8.75721 } },
 								},
 								Transform2 = Transform {
 									CtrlWShown = false,
@@ -3018,7 +3117,7 @@
 										Input = Input {
 											SourceOp = "Background1_2",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 219.031, 140.758 } },
 								},
@@ -3029,15 +3128,16 @@
 											SourceOp = "Merge1_2",
 											Source = "Output",
 										},
-										Width = Input { Value = 1920, },
-										Height = Input { Value = 1080, },
+										GlobalOut = Input { Value = 124, },
+										Width = Input { Value = 3840, },
+										Height = Input { Value = 1920, },
 										UseFrameFormatSettings = Input { Value = 1, },
 										["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 										TopLeftRed = Input { Value = 1, },
 										TopLeftGreen = Input { Value = 1, },
-										TopLeftBlue = Input { Value = 1, },
+										TopLeftBlue = Input { Value = 1, }
 									},
-									ViewInfo = OperatorInfo { Pos = { 109.031, 74.7573 } },
+									ViewInfo = OperatorInfo { Pos = { 109.031, 74.7572 } },
 								}
 							},
 						},
@@ -3048,9 +3148,9 @@
 								Input = Input {
 									SourceOp = "AWB",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -660, 16.4994 } },
+							ViewInfo = OperatorInfo { Pos = { -55, 8.75728 } },
 						},
 						SwitchFuse3 = Fuse.Switch {
 							CtrlWShown = false,
@@ -3090,48 +3190,64 @@
 								Input8 = Input {
 									SourceOp = "Instance_EmptyText_1",
 									Source = "Output",
-								},
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -440, 49.4994 } },
+							ViewInfo = OperatorInfo { Pos = { 165, 41.7573 } },
 							Version = 172
 						},
 						Instance_Transform4 = Transform {
 							CtrlWShown = false,
 							SourceOp = "Transform4",
 							Inputs = {
-								EffectMask = Input { },
-								SettingsNest = Input { },
-								TransformNest = Input { },
-								ReferenceSize = Input { },
+								EffectMask = Input {
+								},
+								SettingsNest = Input {
+								},
+								TransformNest = Input {
+								},
+								ReferenceSize = Input {
+								},
 								Input = Input {
 									SourceOp = "sRender1_7",
 									Source = "Output",
 								},
-								CommentsNest = Input { },
-								FrameRenderScriptNest = Input { },
-								StartRenderScripts = Input { },
-								EndRenderScripts = Input { },
+								CommentsNest = Input {
+								},
+								FrameRenderScriptNest = Input {
+								},
+								StartRenderScripts = Input {
+								},
+								EndRenderScripts = Input {
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -660, 148.5 } },
+							ViewInfo = OperatorInfo { Pos = { -55, 140.758 } },
 						},
 						Instance_Transform4_1 = Transform {
 							CtrlWShown = false,
 							SourceOp = "Transform4",
 							Inputs = {
-								EffectMask = Input { },
-								SettingsNest = Input { },
-								TransformNest = Input { },
-								ReferenceSize = Input { },
+								EffectMask = Input {
+								},
+								SettingsNest = Input {
+								},
+								TransformNest = Input {
+								},
+								ReferenceSize = Input {
+								},
 								Input = Input {
 									SourceOp = "sRender1_6",
 									Source = "Output",
 								},
-								CommentsNest = Input { },
-								FrameRenderScriptNest = Input { },
-								StartRenderScripts = Input { },
-								EndRenderScripts = Input { },
+								CommentsNest = Input {
+								},
+								FrameRenderScriptNest = Input {
+								},
+								StartRenderScripts = Input {
+								},
+								EndRenderScripts = Input {
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -660, 115.5 } },
+							ViewInfo = OperatorInfo { Pos = { -55, 107.758 } },
 						},
 						WBFluor = GroupOperator {
 							CtrlWShown = false,
@@ -3142,7 +3258,19 @@
 									Source = "Output",
 								}
 							},
-							ViewInfo = GroupInfo { Pos = { -770, 148.5 } },
+							ViewInfo = GroupInfo {
+								Pos = { -165, 140.758 },
+								Flags = {
+									AllowPan = false,
+									AutoSnap = true,
+									RemoveRouters = true
+								},
+								Size = { 786, 165.364, 393, 24.2424 },
+								Direction = "Horizontal",
+								PipeStyle = "Direct",
+								Scale = 1,
+								Offset = { 0, 0 }
+							},
 							Tools = ordered() {
 								sRectangle1_7 = sRectangle {
 									CtrlWShown = false,
@@ -3150,7 +3278,7 @@
 										Solid = Input { Value = 0, },
 										BorderWidth = Input { Value = 0.026, },
 										JoinStyle = Input { Value = 2, },
-										Height = Input { Value = 0.096, },
+										Height = Input { Value = 0.096, }
 									},
 									ViewInfo = OperatorInfo { Pos = { -330, 107.258 } },
 								},
@@ -3158,9 +3286,9 @@
 									CtrlWShown = false,
 									Inputs = {
 										Width = Input { Value = 0.036, },
-										Height = Input { Value = 1, },
+										Height = Input { Value = 1, }
 									},
-									ViewInfo = OperatorInfo { Pos = { -330, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { -330, 41.2572 } },
 								},
 								sDuplicate1_2 = sDuplicate {
 									CtrlWShown = false,
@@ -3172,8 +3300,12 @@
 											SourceOp = "sRectangle2_7",
 											Source = "Output",
 										},
+										Polyline = Input {
+											Value = Polyline {
+											},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { -220, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { -220, 41.2572 } },
 								},
 								Instance_sDuplicate1 = sDuplicate {
 									CtrlWShown = false,
@@ -3191,12 +3323,16 @@
 											SourceOp = "sRectangle2_7",
 											Source = "Output",
 										},
-										CommentsNest = Input { },
-										FrameRenderScriptNest = Input { },
-										StartRenderScripts = Input { },
-										EndRenderScripts = Input { },
+										CommentsNest = Input {
+										},
+										FrameRenderScriptNest = Input {
+										},
+										StartRenderScripts = Input {
+										},
+										EndRenderScripts = Input {
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { -220, 8.25726 } },
+									ViewInfo = OperatorInfo { Pos = { -220, 8.25721 } },
 								},
 								sMerge1_6 = sMerge {
 									CtrlWShown = false,
@@ -3208,21 +3344,22 @@
 										Input2 = Input {
 											SourceOp = "sBoolean4_3",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -110, 107.258 } },
 								},
 								sRender1_7 = sRender {
 									CtrlWShown = false,
 									Inputs = {
-										Width = Input { Value = 1920, },
-										Height = Input { Value = 1080, },
+										GlobalOut = Input { Value = 124, },
+										Width = Input { Value = 3840, },
+										Height = Input { Value = 1920, },
 										UseFrameFormatSettings = Input { Value = 1, },
 										["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 										Input = Input {
 											SourceOp = "sMerge1_6",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 0, 107.258 } },
 								},
@@ -3237,17 +3374,17 @@
 										Input2 = Input {
 											SourceOp = "Instance_sDuplicate1",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { -110, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { -110, 41.2572 } },
 								},
 								sRectangle3_6 = sRectangle {
 									CtrlWShown = false,
 									Inputs = {
 										["Translate.Y"] = Input { Value = -0.173, },
-										Width = Input { Value = 1, },
+										Width = Input { Value = 1, }
 									},
-									ViewInfo = OperatorInfo { Pos = { 0, 8.25726 } },
+									ViewInfo = OperatorInfo { Pos = { 0, 8.25721 } },
 								},
 								sBoolean2_6 = sBoolean {
 									CtrlWShown = false,
@@ -3260,9 +3397,9 @@
 										Input2 = Input {
 											SourceOp = "sRectangle3_6",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { 0, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { 0, 41.2572 } },
 								},
 								sDuplicate2_1 = sDuplicate {
 									CtrlWShown = false,
@@ -3273,16 +3410,20 @@
 											SourceOp = "sBoolean2_6",
 											Source = "Output",
 										},
+										Polyline = Input {
+											Value = Polyline {
+											},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { 110, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { 110, 41.2572 } },
 								},
 								sEllipse1_3 = sEllipse {
 									CtrlWShown = false,
 									Inputs = {
 										Width = Input { Value = 0.668, },
-										Height = Input { Value = 0.21, },
+										Height = Input { Value = 0.21, }
 									},
-									ViewInfo = OperatorInfo { Pos = { 220, 8.25726 } },
+									ViewInfo = OperatorInfo { Pos = { 220, 8.25721 } },
 								},
 								sBoolean3_3 = sBoolean {
 									CtrlWShown = false,
@@ -3295,9 +3436,9 @@
 										Input2 = Input {
 											SourceOp = "sEllipse1_3",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { 220, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { 220, 41.2572 } },
 								},
 								sBoolean4_3 = sBoolean {
 									CtrlWShown = false,
@@ -3309,16 +3450,16 @@
 										Input2 = Input {
 											SourceOp = "sEllipse2_1",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { 330, 41.2573 } },
+									ViewInfo = OperatorInfo { Pos = { 330, 41.2572 } },
 								},
 								sEllipse2_1 = sEllipse {
 									CtrlWShown = false,
 									Inputs = {
-										Width = Input { Value = 1.654, },
+										Width = Input { Value = 1.654, }
 									},
-									ViewInfo = OperatorInfo { Pos = { 330, 8.25726 } },
+									ViewInfo = OperatorInfo { Pos = { 330, 8.25721 } },
 								}
 							},
 						},
@@ -3331,7 +3472,19 @@
 									Source = "Output",
 								}
 							},
-							ViewInfo = GroupInfo { Pos = { -770, 115.5 } },
+							ViewInfo = GroupInfo {
+								Pos = { -165, 107.758 },
+								Flags = {
+									AllowPan = false,
+									AutoSnap = true,
+									RemoveRouters = true
+								},
+								Size = { 621, 198.364, 310.5, 24.2424 },
+								Direction = "Horizontal",
+								PipeStyle = "Direct",
+								Scale = 1,
+								Offset = { 0, 0 }
+							},
 							Tools = ordered() {
 								sEllipse1_2 = sEllipse {
 									CtrlWShown = false,
@@ -3341,7 +3494,7 @@
 										Height = Input {
 											Value = 0.231,
 											Expression = "Width",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -248, 41.7573 } },
 								},
@@ -3356,21 +3509,22 @@
 										Input = Input {
 											SourceOp = "sEllipse1_2",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -248, 107.758 } },
 								},
 								sRender1_6 = sRender {
 									CtrlWShown = false,
 									Inputs = {
-										Width = Input { Value = 1920, },
-										Height = Input { Value = 1080, },
+										GlobalOut = Input { Value = 124, },
+										Width = Input { Value = 3840, },
+										Height = Input { Value = 1920, },
 										UseFrameFormatSettings = Input { Value = 1, },
 										["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 										Input = Input {
 											SourceOp = "sTransform3",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 247, 140.758 } },
 								},
@@ -3379,7 +3533,7 @@
 									Inputs = {
 										["Translate.Y"] = Input { Value = 0.058, },
 										Width = Input { Value = 0.072, },
-										Height = Input { Value = 0.13, },
+										Height = Input { Value = 0.13, }
 									},
 									ViewInfo = OperatorInfo { Pos = { -193, 140.758 } },
 								},
@@ -3394,7 +3548,7 @@
 										Input2 = Input {
 											SourceOp = "sRectangle4_4",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -28, 140.758 } },
 								},
@@ -3405,7 +3559,7 @@
 										Input = Input {
 											SourceOp = "sBoolean4_2",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 137, 140.758 } },
 								},
@@ -3420,7 +3574,7 @@
 										Input2 = Input {
 											SourceOp = "sTransform2",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -83, 107.758 } },
 								},
@@ -3435,9 +3589,9 @@
 										Input = Input {
 											SourceOp = "sEllipse1_2",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { -28, 74.7573 } },
+									ViewInfo = OperatorInfo { Pos = { -28, 74.7572 } },
 								},
 								sMerge1_5 = sMerge {
 									CtrlWShown = false,
@@ -3453,7 +3607,7 @@
 										Input3 = Input {
 											SourceOp = "sRectangle3_5",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 82, 107.758 } },
 								},
@@ -3462,7 +3616,7 @@
 									Inputs = {
 										["Translate.Y"] = Input { Value = 0.158, },
 										Width = Input { Value = 0.133, },
-										Height = Input { Value = 0.093, },
+										Height = Input { Value = 0.093, }
 									},
 									ViewInfo = OperatorInfo { Pos = { 247, 107.758 } },
 								},
@@ -3477,9 +3631,9 @@
 										Input2 = Input {
 											SourceOp = "sTransform1_1",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { 137, 74.7573 } },
+									ViewInfo = OperatorInfo { Pos = { 137, 74.7572 } },
 								},
 								sBoolean2_5 = sBoolean {
 									CtrlWShown = false,
@@ -3492,17 +3646,17 @@
 										Input2 = Input {
 											SourceOp = "sRectangle2_6",
 											Source = "Output",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { 247, 74.7573 } },
+									ViewInfo = OperatorInfo { Pos = { 247, 74.7572 } },
 								},
 								sRectangle1_6 = sRectangle {
 									CtrlWShown = false,
 									Inputs = {
 										Width = Input { Value = 0.526, },
-										Height = Input { Value = 0.026, },
+										Height = Input { Value = 0.026, }
 									},
-									ViewInfo = OperatorInfo { Pos = { 137, 8.75726 } },
+									ViewInfo = OperatorInfo { Pos = { 137, 8.75721 } },
 								},
 								sDuplicate1_1 = sDuplicate {
 									CtrlWShown = false,
@@ -3513,6 +3667,10 @@
 											SourceOp = "sRectangle1_6",
 											Source = "Output",
 										},
+										Polyline = Input {
+											Value = Polyline {
+											},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 137, 41.7573 } },
 								},
@@ -3521,7 +3679,7 @@
 									Inputs = {
 										["Translate.Y"] = Input { Value = 0.196, },
 										Width = Input { Value = 0.622, },
-										Height = Input { Value = 0.32, },
+										Height = Input { Value = 0.32, }
 									},
 									ViewInfo = OperatorInfo { Pos = { 247, 41.7573 } },
 								}
@@ -3536,12 +3694,24 @@
 									Source = "Output",
 								}
 							},
-							ViewInfo = GroupInfo { Pos = { -770, 49.4994 } },
+							ViewInfo = GroupInfo {
+								Pos = { -165, 41.7573 },
+								Flags = {
+									AllowPan = false,
+									AutoSnap = true,
+									RemoveRouters = true
+								},
+								Size = { 566, 99.3637, 283, 24.2424 },
+								Direction = "Horizontal",
+								PipeStyle = "Direct",
+								Scale = 1,
+								Offset = { 0, 0 }
+							},
 							Tools = ordered() {
 								sRectangle5 = sRectangle {
 									CtrlWShown = false,
 									Inputs = {
-										Height = Input { Value = 0.026, },
+										Height = Input { Value = 0.026, }
 									},
 									ViewInfo = OperatorInfo { Pos = { -220, 41.2576 } },
 								},
@@ -3552,9 +3722,9 @@
 										Height = Input {
 											Value = 0.284,
 											Expression = "Width",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { 0, 8.25757 } },
+									ViewInfo = OperatorInfo { Pos = { 0, 8.25756 } },
 								},
 								sEllipse1 = sEllipse {
 									CtrlWShown = false,
@@ -3563,9 +3733,9 @@
 										Height = Input {
 											Value = 0.268,
 											Expression = "Width",
-										},
+										}
 									},
-									ViewInfo = OperatorInfo { Pos = { 110, 8.25757 } },
+									ViewInfo = OperatorInfo { Pos = { 110, 8.25756 } },
 								},
 								sDuplicate1 = sDuplicate {
 									CtrlWShown = false,
@@ -3576,6 +3746,10 @@
 											SourceOp = "sRectangle5",
 											Source = "Output",
 										},
+										Polyline = Input {
+											Value = Polyline {
+											},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { -110, 41.2576 } },
 								},
@@ -3590,7 +3764,7 @@
 										Input2 = Input {
 											SourceOp = "sEllipse2",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 0, 41.2576 } },
 								},
@@ -3604,21 +3778,22 @@
 										Input2 = Input {
 											SourceOp = "sEllipse1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 110, 41.2576 } },
 								},
 								sRender2 = sRender {
 									CtrlWShown = false,
 									Inputs = {
-										Width = Input { Value = 1920, },
-										Height = Input { Value = 1080, },
+										GlobalOut = Input { Value = 124, },
+										Width = Input { Value = 3840, },
+										Height = Input { Value = 1920, },
 										UseFrameFormatSettings = Input { Value = 1, },
 										["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 										Input = Input {
 											SourceOp = "sMerge1",
 											Source = "Output",
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 220, 41.2576 } },
 								}
@@ -3628,8 +3803,9 @@
 							CtrlWShown = false,
 							NameSet = true,
 							Inputs = {
-								Width = Input { Value = 1920, },
-								Height = Input { Value = 1080, },
+								GlobalOut = Input { Value = 124, },
+								Width = Input { Value = 3840, },
+								Height = Input { Value = 1920, },
 								UseFrameFormatSettings = Input { Value = 1, },
 								["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 								StyledText = Input { Value = "AWB", },
@@ -3637,85 +3813,131 @@
 								Style = Input { Value = "Bold", },
 								Size = Input { Value = 0.5, },
 								VerticalJustificationNew = Input { Value = 3, },
-								HorizontalJustificationNew = Input { Value = 3, },
+								HorizontalJustificationNew = Input { Value = 3, }
 							},
-							ViewInfo = OperatorInfo { Pos = { -770, 16.4994 } },
+							ViewInfo = OperatorInfo { Pos = { -165, 8.75728 } },
 						},
 						Instance_Transform4_3 = Transform {
 							CtrlWShown = false,
 							SourceOp = "Transform4",
 							Inputs = {
-								EffectMask = Input { },
-								SettingsNest = Input { },
-								TransformNest = Input { },
-								ReferenceSize = Input { },
+								EffectMask = Input {
+								},
+								SettingsNest = Input {
+								},
+								TransformNest = Input {
+								},
+								ReferenceSize = Input {
+								},
 								Input = Input {
 									SourceOp = "sRender2",
 									Source = "Output",
 								},
-								CommentsNest = Input { },
-								FrameRenderScriptNest = Input { },
-								StartRenderScripts = Input { },
-								EndRenderScripts = Input { },
+								CommentsNest = Input {
+								},
+								FrameRenderScriptNest = Input {
+								},
+								StartRenderScripts = Input {
+								},
+								EndRenderScripts = Input {
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -660, 49.4994 } },
+							ViewInfo = OperatorInfo { Pos = { -55, 41.7573 } },
 						},
 						Instance_Transform4_2 = Transform {
 							CtrlWShown = false,
 							SourceOp = "Transform4",
 							Inputs = {
-								EffectMask = Input { },
-								SettingsNest = Input { },
-								TransformNest = Input { },
-								ReferenceSize = Input { },
+								EffectMask = Input {
+								},
+								SettingsNest = Input {
+								},
+								TransformNest = Input {
+								},
+								ReferenceSize = Input {
+								},
 								Input = Input {
 									SourceOp = "Background1_1",
 									Source = "Output",
 								},
-								CommentsNest = Input { },
-								FrameRenderScriptNest = Input { },
-								StartRenderScripts = Input { },
-								EndRenderScripts = Input { },
+								CommentsNest = Input {
+								},
+								FrameRenderScriptNest = Input {
+								},
+								StartRenderScripts = Input {
+								},
+								EndRenderScripts = Input {
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -660, 82.4994 } },
+							ViewInfo = OperatorInfo { Pos = { -55, 74.7573 } },
 						},
 						Instance_EmptyText_1 = TextPlus {
 							CtrlWShown = false,
 							NameSet = true,
 							SourceOp = "EmptyText",
 							Inputs = {
-								EffectMask = Input { },
-								SettingsNest = Input { },
-								ImageNest = Input { },
-								["Gamut.ColorSpaceNest"] = Input { },
-								["Gamut.GammaSpaceNest"] = Input { },
-								Layout = Input { },
-								LayoutRotation = Input { },
-								Background = Input { },
-								TransformTransform = Input { },
-								TransformRotation = Input { },
-								TransformShear = Input { },
-								TransformSize = Input { },
-								Properties1 = Input { },
-								Softness1 = Input { },
-								Position1 = Input { },
-								Rotation1 = Input { },
-								Shear1 = Input { },
-								Size1 = Input { },
-								TextText = Input { },
-								TabSpacing = Input { },
-								AdvancedFontControls = Input { },
-								ClearSelectedKerning = Input { },
-								ClearAllKerning = Input { },
-								ClearSelectedPlacement = Input { },
-								ClearAllPlacement = Input { },
-								Internal = Input { },
-								CommentsNest = Input { },
-								FrameRenderScriptNest = Input { },
-								StartRenderScripts = Input { },
-								EndRenderScripts = Input { },
+								EffectMask = Input {
+								},
+								SettingsNest = Input {
+								},
+								ImageNest = Input {
+								},
+								["Gamut.ColorSpaceNest"] = Input {
+								},
+								["Gamut.GammaSpaceNest"] = Input {
+								},
+								Layout = Input {
+								},
+								LayoutRotation = Input {
+								},
+								Background = Input {
+								},
+								TransformTransform = Input {
+								},
+								TransformRotation = Input {
+								},
+								TransformShear = Input {
+								},
+								TransformSize = Input {
+								},
+								Properties1 = Input {
+								},
+								Softness1 = Input {
+								},
+								Position1 = Input {
+								},
+								Rotation1 = Input {
+								},
+								Shear1 = Input {
+								},
+								Size1 = Input {
+								},
+								TextText = Input {
+								},
+								TabSpacing = Input {
+								},
+								AdvancedFontControls = Input {
+								},
+								ClearSelectedKerning = Input {
+								},
+								ClearAllKerning = Input {
+								},
+								ClearSelectedPlacement = Input {
+								},
+								ClearAllPlacement = Input {
+								},
+								Internal = Input {
+								},
+								CommentsNest = Input {
+								},
+								FrameRenderScriptNest = Input {
+								},
+								StartRenderScripts = Input {
+								},
+								EndRenderScripts = Input {
+								}
 							},
-							ViewInfo = OperatorInfo { Pos = { -440, 148.5 } },
+							ViewInfo = OperatorInfo { Pos = { 165, 140.758 } },
 						},
 						WBCloudy = GroupOperator {
 							CtrlWShown = false,
@@ -3726,7 +3948,19 @@
 									Source = "Output",
 								}
 							},
-							ViewInfo = GroupInfo { Pos = { -770, 82.4994 } },
+							ViewInfo = GroupInfo {
+								Pos = { -165, 74.7573 },
+								Flags = {
+									AllowPan = false,
+									AutoSnap = true,
+									RemoveRouters = true
+								},
+								Size = { 126, 130.886, 63, 24.2424 },
+								Direction = "Horizontal",
+								PipeStyle = "Direct",
+								Scale = 1,
+								Offset = { 0, 0 }
+							},
 							Tools = ordered() {
 								Background1_1 = Background {
 									CtrlWShown = false,
@@ -3735,13 +3969,14 @@
 											SourceOp = "Polygon1",
 											Source = "Mask",
 										},
-										Width = Input { Value = 1920, },
-										Height = Input { Value = 1080, },
+										GlobalOut = Input { Value = 124, },
+										Width = Input { Value = 3840, },
+										Height = Input { Value = 1920, },
 										UseFrameFormatSettings = Input { Value = 1, },
 										["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 										TopLeftRed = Input { Value = 1, },
 										TopLeftGreen = Input { Value = 1, },
-										TopLeftBlue = Input { Value = 1, },
+										TopLeftBlue = Input { Value = 1, }
 									},
 									ViewInfo = OperatorInfo { Pos = { 0, 73.7576 } },
 								},
@@ -3752,21 +3987,21 @@
 									Inputs = {
 										Filter = Input { Value = FuID { "Fast Gaussian" }, },
 										BorderWidth = Input { Value = 0.0121, },
-										MaskWidth = Input { Value = 1920, },
-										MaskHeight = Input { Value = 1080, },
+										MaskWidth = Input { Value = 3840, },
+										MaskHeight = Input { Value = 1920, },
 										PixelAspect = Input { Value = { 1, 1 }, },
 										UseFrameFormatSettings = Input { Value = 1, },
 										ClippingMode = Input { Value = FuID { "None" }, },
 										Center = Input { Value = { 0.5625, 0.546913580246914 }, },
 										Polyline = Input {
-											SourceOp = "Polygon1Polyline",
+											SourceOp = "Polygon1多边形折线",
 											Source = "Value",
 										},
 										Polyline2 = Input {
 											Value = Polyline {
 											},
 											Disabled = true,
-										},
+										}
 									},
 									ViewInfo = OperatorInfo { Pos = { 0, 7.75756 } },
 								}
@@ -3774,7 +4009,7 @@
 						}
 					},
 				},
-				Polygon1_1Polyline = BezierSpline {
+				["Polygon1_1多边形折线"] = BezierSpline {
 					SplineColor = { Red = 173, Green = 255, Blue = 47 },
 					CtrlWZoom = false,
 					KeyFrames = {
@@ -3788,7 +4023,7 @@
 							} }
 					}
 				},
-				Polygon1Polyline = BezierSpline {
+				["Polygon1多边形折线"] = BezierSpline {
 					SplineColor = { Red = 173, Green = 255, Blue = 47 },
 					CtrlWZoom = false,
 					KeyFrames = {
@@ -3806,6 +4041,7 @@
 					}
 				},
 				FilmModeTransform = Transform {
+					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Center = Input { Value = { 0.509, 0.771 }, },
@@ -3816,12 +4052,208 @@
 						Input = Input {
 							SourceOp = "Merge18",
 							Source = "Output",
-						},
+						}
 					},
-					ViewInfo = OperatorInfo { Pos = { -275, -16.5 } },
+					ViewInfo = OperatorInfo { Pos = { -303, 569.258 } },
+				},
+				MultiMerge2 = MultiMerge {
+					CtrlWShown = false,
+					Inputs = {
+						LayerOrder = Input { Value = ScriptVal { {
+									[0] = 1,
+									2,
+									3
+								} }, },
+						Background = Input {
+							SourceOp = "FilmModeTransform",
+							Source = "Output",
+						},
+						["Layer1.Foreground"] = Input {
+							SourceOp = "CaptureFramerate",
+							Source = "Output",
+						},
+						LayerName1 = Input { Value = "CaptureFramerate Layer", },
+						["Layer2.Foreground"] = Input {
+							SourceOp = "Transform3",
+							Source = "Output",
+						},
+						LayerName2 = Input { Value = "Transform3 Layer", },
+						["Layer3.Foreground"] = Input {
+							SourceOp = "FocusAreaTransform",
+							Source = "Output",
+						},
+						LayerName3 = Input { Value = "FocusAreaTransform Layer", }
+					},
+					ViewInfo = OperatorInfo { Pos = { -55, 569.258 } },
+				},
+				MultiMerge3 = MultiMerge {
+					CtrlWShown = false,
+					Inputs = {
+						LayerOrder = Input { Value = ScriptVal { {
+									[0] = 1,
+									2
+								} }, },
+						Background = Input {
+							SourceOp = "WBTransform",
+							Source = "Output",
+						},
+						["Layer1.Foreground"] = Input {
+							SourceOp = "ShowPPMode",
+							Source = "Output",
+						},
+						LayerName1 = Input { Value = "ShowPPMode Layer", },
+						["Layer2.Foreground"] = Input {
+							SourceOp = "ShowFocalLength35mm",
+							Source = "Output",
+						},
+						LayerName2 = Input { Value = "ShowFocalLength35mm Layer", }
+					},
+					ViewInfo = OperatorInfo { Pos = { -330, 404.258 } },
+				},
+				MultiMerge4 = MultiMerge {
+					CtrlWShown = false,
+					Inputs = {
+						LayerOrder = Input { Value = ScriptVal { {
+									[0] = 1,
+									2,
+									3,
+									4,
+									5
+								} }, },
+						Background = Input {
+							SourceOp = "ShutterSpeed",
+							Source = "Output",
+						},
+						["Layer1.Foreground"] = Input {
+							SourceOp = "Aperture",
+							Source = "Output",
+						},
+						LayerName1 = Input { Value = "Aperture Layer", },
+						["Layer2.Foreground"] = Input {
+							SourceOp = "ISO",
+							Source = "Output",
+						},
+						LayerName2 = Input { Value = "ISO Layer", },
+						["Layer3.Foreground"] = Input {
+							SourceOp = "GainAdjustment",
+							Source = "Output",
+						},
+						LayerName3 = Input { Value = "GainAdjustment Layer", },
+						["Layer4.Foreground"] = Input {
+							SourceOp = "FocusPosition",
+							Source = "Output",
+						},
+						LayerName4 = Input { Value = "FocusPosition Layer", },
+						["Layer5.Foreground"] = Input {
+							SourceOp = "ShowTimecode",
+							Source = "Output",
+						},
+						LayerName5 = Input { Value = "ShowTimecode Layer", }
+					},
+					ViewInfo = OperatorInfo { Pos = { -248, 272.258 } },
+				},
+				MultiMerge5 = MultiMerge {
+					CtrlWShown = false,
+					Inputs = {
+						LayerOrder = Input { Value = ScriptVal { {
+									[0] = 1,
+									2,
+									3
+								} }, },
+						Background = Input {
+							SourceOp = "ShowFileAndRecordSettings",
+							Source = "Output",
+						},
+						["Layer1.Foreground"] = Input {
+							SourceOp = "ShowModelName",
+							Source = "Output",
+						},
+						LayerName1 = Input { Value = "ShowModelName Layer", },
+						["Layer2.Foreground"] = Input {
+							SourceOp = "ShowDateTime",
+							Source = "Output",
+						},
+						LayerName2 = Input { Value = "ShowDateTime Layer", },
+						["Layer3.Foreground"] = Input {
+							SourceOp = "SwitchFuse5",
+							Source = "Output",
+						},
+						LayerName3 = Input { Value = "SwitchFuse5 Layer", }
+					},
+					ViewInfo = OperatorInfo { Pos = { 412, 181.5 } },
+				},
+				MultiMerge6 = MultiMerge {
+					CtrlWShown = false,
+					Inputs = {
+						LayerOrder = Input { Value = ScriptVal { {
+									[0] = 1,
+									2,
+									3
+								} }, },
+						Background = Input {
+							SourceOp = "RightTransform",
+							Source = "Output",
+						},
+						["Layer1.Foreground"] = Input {
+							SourceOp = "FooterTransform",
+							Source = "Output",
+						},
+						LayerName1 = Input { Value = "FooterTransform Layer", },
+						["Layer2.Foreground"] = Input {
+							SourceOp = "LeftTransform",
+							Source = "Output",
+						},
+						LayerName2 = Input { Value = "LeftTransform Layer", },
+						["Layer3.Foreground"] = Input {
+							SourceOp = "HeaderTransform",
+							Source = "Output",
+						},
+						LayerName3 = Input { Value = "HeaderTransform Layer", }
+					},
+					ViewInfo = OperatorInfo { Pos = { 275, 404.258 } },
+				},
+				MultiMerge7 = MultiMerge {
+					CtrlWShown = false,
+					Inputs = {
+						LayerOrder = Input { Value = ScriptVal { {
+									[0] = 1,
+									2,
+									3
+								} }, },
+						Background = Input {
+							SourceOp = "FileFormatAndFrameRate",
+							Source = "Output",
+						},
+						["Layer1.Foreground"] = Input {
+							SourceOp = "BitrateTransform",
+							Source = "Output",
+						},
+						LayerName1 = Input { Value = "BitrateTransform Layer", },
+						["Layer2.Foreground"] = Input {
+							SourceOp = "Profile",
+							Source = "Output",
+						},
+						LayerName2 = Input { Value = "Profile Layer", },
+						["Layer3.Foreground"] = Input {
+							SourceOp = "FixedBit",
+							Source = "Output",
+						},
+						LayerName3 = Input { Value = "FixedBit Layer", }
+					},
+					ViewInfo = OperatorInfo { Pos = { -413, 140.258 } },
+				},
+				Merge1 = Merge {
+					CtrlWShown = false,
+					Inputs = {
+						Foreground = Input {
+							SourceOp = "Backgroud1",
+							Source = "Output",
+						},
+						PerformDepthMerge = Input { Value = 0, }
+					},
+					ViewInfo = OperatorInfo { Pos = { 715, 404.258 } },
 				}
 			},
 		}
-	},
-	ActiveTool = "SonyMILC"
+	}
 }

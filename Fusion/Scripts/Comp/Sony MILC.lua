@@ -52,11 +52,10 @@ ffi.cdef [[
         DRFrameDataArray FocusPositionArray;
         DRFrameDataArray CaptureGammaEquationArray;
 	    DRFrameDataArray CameraMasterGainAdjustmentArray;
-        long long int Offset;
     } DRSonyRtmdDisp;
 
 	extern __declspec(dllexport) DRSonyNrtmd DRSonyNrtmdDisp(char* absPath);
-	extern __declspec(dllexport) DRSonyRtmdDisp DrSonyRtmdDisp(char* absPath, int start, int count, long long int offset);
+	extern __declspec(dllexport) DRSonyRtmdDisp DrSonyRtmdDisp(char* absPath, int start, int count);
 ]]
 
 local function log_line(message)
@@ -322,11 +321,11 @@ function handleRtmdByFrame(res)
     end
 end
 
-function getSonyRtmdByFrame(filePath, start, batch_count, offset)
+function getSonyRtmdByFrame(filePath, start, batch_count)
     log_line(string.format("处理帧:%d至%d", start, start + batch_count - 1))
     local c_str = ffi.new("char[?]", #filePath + 1)
     ffi.copy(c_str, filePath)
-    local res = lib.DrSonyRtmdDisp(c_str, start, batch_count, offset)
+    local res = lib.DrSonyRtmdDisp(c_str, start, batch_count)
     handleRtmdByFrame(res)
     return tonumber(res.Offset)
 end
@@ -383,17 +382,16 @@ function Main()
     local batch_count = 1000
     local start
     local i = 0
-    local offset = 0
 
     log_line("开始获取帧数据")
     while (true)
     do
         start = renderStart + batch_count * i
         if start + batch_count >= renderEnd + 1 then
-            offset = getSonyRtmdByFrame(filePath, start, renderEnd - start + 1, offset)
+            getSonyRtmdByFrame(filePath, start, renderEnd - start + 1)
             break
         end
-        offset = getSonyRtmdByFrame(filePath, start, batch_count, offset)
+        getSonyRtmdByFrame(filePath, start, batch_count)
         i = i + 1
     end
 

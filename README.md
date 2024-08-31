@@ -8,6 +8,8 @@
 ## 支持范围
 ### 达芬奇版本
 17+
+Sony MILC使用了Multi Merge节点，需要18.5+版本
+从达芬奇19开始，BMD修复了开启RCM，色差偏移的bug，所以移除了相关修复脚本，如果需要请从Deprecated目录手动下载并放置指定目录
 
 ### 操作系统
 * Windows
@@ -41,7 +43,7 @@
    f.佳能相机暂无法解析到拍摄使用的LOG格式，暂时无法自动匹配，如需批量匹配佳能素材可以使用智能媒体夹过滤佳能素材并全选设置对应输入色彩空间
 
 
-3. RCM下色彩偏移修复<br/>
+3. ~~RCM下色彩偏移修复~~【达芬奇19开始移除】<br/>
    Fusion页面任意节点右键脚本->RCM Color Shift Fix
    18.1版本开始，Text+在RCM下做了一定的修改，请更新脚本到0.9.0版本
 
@@ -79,6 +81,33 @@
     <th>作用</th>
   </tr>
   <tr>
+    <td rowspan="1">Scripts/Comp</td>
+    <td>Sony MILC.lua</td>
+    <td>索尼微单参数界面</td>
+  </tr>
+  <tr>
+    <td rowspan="3">Scripts/Utility</td>
+    <td>Metadata Parser.lua</td>
+    <td>元数据解析</td>
+  </tr>
+  <tr>
+    <td>RCM Color Space Match.lua</td>
+    <td>RCM色彩空间匹配</td>
+  </tr>
+  <tr>
+    <td>Script Installer.lua</td>
+    <td>脚本安装助手</td>
+  </tr>
+</table>
+
+达芬奇19移除的脚本
+<table>
+  <tr>
+    <th>文件夹</th>
+    <th>文件名</th>
+    <th>作用</th>
+  </tr>
+  <tr>
     <td rowspan="2">Config</td>
     <td>RCMColorSpaceMatchHotkey.fu</td>
     <td>Fusion快捷键注册，快速调色启动</td>
@@ -97,31 +126,9 @@
     <td>RCM Fusion颜色偏移输出修正</td>
   </tr>
   <tr>
-    <td rowspan="1">Scripts/Comp</td>
-    <td>Sony MILC.lua</td>
-    <td>索尼微单参数界面</td>
-  </tr>
-  <tr>
     <td>Scripts/Tool</td>
     <td>RCM Color Shift Fix.lua</td>
     <td>RCM色彩修正Tool脚本</td>
-  </tr>
-  <tr>
-    <td rowspan="4">Scripts/Utility</td>
-    <td>Metadata Parser.lua</td>
-    <td>元数据解析</td>
-  </tr>
-  <tr>
-    <td>RCM Color Space Match.lua</td>
-    <td>RCM色彩空间匹配</td>
-  </tr>
-  <tr>
-    <td>Script Installer.lua</td>
-    <td>脚本安装助手</td>
-  </tr>
-  <tr>
-    <td>Subtitle Tool.lua</td>
-    <td>字幕工具</td>
   </tr>
 </table>
 

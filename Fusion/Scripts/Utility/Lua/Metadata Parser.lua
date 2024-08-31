@@ -13,6 +13,7 @@ ffi.cdef [[
 	typedef struct
 	{
 		bool IsSupportMedia;
+		char *DateRecorded;
 		char *CameraType;
 		char *CameraManufacturer;
 		char *CameraSerial;
@@ -23,11 +24,13 @@ ffi.cdef [[
 		char *TimeLapseInterval;
 		char *CameraFps;
 		char *ShutterType;
+		char *ShutterAngle;
 		char *Shutter;
 		char *ISO;
 		char *WhitePoint;
 		char *WhiteBalanceTint;
 		char *CameraFirmware;
+		char *LUTUsed;
 		char *LensType;
 		char *LensNumber;
 		char *LensNotes;
@@ -68,6 +71,7 @@ local function processClip(clip)
         end
         local metadata = {}
         local returnVal = {}
+        returnVal["Date Recorded"] = ffi.string(res.DateRecorded)
         returnVal["Camera Type"] = ffi.string(res.CameraType)
         returnVal["Camera Manufacturer"] = ffi.string(res.CameraManufacturer)
         returnVal["Camera Serial #"] = ffi.string(res.CameraSerial)
@@ -78,10 +82,12 @@ local function processClip(clip)
         returnVal["Time-Lapse Interval"] = ffi.string(res.TimeLapseInterval)
         returnVal["Camera FPS"] = ffi.string(res.CameraFps)
         returnVal["Shutter Type"] = ffi.string(res.ShutterType)
+        returnVal["Shutter Angle"] = ffi.string(res.ShutterAngle)
         returnVal["ISO"] = ffi.string(res.ISO)
         returnVal["White Point (Kelvin)"] = ffi.string(res.WhitePoint)
         returnVal["White Balance Tint"] = ffi.string(res.WhiteBalanceTint)
         returnVal["Camera Firmware"] = ffi.string(res.CameraFirmware)
+        returnVal["LUT Used"] = ffi.string(res.LUTUsed)
         returnVal["Lens Type"] = ffi.string(res.LensType)
         returnVal["Lens Number"] = ffi.string(res.LensNumber)
         returnVal["Lens Notes"] = ffi.string(res.LensNotes)
