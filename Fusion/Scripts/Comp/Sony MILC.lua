@@ -327,7 +327,6 @@ function getSonyRtmdByFrame(filePath, start, batch_count)
     ffi.copy(c_str, filePath)
     local res = lib.DrSonyRtmdDisp(c_str, start, batch_count)
     handleRtmdByFrame(res)
-    return tonumber(res.Offset)
 end
 
 function setBezier()
