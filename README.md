@@ -7,9 +7,9 @@
 
 ## Deprecated
 
-即日起2026年4月，本插件停止功能更新，推荐使用全新推出的独立桌面应用 **达芬奇创意** **Creative Resolve**
-更全面的元数据解析，支持逐帧元数据查看，更多功能等你来探索
-官网：https://creativeresolve.net/
+即日起2026年4月，本插件停止功能更新，推荐使用全新推出的独立桌面应用 **达芬奇创意** **Creative Resolve** <br/>
+更全面的元数据解析，支持逐帧元数据查看，更多功能等你来探索 <br/>
+官网：https://creativeresolve.net/ <br/>
 问题反馈：https://github.com/creative-resolve/community
 
 ## 支持范围
