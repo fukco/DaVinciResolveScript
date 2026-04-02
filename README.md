@@ -5,6 +5,13 @@
 
 [English Version](README-EN.md)
 
+## Deprecated
+
+即日起2026年4月，本插件停止功能更新，推荐使用全新推出的独立桌面应用 **达芬奇创意** **Creative Resolve**
+更全面的元数据解析，支持逐帧元数据查看，更多功能等你来探索
+官网：https://creativeresolve.net/
+问题反馈：https://github.com/creative-resolve/community
+
 ## 支持范围
 ### 达芬奇版本
 17+ <br/>
